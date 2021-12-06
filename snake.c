@@ -1,12 +1,16 @@
 #include <stdint.h>  
 #include <pic32mx.h>
-#include <stdlib.h>
 #include "mipslab.h" 
 
-int const starting_length = 5;
+int const starting_length = 8;
 struct Snake s;
 struct Snake s2;
 _Bool fruit_coords[128][32];
+ _Bool turnCCW = 0;
+ _Bool turnCW = 0;
+char directions[4] = {'l', 'u', 'r', 'd'};
+int directionPointer = 2;
+
 
 void initialize_fruit(){    
 	//srand(100);
@@ -42,11 +46,33 @@ void visualize(){
     update_board();
 }
 
-void move(char direction){
+// Evaluates if the user is turning
+void evaluate_rotation(){
+
+    //This should not be called, raise flags instead?
+    getinput(&turnCCW, &turnCW);
+
+    if(turnCCW){
+        directionPointer--;
+        turnCCW = 0;
+    }
+    if(turnCW){
+        directionPointer++;
+        turnCW = 0;
+    }
+    
+    // Ensures the pointer loops around if it surpasses the boundaries of the array
+    directionPointer = directionPointer % 4;
+}
+
+void move(){
+
+    evaluate_rotation();
+
     int x = s.body[0].x;
     int y = s.body[0].y;
 
-    switch(direction){
+    switch(directions[directionPointer]){
         case 'u':
             y--;
         break;
@@ -61,6 +87,7 @@ void move(char direction){
         break;
     }
 
+    //Resets the tail pixel on the board
     board[s.body[starting_length-1].x][s.body[starting_length-1].y] = 0;
 
     int i;
@@ -69,8 +96,9 @@ void move(char direction){
     }
     s.body[0].x = x;
     s.body[0].y = y;
-    visualize();
-    
+
+    board[x][y] = 1;
+    update_board();
 }
 
 
@@ -86,7 +114,7 @@ void initialize_snake(){
     s.length = starting_length;
 
     int i;
-    for(i = 0; i < sizeof(s.body); i ++){
+    for(i = 0; i < sizeof(s.body); i++){
         s.body[i].x = 0;
         s.body[i].y = 0;
     }

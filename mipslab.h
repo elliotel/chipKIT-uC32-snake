@@ -50,7 +50,7 @@ extern const uint8_t const font[128*8];
 /* Declare bitmap array containing icon */
 extern const uint8_t const icon[128*2];
 /* Declare bitmap array containing board */
-extern uint8_t screen[128*8];
+extern uint8_t screen[128*4];
 /* Declare text buffer for display output */
 extern char textbuffer[4][16];
 
@@ -67,4 +67,6 @@ void time2string( char *, int );
 /* Written as part of i/o lab: getbtns, getsw, enable_interrupt */
 int getbtns(void);
 int getsw(void);
+void getinput(_Bool *, _Bool *);
+void update_game();
 void enable_interrupt(void);
