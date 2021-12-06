@@ -45,12 +45,12 @@ void visualize(){
     }
     update_board();
 }
+void update_rotation(){
+    getinput(&turnCCW, &turnCW);
+}
 
 // Evaluates if the user is turning
 void evaluate_rotation(){
-
-    //This should not be called, raise flags instead?
-    getinput(&turnCCW, &turnCW);
 
     if(turnCCW){
         directionPointer--;
@@ -90,15 +90,19 @@ void move(){
     //Resets the tail pixel on the board
     board[s.body[starting_length-1].x][s.body[starting_length-1].y] = 0;
 
+    struct Coordinate coo1 = s.body[0];
+    struct Coordinate coo2 = s.body[0];
     int i;
     for(i = 0; i < starting_length; i++){
-        s.body[i+1] = s.body[i];
+        coo2 = coo1;
+        coo1 = s.body[i+1];
+        s.body[i+1] = coo2;
     }
+    
     s.body[0].x = x;
     s.body[0].y = y;
 
     board[x][y] = 1;
-    update_board();
 }
 
 

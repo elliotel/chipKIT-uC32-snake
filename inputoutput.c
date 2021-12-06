@@ -58,31 +58,33 @@ void IOinitialize( void )
 void getinput(_Bool *turnCCW,_Bool *turnCW){
     buttonStatus = getbtns();
     if(buttonStatus){
+        /*
     if (buttonStatus & 0x1){
         *turnCCW = 1;
     }
     if (buttonStatus & 0x2){
         *turnCW = 1;
     }
-    /*
+    */
     if (buttonStatus & 0x4) {
-        return 3;
+        *turnCW = 1;
     }
     if (buttonStatus & 0x8){
-        return 4;
+        *turnCCW = 1;
     }
-    */
     }
     
 }
 
 void update_game(){
+    update_rotation();
+
     if (IFS(0) & 0x100) { //interrupt flag, found in bit 8 of IFS(0) (lecture), if 1 the timer has reached the period
 		IFS(0) &= ~0x100; 
 		timeoutcount++;
 	}
 
-	if (timeoutcount == 10) { 
+	if (timeoutcount == 5) { 
 		timeoutcount = 0;
 		display_update();
 		update_board();

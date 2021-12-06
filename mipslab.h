@@ -70,3 +70,6 @@ int getsw(void);
 void getinput(_Bool *, _Bool *);
 void update_game();
 void enable_interrupt(void);
+void update_rotation();
+int buttonStatus;
+
