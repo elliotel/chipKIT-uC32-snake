@@ -18,8 +18,12 @@ extern struct Coordinate{
     int x; int y; 
 };
 
+extern struct FatCoordinate{
+   struct Coordinate a; struct Coordinate b;
+};
+
 extern struct Snake{
-    struct Coordinate body[10];
+    struct FatCoordinate body[10];
     _Bool alive;
     int length;
 };
