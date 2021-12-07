@@ -1,5 +1,6 @@
 #include <stdint.h>  
 #include <pic32mx.h>
+#include <stdlib.h>
 #include "mipslab.h" 
 
 int const starting_length = 8;
@@ -10,6 +11,8 @@ _Bool fruit_coords[128][32];
  _Bool turnCW = 0;
 char directions[4] = {'l', 'u', 'r', 'd'};
 int directionPointer = 2;
+struct Fruit fruits[10];
+int fruit_num = 0;
 
 //Kind of redundant but fastest solution to code
 _Bool lastTurnClockwise = 0; 
@@ -29,17 +32,27 @@ void initialize_fruit(){
 }
 
 void spawn_fruit(){
-    //int x = (rand() % 125) + 1;
-    //int y = (rand() % 29) + 1;
-    
-    int x = 50;
-    int y = 5;
+    int x = (rand() % 125) + 1;
+    int y = (rand() % 29) + 1;
 
+    //Börjat implementera lite logik för att skapa structs av frukter, men oklart om det är bäst
+    //struct Fruit fruit = {.x1 = x, .x2 = x+1, .y1 = y, .y2 = y+1};
     if(board[x][y] != 1){
-        fruit_coords[x][y] = 1;
-        board[x][y] = 1;
-        update_board();
+    int i, j;
+        for(i = x; i <= x+1; i++){
+            for(j = y; j <= y+1; j++){
+                fruit_coords[i][j] = 1;
+                board[i][j] = 1;
+            }
+        }
     }
+}
+
+
+void remove_fruit(){
+}
+
+void render_fruits(){
 }
 
 

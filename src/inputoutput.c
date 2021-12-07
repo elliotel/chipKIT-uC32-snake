@@ -26,6 +26,7 @@ unsigned volatile int* test;
 int buttonStatus;
 int switchStatus;
 int timeoutcount;
+int fruitcount;
 
 /* Interrupt Service Routine */
 void user_isr( void )
@@ -48,6 +49,7 @@ void IOinitialize( void )
   TMR2 = 0;
   T2CONSET = 0x8000; //Start the timer (15 bit according to manual 14 (timer))
   timeoutcount = 0;
+  fruitcount = 0;
   
 
   port_E = (unsigned volatile char*) 0xbf886110; //address of PORTE 
@@ -82,13 +84,20 @@ void update_game(){
     if (IFS(0) & 0x100) { //interrupt flag, found in bit 8 of IFS(0) (lecture), if 1 the timer has reached the period
 		IFS(0) &= ~0x100; 
 		timeoutcount++;
+        fruitcount++;
 	}
 
-	if (timeoutcount == 5) { 
+	if (timeoutcount == 2) { 
 		timeoutcount = 0;
 		display_update();
 		update_board();
 		move();
+        
+        if(fruitcount == 20){
+        fruitcount = 0;
+        spawn_fruit();
+        }
+
 		tick(&mytime);
 
 		if (*port_E != 255) {

@@ -28,6 +28,10 @@ extern struct Snake{
     int length;
 };
 
+extern struct Fruit{
+   int x1; int x2; int y1; int y2;
+};
+
 /* Declare lab-related functions from mipslabfunc.c */
 char * itoaconv( int num );
 void labwork();
@@ -76,4 +80,6 @@ void update_game();
 void enable_interrupt(void);
 void update_rotation();
 int buttonStatus;
+void spawn_fruit();
+void update_board();
 
