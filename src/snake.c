@@ -92,7 +92,12 @@ _Bool evaluate_rotation(){
     }
     
     // Ensures the pointer loops around if it surpasses the boundaries of the array
-    directionPointer = directionPointer % 4;
+    if (directionPointer > 3) {
+        directionPointer = 0;
+    }
+    else if (directionPointer < 0 ) {
+        directionPointer = 3;
+    }
 
     if (turnCW || turnCCW) {
         movesSinceTurn = 0;
