@@ -82,4 +82,5 @@ void update_rotation();
 int buttonStatus;
 void spawn_fruit();
 void update_board();
+void display_update();
 

@@ -23,6 +23,7 @@ static void num32asc( char * s, int );
 #define DISPLAY_TURN_OFF_VDD (PORTFSET = 0x40)
 #define DISPLAY_TURN_OFF_VBAT (PORTFSET = 0x20)
 
+
 /* quicksleep:
    A simple function to create a small delay.
    Very inefficient use of computing resources,
@@ -186,6 +187,30 @@ void display_snake(int x, int y) {
   screen[1] = 252;
 }
 
+void set_up_menu(void){
+
+}
+
+//Loads the game board
+void set_up_board(void){
+  int x;
+  int y;
+  for(x = 0; x < 128;  x++){
+    for(y = 0; y < 32; y++){
+      if(((y == 0 || y == 31) && x >= 20) || x == 20 || x == 127){
+        board[x][y] = 1;
+      }       
+      else {
+        board[x][y] = 0;
+      }
+    }
+  }
+}
+
+void set_up_score(void){
+
+}
+
 void display_update(void) {
 	int i, j, k;
 	int c;
@@ -210,81 +235,9 @@ void display_update(void) {
 	}
 }
 
-/* Helper function, local to this file.
-   Converts a number to hexadecimal ASCII digits. */
-static void num32asc( char * s, int n ) 
-{
-  int i;
-  for( i = 28; i >= 0; i -= 4 )
-    *s++ = "0123456789ABCDEF"[ (n >> i) & 15 ];
-}
-
-/*
- * nextprime
- * 
- * Return the first prime number larger than the integer
- * given as a parameter. The integer must be positive.
- */
-#define PRIME_FALSE   0     /* Constant to help readability. */
-#define PRIME_TRUE    1     /* Constant to help readability. */
-int nextprime( int inval )
-{
-   register int perhapsprime = 0; /* Holds a tentative prime while we check it. */
-   register int testfactor; /* Holds various factors for which we test perhapsprime. */
-   register int found;      /* Flag, false until we find a prime. */
-
-   if (inval < 3 )          /* Initial sanity check of parameter. */
-   {
-     if(inval <= 0) return(1);  /* Return 1 for zero or negative input. */
-     if(inval == 1) return(2);  /* Easy special case. */
-     if(inval == 2) return(3);  /* Easy special case. */
-   }
-   else
-   {
-     /* Testing an even number for primeness is pointless, since
-      * all even numbers are divisible by 2. Therefore, we make sure
-      * that perhapsprime is larger than the parameter, and odd. */
-     perhapsprime = ( inval + 1 ) | 1 ;
-   }
-   /* While prime not found, loop. */
-   for( found = PRIME_FALSE; found != PRIME_TRUE; perhapsprime += 2 )
-   {
-     /* Check factors from 3 up to perhapsprime/2. */
-     for( testfactor = 3; testfactor <= (perhapsprime >> 1) + 1; testfactor += 1 )
-     {
-       found = PRIME_TRUE;      /* Assume we will find a prime. */
-       if( (perhapsprime % testfactor) == 0 ) /* If testfactor divides perhapsprime... */
-       {
-         found = PRIME_FALSE;   /* ...then, perhapsprime was non-prime. */
-         goto check_next_prime; /* Break the inner loop, go test a new perhapsprime. */
-       }
-     }
-     check_next_prime:;         /* This label is used to break the inner loop. */
-     if( found == PRIME_TRUE )  /* If the loop ended normally, we found a prime. */
-     {
-       return( perhapsprime );  /* Return the prime we found. */
-     } 
-   }
-   return( perhapsprime );      /* When the loop ends, perhapsprime is a real prime. */
-} 
-
-void set_up_board(void){
-  int x;
-  int y;
-  for(x = 0; x < 128;  x++){
-    for(y = 0; y < 32; y++){
-      if(y == 0 || y == 31 || x == 0 || x == 127){
-        board[x][y] = 1;
-      }       
-      else {
-        board[x][y] = 0;
-      }
-    }
-  }
-}
-
 //converts coordinates to pixels
 void update_board(void){
+    
   int y = 0;
   int c = 0;
   int x;
@@ -305,6 +258,16 @@ void update_board(void){
     }
   display_board(0, screen);
 }
+
+/* Helper function, local to this file.
+   Converts a number to hexadecimal ASCII digits. */
+static void num32asc( char * s, int n ) 
+{
+  int i;
+  for( i = 28; i >= 0; i -= 4 )
+    *s++ = "0123456789ABCDEF"[ (n >> i) & 15 ];
+}
+
 
 /*
  * itoa

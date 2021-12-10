@@ -55,10 +55,11 @@ int main(void) {
 	SPI2CONSET = 0x8000;
 	
 	display_init();
-	set_up_board();
 	display_board(0,screen);
 	initialize_fruit();
 	initialize_snake1();
+	
+	set_up_board();
 	/*
 	struct Snake snek;
 	snek = 

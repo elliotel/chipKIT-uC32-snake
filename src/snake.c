@@ -11,8 +11,9 @@ _Bool fruit_coords[128][32];
  _Bool turnCW = 0;
 char directions[4] = {'l', 'u', 'r', 'd'};
 int directionPointer = 2;
-struct Fruit fruits[10];
+struct Fruit fruits[11];
 int fruit_num = 0;
+int score;
 
 //Kind of redundant but fastest solution to code
 _Bool lastTurnClockwise = 0; 
@@ -28,33 +29,77 @@ void initialize_fruit(){
         for(y = 0; y < 32; y++){
             fruit_coords[x][y] = 0;
         }
-    }    
+    }   
 }
 
 void spawn_fruit(){
-    int x = (rand() % 125) + 1;
+    //Randomly generates locations for fruit
+    if(fruit_num == 10){
+        return;
+    }
+    int x = (rand() % 87) + 40;
     int y = (rand() % 29) + 1;
 
     //Börjat implementera lite logik för att skapa structs av frukter, men oklart om det är bäst
     //struct Fruit fruit = {.x1 = x, .x2 = x+1, .y1 = y, .y2 = y+1};
     if(board[x][y] != 1){
+
+        struct Fruit fruit = {.x1 = x, .x2 = x+1, .y1 = y, .y2 = y+1};
+        fruits[fruit_num] = fruit;
+    /*
     int i, j;
         for(i = x; i <= x+1; i++){
             for(j = y; j <= y+1; j++){
-                fruit_coords[i][j] = 1;
-                board[i][j] = 1;
+                fruits[fruit_num] = 
             }
         }
+        */
     }
+    
+    fruit_num++;
+    visualize_fruit();
 }
 
-
-void remove_fruit(){
+void visualize_fruit(){
+    int i;
+    for(i = 0; i < fruit_num; i++){
+        board[fruits[fruit_num].x1][fruits[fruit_num].y1] = 1;
+        board[fruits[fruit_num].x1][fruits[fruit_num].y2] = 1;
+        board[fruits[fruit_num].x2][fruits[fruit_num].y1] = 1;
+        board[fruits[fruit_num].x2][fruits[fruit_num].y2] = 1;
+    }
+    update_board();
 }
 
-void render_fruits(){
+void detect_collition(){
+    //if the board coordinates where the snake head coordinates are == 1
+    // if there is fruit on this coord 
+    score++;
+    //remove_fruit(fruit);
+    //If not, game over
 }
 
+void remove_fruit(int x, int y){
+    _Bool found = 0;
+    int i;
+    for(i = 0; i < fruit_num; i++){
+        
+        if(!found){
+            if(fruits[fruit_num].x1 == x|| fruits[fruit_num].x2 == x){
+                if(fruits[fruit_num].y1 == y || fruits[fruit_num].y2 == y){
+                    found = true;
+                }
+            }
+        }
+        
+        if(found){
+            fruits[fruit_num] = fruits[fruit_num+1];
+        }
+    }
+
+    fruit_num--;
+    score++;
+}
 
 void visualize(){
     int i;
