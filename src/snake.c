@@ -134,11 +134,11 @@ void calculate_fat_rotation(char previousDirection) {
     else if (movesSinceTurn == starting_length) {
         if (lastTurnClockwise) {
             board[s.body[starting_length-1].b.x][s.body[starting_length-1].b.y] = 0;
-            board[s.body[starting_length-2].b.x][s.body[starting_length-2].b.y] = 0;
+            board[s.body[starting_length].b.x][s.body[starting_length].b.y] = 0;
         }
         else {
             board[s.body[starting_length-1].a.x][s.body[starting_length-1].a.y] = 0;
-            board[s.body[starting_length-2].a.x][s.body[starting_length-2].a.y] = 0;
+            board[s.body[starting_length].a.x][s.body[starting_length].a.y] = 0;
         }
     }
     else {
@@ -155,6 +155,14 @@ void calculate_fat_rotation(char previousDirection) {
         coo1 = s.body[i+1];
         s.body[i+1] = coo2;
     }
+    s.body[starting_length].a.x = 0;
+    s.body[starting_length].a.y = 0;
+    s.body[starting_length].b.x = 0;
+    s.body[starting_length].b.y = 0;
+
+    board[s.body[starting_length].a.x][s.body[starting_length].a.y] = 0;
+    board[s.body[starting_length].b.x][s.body[starting_length].b.y] = 0;
+
     //Code duplication over
 
     switch(previousDirection){
@@ -163,9 +171,11 @@ void calculate_fat_rotation(char previousDirection) {
                 s.body[0].a.x = s.body[1].a.x - 1;
                 s.body[0].a.y = s.body[1].a.y + 1;
                 s.body[0].b.x = s.body[1].b.x - 2;
+                s.body[0].b.y = s.body[1].b.y;
             }
             else if (newDirection == 'r') {
                 s.body[0].a.x = s.body[1].a.x + 2;
+                s.body[0].a.y = s.body[1].a.y;
                 s.body[0].b.x = s.body[1].b.x + 1;
                 s.body[0].b.y = s.body[1].b.y + 1;
             }
@@ -173,6 +183,7 @@ void calculate_fat_rotation(char previousDirection) {
         case 'd':
             if (newDirection == 'l') {
                 s.body[0].a.x = s.body[1].a.x - 2;
+                s.body[0].a.y = s.body[1].a.y;
                 s.body[0].b.x = s.body[1].b.x - 1;
                 s.body[0].b.y = s.body[1].b.y - 1;
             }
@@ -180,10 +191,12 @@ void calculate_fat_rotation(char previousDirection) {
                 s.body[0].a.x = s.body[1].a.x + 1;
                 s.body[0].a.y = s.body[1].a.y - 1;
                 s.body[0].b.x = s.body[1].b.x + 2;
+                s.body[0].b.y = s.body[1].b.y;
             }
         break;
         case 'l':
             if (newDirection == 'u') {
+                s.body[0].a.x = s.body[1].a.x;
                 s.body[0].a.y = s.body[1].a.y - 2;
                 s.body[0].b.x = s.body[1].b.x + 1;
                 s.body[0].b.y = s.body[1].b.y - 1;
@@ -191,6 +204,7 @@ void calculate_fat_rotation(char previousDirection) {
             else if (newDirection == 'd') {
                 s.body[0].a.x = s.body[1].a.x + 1;
                 s.body[0].a.y = s.body[1].a.y + 1;
+                s.body[0].b.x = s.body[1].b.x;
                 s.body[0].b.y = s.body[1].b.y + 2;
             }
         break;
@@ -198,9 +212,11 @@ void calculate_fat_rotation(char previousDirection) {
             if (newDirection == 'u') {
                 s.body[0].a.x = s.body[1].a.x - 1;
                 s.body[0].a.y = s.body[1].a.y - 1;
+                s.body[0].b.x = s.body[1].b.x;
                 s.body[0].b.y = s.body[1].b.y - 2;
             }
             else if (newDirection == 'd') {
+                s.body[0].a.x = s.body[1].a.x;
                 s.body[0].a.y = s.body[1].a.y + 2;
                 s.body[0].b.x = s.body[1].b.x - 1;
                 s.body[0].b.y = s.body[1].b.y + 1;
@@ -259,23 +275,23 @@ void move(){
     else if (movesSinceTurn == starting_length) {
         if (lastTurnClockwise) {
             board[s.body[starting_length-1].b.x][s.body[starting_length-1].b.y] = 0;
-            board[s.body[starting_length-2].b.x][s.body[starting_length-2].b.y] = 0;
+            board[s.body[starting_length].b.x][s.body[starting_length].b.y] = 0;
         }
         else {
             board[s.body[starting_length-1].a.x][s.body[starting_length-1].a.y] = 0;
-            board[s.body[starting_length-2].a.x][s.body[starting_length-2].a.y] = 0;
+            board[s.body[starting_length].a.x][s.body[starting_length].a.y] = 0;
         }
     }
     else {
-    //Resets the tail pixel on the board
-    board[s.body[starting_length-1].a.x][s.body[starting_length-1].a.y] = 0;
-    board[s.body[starting_length-1].b.x][s.body[starting_length-1].b.y] = 0;
+        //Resets the tail pixel on the board
+        board[s.body[starting_length-1].a.x][s.body[starting_length-1].a.y] = 0;
+        board[s.body[starting_length-1].b.x][s.body[starting_length-1].b.y] = 0;
     }
 
     struct FatCoordinate coo1 = s.body[0];
     struct FatCoordinate coo2 = s.body[0];
     int i;
-    for(i = 0; i < starting_length - 1; i++){
+    for(i = 0; i < starting_length; i++){
         coo2 = coo1;
         coo1 = s.body[i+1];
         s.body[i+1] = coo2;
