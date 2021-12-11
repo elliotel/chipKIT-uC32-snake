@@ -5,21 +5,21 @@
 
 int const starting_length = 8;
 struct Snake s;
-struct Snake s2;
 _Bool fruit_coords[128][32];
- _Bool turnCCW = 0;
- _Bool turnCW = 0;
+_Bool turnCCW = 0;
+_Bool turnCW = 0;
 char directions[4] = {'l', 'u', 'r', 'd'};
 int directionPointer = 2;
-struct Fruit fruits[11];
 int fruit_num = 0;
-int score;
+int score = 20;
+struct Fruit fruits[11];
+
+char score_count[3];
 
 //Kind of redundant but fastest solution to code
 _Bool lastTurnClockwise = 0; 
 
 int movesSinceTurn = 10;
-
 
 void initialize_fruit(){    
 	//srand(100);
@@ -32,32 +32,35 @@ void initialize_fruit(){
     }   
 }
 
+void update_score(){
+    sprintf(score_count, "%d", score);
+    string_to_pixel(1, 10, score_count, 3);
+}
+
 void spawn_fruit(){
     //Randomly generates locations for fruit
     if(fruit_num == 10){
         return;
     }
-    int x = (rand() % 87) + 40;
+    int x = (rand() % 99) + 28;
     int y = (rand() % 29) + 1;
 
     //Börjat implementera lite logik för att skapa structs av frukter, men oklart om det är bäst
     //struct Fruit fruit = {.x1 = x, .x2 = x+1, .y1 = y, .y2 = y+1};
     if(board[x][y] != 1){
-
         struct Fruit fruit = {.x1 = x, .x2 = x+1, .y1 = y, .y2 = y+1};
         fruits[fruit_num] = fruit;
-    /*
+    
+    //Inte fin kod
     int i, j;
         for(i = x; i <= x+1; i++){
             for(j = y; j <= y+1; j++){
-                fruits[fruit_num] = 
+                board[i][j] = 1;
             }
         }
-        */
+        
     }
-    
     fruit_num++;
-    visualize_fruit();
 }
 
 void visualize_fruit(){
@@ -71,13 +74,6 @@ void visualize_fruit(){
     update_board();
 }
 
-void detect_collition(){
-    //if the board coordinates where the snake head coordinates are == 1
-    // if there is fruit on this coord 
-    score++;
-    //remove_fruit(fruit);
-    //If not, game over
-}
 
 void remove_fruit(int x, int y){
     _Bool found = 0;
@@ -88,6 +84,10 @@ void remove_fruit(int x, int y){
             if(fruits[fruit_num].x1 == x|| fruits[fruit_num].x2 == x){
                 if(fruits[fruit_num].y1 == y || fruits[fruit_num].y2 == y){
                     found = true;
+                    board[fruits[fruit_num].x1][fruits[fruit_num].y1] = 0;
+                    board[fruits[fruit_num].x1][fruits[fruit_num].y2] = 0;
+                    board[fruits[fruit_num].x2][fruits[fruit_num].y1] = 0;
+                    board[fruits[fruit_num].x2][fruits[fruit_num].y2] = 0;
                 }
             }
         }
@@ -99,6 +99,24 @@ void remove_fruit(int x, int y){
 
     fruit_num--;
     score++;
+}
+
+void detect_collition(){
+    int i;
+    for(i = 0; i < fruit_num; i++){
+        if(fruits[fruit_num].x1 > 0){
+            board[2][2] = 1;
+        }
+        if((s.body[0].a.x == fruits[fruit_num].x1 || s.body[0].a.x == fruits[fruit_num].x2 
+        || s.body[0].b.x == fruits[fruit_num].x1 || s.body[0].b.x == fruits[fruit_num].x2) && 
+        ( s.body[0].a.y == fruits[fruit_num].y1 || s.body[0].a.y == fruits[fruit_num].y2 
+        || s.body[0].b.y == fruits[fruit_num].y1 || s.body[0].b.x == fruits[fruit_num].y2)){
+        //remove_fruit();
+        board[2][2] = 1;
+        score++;    
+        break;
+        }
+    }
 }
 
 void visualize(){

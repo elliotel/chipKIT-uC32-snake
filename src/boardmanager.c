@@ -197,7 +197,7 @@ void set_up_board(void){
   int y;
   for(x = 0; x < 128;  x++){
     for(y = 0; y < 32; y++){
-      if(((y == 0 || y == 31) && x >= 20) || x == 20 || x == 127){
+      if(((y == 0 || y == 31) && x >= 28) || x == 28 || x == 127){
         board[x][y] = 1;
       }       
       else {
@@ -233,6 +233,36 @@ void display_update(void) {
 				spi_send_recv(font[c*8 + k]);
 		}
 	}
+}
+
+void string_to_pixel(int x, int y, char* s, int l){
+    //SKRIV OM LITE
+    int c;
+    int k;
+    int add = 0;
+    _Bool chara = 0;
+    for(c = 0; c < l; c++, add++, s++)
+    {
+        chara = 0;
+        for(k = 0; k < 8; k++)
+        {
+            int i = font[(*s)*8 + k];
+            if(i != 0)
+            {
+                int j;
+                for(j = 0; j < 8; j++)
+                {
+                    if(i & 0x1)
+                        board[x+add][y+j] = 1;
+                    i = i >> 1;
+                }
+                add++;  
+                chara = 1;      
+            }
+        }
+        if(!chara)
+            add += 4;
+    }
 }
 
 //converts coordinates to pixels

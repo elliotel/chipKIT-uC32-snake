@@ -55,7 +55,6 @@ int main(void) {
 	SPI2CONSET = 0x8000;
 	
 	display_init();
-	display_board(0,screen);
 	initialize_fruit();
 	initialize_snake1();
 	
