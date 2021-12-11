@@ -19,6 +19,8 @@ char score_count[3];
 //Kind of redundant but fastest solution to code
 _Bool lastTurnClockwise = 0; 
 
+char previous_direction;
+
 int movesSinceTurn = 10;
 
 void initialize_fruit(){    
@@ -138,7 +140,7 @@ _Bool evaluate_rotation(){
         turnCCW = 0;
         return 0;
     }
-    char previousDirection = directions[directionPointer];
+    previous_direction = directions[directionPointer];
     
     if (turnCW && turnCCW) {
         turnCW = 0;
@@ -166,7 +168,6 @@ _Bool evaluate_rotation(){
         movesSinceTurn = 0;
         turnCW = 0;
         turnCCW = 0;
-        calculate_fat_rotation(previousDirection);
         return 1;
     }
     else {
@@ -174,61 +175,13 @@ _Bool evaluate_rotation(){
     }
 }
 
-void calculate_fat_rotation(char previousDirection) {
+void calculate_fat_rotation() {
     char newDirection = directions[directionPointer];
 
-
-    /*
-    CODE DUPLICATION FROM MOVE
-    SORRY WILL FIX
-    */
-   
-    movesSinceTurn++;
-    if (movesSinceTurn == starting_length - 1) {
-        if (lastTurnClockwise) {
-            board[s.body[starting_length-1].a.x][s.body[starting_length-1].a.y] = 0;
-            board[s.body[starting_length-2].a.x][s.body[starting_length-2].a.y] = 0;
-        }
-        else {
-            board[s.body[starting_length-1].b.x][s.body[starting_length-1].b.y] = 0;
-            board[s.body[starting_length-2].b.x][s.body[starting_length-2].b.y] = 0;
-        }
-    }
-    else if (movesSinceTurn == starting_length) {
-        if (lastTurnClockwise) {
-            board[s.body[starting_length-1].b.x][s.body[starting_length-1].b.y] = 0;
-            board[s.body[starting_length].b.x][s.body[starting_length].b.y] = 0;
-        }
-        else {
-            board[s.body[starting_length-1].a.x][s.body[starting_length-1].a.y] = 0;
-            board[s.body[starting_length].a.x][s.body[starting_length].a.y] = 0;
-        }
-    }
-    else {
-        //Resets the tail pixel on the board
-        board[s.body[starting_length-1].a.x][s.body[starting_length-1].a.y] = 0;
-        board[s.body[starting_length-1].b.x][s.body[starting_length-1].b.y] = 0;
-    }
-
-    struct FatCoordinate coo1 = s.body[0];
-    struct FatCoordinate coo2 = s.body[0];
-    int i;
-    for(i = 0; i < starting_length; i++){
-        coo2 = coo1;
-        coo1 = s.body[i+1];
-        s.body[i+1] = coo2;
-    }
-    s.body[starting_length].a.x = 0;
-    s.body[starting_length].a.y = 0;
-    s.body[starting_length].b.x = 0;
-    s.body[starting_length].b.y = 0;
-
+    //Dubbelkolla igen om (och isåfall varför) dessa 2 rader behövs (jag ska alltså)
     board[s.body[starting_length].a.x][s.body[starting_length].a.y] = 0;
     board[s.body[starting_length].b.x][s.body[starting_length].b.y] = 0;
-
-    //Code duplication over
-
-    switch(previousDirection){
+    switch(previous_direction){
         case 'u':
             if (newDirection == 'l') {
                 s.body[0].a.x = s.body[1].a.x - 1;
@@ -296,32 +249,33 @@ void move(){
     Temporary solution while there is only 1 snake
     If a second snake is added, replace with something akin to a boolean that skips movement only for the snake(s) that turned instead
     */
-    if (evaluate_rotation()) {
-        return;
-    }
+    _Bool fat_turn = evaluate_rotation();
 
     int x1 = s.body[0].a.x;
     int x2 = s.body[0].b.x;
     int y1 = s.body[0].a.y;
     int y2 = s.body[0].b.y;
 
-    switch(directions[directionPointer]){
-        case 'u':
-            y1--;
-            y2--;
-        break;
-        case 'd':
-            y1++;
-            y2++;
-        break;
-        case 'l':
-            x1--;
-            x2--;
-        break;
-        case 'r':
-            x1++;
-            x2++;
-        break;
+    if (!fat_turn) {
+
+        switch(directions[directionPointer]){
+            case 'u':
+                y1--;
+                y2--;
+            break;
+            case 'd':
+                y1++;
+                y2++;
+            break;
+            case 'l':
+                x1--;
+                x2--;
+            break;
+            case 'r':
+                x1++;
+                x2++;
+            break;
+        }
     }
     
     movesSinceTurn++;
@@ -360,6 +314,7 @@ void move(){
         s.body[i+1] = coo2;
     }
     
+    if (!fat_turn) {
     s.body[0].a.x = x1;
     s.body[0].b.x = x2;
     s.body[0].a.y = y1;
@@ -367,6 +322,10 @@ void move(){
 
     board[x1][y1] = 1;
     board[x2][y2] = 1;
+    }
+    else { 
+        calculate_fat_rotation();
+    }
 
 }
 
