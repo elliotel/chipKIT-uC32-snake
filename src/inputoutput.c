@@ -27,7 +27,7 @@ int buttonStatus;
 int switchStatus;
 int timeoutcount;
 int fruitcount;
-char score_string[] = "ss s";
+char score_string[] = "score";
 
 /* Interrupt Service Routine */
 void user_isr( void )
