@@ -16,17 +16,11 @@ struct Fruit fruits[11];
 
 char score_count[3];
 
-//Kind of redundant but fastest solution to code
-_Bool lastTurnClockwise = 0; 
-
 char previous_direction;
 
 int movesSinceTurn = 2;
 
 _Bool skip_remove = 0;
-
-int turns[10];
-_Bool turnDirection[10];
 
 void initialize_fruit(){    
 	//srand(100);
@@ -166,11 +160,9 @@ _Bool evaluate_rotation(){
         return 0;
     }
     else if(turnCCW){
-        lastTurnClockwise = 0;
         directionPointer--;
     }
     else if(turnCW){
-        lastTurnClockwise = 1;
         directionPointer++;
     }
     
