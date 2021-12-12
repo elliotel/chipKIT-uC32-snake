@@ -5,6 +5,7 @@
 
 int const starting_length = 8;
 struct Snake s1;
+struct Snake s2;
 _Bool fruit_coords[128][32];
 char directions[4] = {'l', 'u', 'r', 'd'};
 int fruit_num = 0;
@@ -134,7 +135,7 @@ void visualize(struct Snake* s){
 }
 void update_rotation(){
     getinput(&s1);
-    //getinput(&s2);
+    getinput(&s2);
 }
 
 // Evaluates if the user is turning
@@ -375,7 +376,7 @@ void detect_collision(struct Snake* s) {
         if (detect_fruit_collision(s, next_coordinate)) {
             return;
         }
-           
+
         //Otherwise, game over.
         int q;
         for (q = 0; q < 128; q++) {
@@ -389,7 +390,7 @@ void detect_collision(struct Snake* s) {
 
 void move() {
     move_snake(&s1);
-    //move_snake(s2);
+    move_snake(&s2);
 }
 
 void move_snake(struct Snake* s){
@@ -472,15 +473,14 @@ void move_snake(struct Snake* s){
 
 
 void initialize_snakes(){
-    initialize_snake(&s1);
     s1.player_one = 1;
-    //initialize_snake(s2)
-    //s2.player_one = 0;
+    s2.player_one = 0;
+    initialize_snake(&s1);
+    initialize_snake(&s2);
 }
 
 void initialize_snake(struct Snake* s){
     s->length = starting_length;
-    s->directionPointer = 2;
     s->movesSinceTurn = 2;
     s->skip_remove = 0;
     s->turnCCW = 0;
@@ -493,14 +493,31 @@ void initialize_snake(struct Snake* s){
         s->body[i].a.y = 0;
         s->body[i].b.y = 0;
     }
-    int x = 50;
-    int y = 16;
+
+    if (s->player_one) {
+        s->directionPointer = 2;
+        int x = 40;
+        int y = 16;
     
-    for(i = 0; i < s->length; i++){
-        s->body[i].a.x = x - i;
-        s->body[i].b.x = x - i;
-        s->body[i].a.y = y;
-        s->body[i].b.y = y + 1;
+        for(i = 0; i < s->length; i++){
+            s->body[i].a.x = x - i;
+            s->body[i].b.x = x - i;
+            s->body[i].a.y = y;
+            s->body[i].b.y = y + 1;
+        }
+    }
+    else {
+        
+        s->directionPointer = 0;
+        int x = 120;
+        int y = 16;
+    
+        for(i = 0; i < s->length; i++){
+            s->body[i].a.x = x + i;
+            s->body[i].b.x = x + i;
+            s->body[i].a.y = y;
+            s->body[i].b.y = y - 1;
+        }
     }
     visualize(s);
 }

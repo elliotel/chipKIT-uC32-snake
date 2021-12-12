@@ -73,10 +73,10 @@ void getinput(struct Snake* s){
         else {
 
             if (buttonStatus & 0x1){
-                s->turnCCW = 1;
+                s->turnCW = 1;
             }
             if (buttonStatus & 0x2){
-                s->turnCW = 1;
+                s->turnCCW = 1;
             }
         }
     }
