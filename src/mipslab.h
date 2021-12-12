@@ -22,6 +22,15 @@ extern struct FatCoordinate{
    struct Coordinate a; struct Coordinate b;
 };
 
+extern struct Fruit{
+   int x1; int x2; int y1; int y2;
+};
+
+extern struct AI {
+   _Bool enabled;
+   struct Fruit target;
+};
+
 extern struct Snake{
    struct FatCoordinate body[200];
    _Bool alive;
@@ -33,13 +42,11 @@ extern struct Snake{
    _Bool turnCCW;
    _Bool turnCW;
    _Bool player_one;
-   
    int score;
+   struct AI ai;
 };
 
-extern struct Fruit{
-   int x1; int x2; int y1; int y2;
-};
+
 
 /* Declare lab-related functions from mipslabfunc.c */
 char * itoaconv( int num );

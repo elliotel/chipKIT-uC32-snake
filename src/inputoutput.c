@@ -61,7 +61,7 @@ void IOinitialize( void )
 void getinput(struct Snake* s){
     buttonStatus = getbtns();
     if(buttonStatus){
-        if (s->player_one) {
+        if (s->player_one && !(s->ai.enabled)) {
 
             if (buttonStatus & 0x4) {
                 s->turnCW = 1;
@@ -70,7 +70,7 @@ void getinput(struct Snake* s){
                 s->turnCCW = 1;
             }
         }
-        else {
+        else if (!(s->ai.enabled)){
 
             if (buttonStatus & 0x1){
                 s->turnCW = 1;
@@ -96,7 +96,7 @@ void update_game(){
 		timeoutcount = 0;
 		update_board();
         //detect_collition();
-        string_to_pixel(1,0,score_string,5);
+        string_to_pixel(1,1,score_string,5);
         //update_score();
 		move();
         //display_string(1, score);        
