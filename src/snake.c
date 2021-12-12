@@ -28,49 +28,6 @@ _Bool skip_remove = 0;
 int turns[10];
 _Bool turnDirection[10];
 
-void queue_init() {
-    int i;
-    for (i = 0; i < 10; i++) {
-        turns[i] = 0;
-        turnDirection[i] = 0;
-    }
-}
-
-void queue_push(int value, _Bool clockwise) {
-    int i = 0;
-    while (turns[i] != 0) {
-        i++;
-        if (i == 10) { return; }
-    }
-    turns[i] = value;
-    turnDirection[i] = clockwise;
-}
-
-int queue_pop() {
-    int popped = turns[0];
-    turns[0] = 0;
-    turnDirection[0] = 0;
-    int i = 0;
-    while (turns[i+1] != 0) {
-        turns[i] = turns[i+1];
-        turnDirection[i] = turnDirection[i+1];
-        turns[i+1] = 0;
-        turnDirection[i+1] = 0;
-        i++;
-        if (i == 10) { break; }
-    }
-    return popped;
-}
-
-int queue_total() {
-    int sum = 0;
-    int i;
-    for (i = 0; i < 10; i++) {
-        sum += turns[i];
-    }
-    return sum;
-}
-
 void initialize_fruit(){    
 	//srand(100);
     int x;
@@ -401,7 +358,7 @@ _Bool detect_fruit_collision(struct FatCoordinate next_coordinate) {
         || next_coordinate.b.y == fruits[i].y1 || next_coordinate.b.y == fruits[i].y2)) {
             remove_fruit(i);
             score++;
-            s.length++;
+            increase_length();
             update_score();
             found = 1;
             }
@@ -494,6 +451,8 @@ void move(){
     //Resets the tail pixel on the board
     board[s.body[s.length-1].a.x][s.body[s.length-1].a.y] = 0;
     board[s.body[s.length-1].b.x][s.body[s.length-1].b.y] = 0;
+    } else {
+        skip_remove = 0;
     }
     
 
