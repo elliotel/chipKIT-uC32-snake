@@ -23,7 +23,7 @@ extern struct FatCoordinate{
 };
 
 extern struct Snake{
-    struct FatCoordinate body[10];
+    struct FatCoordinate body[200];
     _Bool alive;
     int length;
 };

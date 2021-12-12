@@ -23,6 +23,8 @@ char previous_direction;
 
 int movesSinceTurn = 2;
 
+_Bool skip_remove = 0;
+
 int turns[10];
 _Bool turnDirection[10];
 
@@ -182,7 +184,7 @@ void detect_collition(){
 
 void visualize(){
     int i;
-    for(i = 0; i < starting_length; i++){
+    for(i = 0; i < s.length; i++){
         board[s.body[i].a.x][s.body[i].a.y] = 1;
         board[s.body[i].b.x][s.body[i].b.y] = 1;
     }
@@ -238,8 +240,8 @@ void calculate_fat_rotation() {
     char newDirection = directions[directionPointer];
 
     //Dubbelkolla igen om (och isåfall varför) dessa 2 rader behövs (jag ska alltså)
-    board[s.body[starting_length].a.x][s.body[starting_length].a.y] = 0;
-    board[s.body[starting_length].b.x][s.body[starting_length].b.y] = 0;
+    board[s.body[s.length].a.x][s.body[s.length].a.y] = 0;
+    board[s.body[s.length].b.x][s.body[s.length].b.y] = 0;
     switch(previous_direction){
         case 'u':
             if (newDirection == 'l') {
@@ -383,6 +385,11 @@ void calculate_fat_rotation() {
     board[s.body[0].b.x][s.body[0].b.y] = 1;
 }
 
+void increase_length() {
+    s.length++;
+    skip_remove = 1;
+}
+
 //Jag får "conflicting type" om jag örsöker returna _Bool och jag FÖRSTÅR inte varför, det funkar på evaluate_rotation() 
 _Bool detect_fruit_collision(struct FatCoordinate next_coordinate) {
     int i;
@@ -394,6 +401,7 @@ _Bool detect_fruit_collision(struct FatCoordinate next_coordinate) {
         || next_coordinate.b.y == fruits[i].y1 || next_coordinate.b.y == fruits[i].y2)) {
             remove_fruit(i);
             score++;
+            s.length++;
             update_score();
             found = 1;
             }
@@ -482,15 +490,17 @@ void move(){
         movesSinceTurn++;
     }
     
+    if (!skip_remove) {
     //Resets the tail pixel on the board
-    board[s.body[starting_length-1].a.x][s.body[starting_length-1].a.y] = 0;
-    board[s.body[starting_length-1].b.x][s.body[starting_length-1].b.y] = 0;
+    board[s.body[s.length-1].a.x][s.body[s.length-1].a.y] = 0;
+    board[s.body[s.length-1].b.x][s.body[s.length-1].b.y] = 0;
+    }
     
 
     struct FatCoordinate coo1 = s.body[0];
     struct FatCoordinate coo2 = s.body[0];
     int i;
-    for(i = 0; i < starting_length; i++){
+    for(i = 0; i < s.length; i++){
         coo2 = coo1;
         coo1 = s.body[i+1];
         s.body[i+1] = coo2;
@@ -528,7 +538,7 @@ void initialize_snake(){
     s.length = starting_length;
 
     int i;
-    for(i = 0; i < starting_length; i++){
+    for(i = 0; i < s.length; i++){
         s.body[i].a.x = 0;
         s.body[i].b.x = 0;
         s.body[i].a.y = 0;
@@ -537,7 +547,7 @@ void initialize_snake(){
     int x = 50;
     int y = 16;
     
-    for(i = 0; i < starting_length; i++){
+    for(i = 0; i < s.length; i++){
         s.body[i].a.x = x - i;
         s.body[i].b.x = x - i;
         s.body[i].a.y = y;
