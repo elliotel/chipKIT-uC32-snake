@@ -32,6 +32,7 @@ extern struct Snake{
    _Bool skip_remove;
    _Bool turnCCW;
    _Bool turnCW;
+   _Bool player_one;
 };
 
 extern struct Fruit{

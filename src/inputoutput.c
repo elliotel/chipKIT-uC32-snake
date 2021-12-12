@@ -61,20 +61,24 @@ void IOinitialize( void )
 void getinput(struct Snake* s){
     buttonStatus = getbtns();
     if(buttonStatus){
-        /*
-    if (buttonStatus & 0x1){
-        *turnCCW = 1;
-    }
-    if (buttonStatus & 0x2){
-        *turnCW = 1;
-    }
-    */
-    if (buttonStatus & 0x4) {
-        s->turnCW = 1;
-    }
-    if (buttonStatus & 0x8){
-        s->turnCCW = 1;
-    }
+        if (s->player_one) {
+
+            if (buttonStatus & 0x4) {
+                s->turnCW = 1;
+            }
+            if (buttonStatus & 0x8){
+                s->turnCCW = 1;
+            }
+        }
+        else {
+
+            if (buttonStatus & 0x1){
+                s->turnCCW = 1;
+            }
+            if (buttonStatus & 0x2){
+                s->turnCW = 1;
+            }
+        }
     }
     
 }

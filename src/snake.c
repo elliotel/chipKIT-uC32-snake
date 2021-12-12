@@ -473,7 +473,9 @@ void move_snake(struct Snake* s){
 
 void initialize_snakes(){
     initialize_snake(&s1);
+    s1.player_one = 1;
     //initialize_snake(s2)
+    //s2.player_one = 0;
 }
 
 void initialize_snake(struct Snake* s){
