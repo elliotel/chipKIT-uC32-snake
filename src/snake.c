@@ -4,7 +4,7 @@
 #include "mipslab.h" 
 
 int const starting_length = 8;
-struct Snake s;
+struct Snake s1;
 _Bool fruit_coords[128][32];
 _Bool turnCCW = 0;
 _Bool turnCW = 0;
@@ -126,10 +126,10 @@ void detect_collition(){
         if(fruits[fruit_num].x1 > 0){
             board[2][2] = 1;
         }
-        if((s.body[0].a.x == fruits[fruit_num].x1 || s.body[0].a.x == fruits[fruit_num].x2 
-        || s.body[0].b.x == fruits[fruit_num].x1 || s.body[0].b.x == fruits[fruit_num].x2) && 
-        ( s.body[0].a.y == fruits[fruit_num].y1 || s.body[0].a.y == fruits[fruit_num].y2 
-        || s.body[0].b.y == fruits[fruit_num].y1 || s.body[0].b.x == fruits[fruit_num].y2)){
+        if((s->body[0].a.x == fruits[fruit_num].x1 || s->body[0].a.x == fruits[fruit_num].x2 
+        || s->body[0].b.x == fruits[fruit_num].x1 || s->body[0].b.x == fruits[fruit_num].x2) && 
+        ( s->body[0].a.y == fruits[fruit_num].y1 || s->body[0].a.y == fruits[fruit_num].y2 
+        || s->body[0].b.y == fruits[fruit_num].y1 || s->body[0].b.x == fruits[fruit_num].y2)){
         //remove_fruit();
         board[2][2] = 1;
         score++;    
@@ -139,11 +139,11 @@ void detect_collition(){
 }
 */
 
-void visualize(){
+void visualize(struct Snake* s){
     int i;
-    for(i = 0; i < s.length; i++){
-        board[s.body[i].a.x][s.body[i].a.y] = 1;
-        board[s.body[i].b.x][s.body[i].b.y] = 1;
+    for(i = 0; i < s->length; i++){
+        board[s->body[i].a.x][s->body[i].a.y] = 1;
+        board[s->body[i].b.x][s->body[i].b.y] = 1;
     }
     update_board();
 }
@@ -193,162 +193,161 @@ _Bool evaluate_rotation(){
     }
 }
 
-void calculate_fat_rotation() {
+void calculate_fat_rotation(struct Snake* s) {
     char newDirection = directions[directionPointer];
 
     //Dubbelkolla igen om (och isåfall varför) dessa 2 rader behövs (jag ska alltså)
-    board[s.body[s.length].a.x][s.body[s.length].a.y] = 0;
-    board[s.body[s.length].b.x][s.body[s.length].b.y] = 0;
+    board[s->body[s->length].a.x][s->body[s->length].a.y] = 0;
+    board[s->body[s->length].b.x][s->body[s->length].b.y] = 0;
     switch(previous_direction){
         case 'u':
             if (newDirection == 'l') {
-                s.body[0].a.x = s.body[1].a.x - 1;
-                s.body[0].a.y = s.body[1].a.y + 1;
-                s.body[0].b.x = s.body[1].b.x - 2;
-                s.body[0].b.y = s.body[1].b.y;
+                s->body[0].a.x = s->body[1].a.x - 1;
+                s->body[0].a.y = s->body[1].a.y + 1;
+                s->body[0].b.x = s->body[1].b.x - 2;
+                s->body[0].b.y = s->body[1].b.y;
                 
-                s.body[1].a.x = s.body[1].a.x;
-                s.body[1].a.y = s.body[1].a.y + 1;
-                s.body[1].b.x = s.body[1].b.x - 1;
-                s.body[1].b.y = s.body[1].b.y;
+                s->body[1].a.x = s->body[1].a.x;
+                s->body[1].a.y = s->body[1].a.y + 1;
+                s->body[1].b.x = s->body[1].b.x - 1;
+                s->body[1].b.y = s->body[1].b.y;
 
-                s.body[2].a.x = s.body[2].a.x + 1;
-                s.body[2].a.y = s.body[2].a.y;
-                s.body[2].b.x = s.body[2].b.x;
-                s.body[2].b.y = s.body[2].b.y - 1;
+                s->body[2].a.x = s->body[2].a.x + 1;
+                s->body[2].a.y = s->body[2].a.y;
+                s->body[2].b.x = s->body[2].b.x;
+                s->body[2].b.y = s->body[2].b.y - 1;
                 
             }
             else if (newDirection == 'r') {
-                s.body[0].a.x = s.body[1].a.x + 2;
-                s.body[0].a.y = s.body[1].a.y;
-                s.body[0].b.x = s.body[1].b.x + 1;
-                s.body[0].b.y = s.body[1].b.y + 1;
+                s->body[0].a.x = s->body[1].a.x + 2;
+                s->body[0].a.y = s->body[1].a.y;
+                s->body[0].b.x = s->body[1].b.x + 1;
+                s->body[0].b.y = s->body[1].b.y + 1;
 
-                s.body[1].a.x = s.body[1].a.x + 1;
-                s.body[1].a.y = s.body[1].a.y;
-                s.body[1].b.x = s.body[1].b.x;
-                s.body[1].b.y = s.body[1].b.y + 1;
+                s->body[1].a.x = s->body[1].a.x + 1;
+                s->body[1].a.y = s->body[1].a.y;
+                s->body[1].b.x = s->body[1].b.x;
+                s->body[1].b.y = s->body[1].b.y + 1;
 
-                s.body[2].a.x = s.body[2].a.x;
-                s.body[2].a.y = s.body[2].a.y - 1;
-                s.body[2].b.x = s.body[2].b.x - 1;
-                s.body[2].b.y = s.body[2].b.y;
+                s->body[2].a.x = s->body[2].a.x;
+                s->body[2].a.y = s->body[2].a.y - 1;
+                s->body[2].b.x = s->body[2].b.x - 1;
+                s->body[2].b.y = s->body[2].b.y;
             }
         break;
         case 'd':
             if (newDirection == 'l') {
-                s.body[0].a.x = s.body[1].a.x - 2;
-                s.body[0].a.y = s.body[1].a.y;
-                s.body[0].b.x = s.body[1].b.x - 1;
-                s.body[0].b.y = s.body[1].b.y - 1;
+                s->body[0].a.x = s->body[1].a.x - 2;
+                s->body[0].a.y = s->body[1].a.y;
+                s->body[0].b.x = s->body[1].b.x - 1;
+                s->body[0].b.y = s->body[1].b.y - 1;
 
-                s.body[1].a.x = s.body[1].a.x - 1;
-                s.body[1].a.y = s.body[1].a.y;
-                s.body[1].b.x = s.body[1].b.x;
-                s.body[1].b.y = s.body[1].b.y - 1;
+                s->body[1].a.x = s->body[1].a.x - 1;
+                s->body[1].a.y = s->body[1].a.y;
+                s->body[1].b.x = s->body[1].b.x;
+                s->body[1].b.y = s->body[1].b.y - 1;
 
-                s.body[2].a.x = s.body[2].a.x;
-                s.body[2].a.y = s.body[2].a.y + 1;
-                s.body[2].b.x = s.body[2].b.x + 1;
-                s.body[2].b.y = s.body[2].b.y;
+                s->body[2].a.x = s->body[2].a.x;
+                s->body[2].a.y = s->body[2].a.y + 1;
+                s->body[2].b.x = s->body[2].b.x + 1;
+                s->body[2].b.y = s->body[2].b.y;
             }
             else if (newDirection == 'r') {
-                s.body[0].a.x = s.body[1].a.x + 1;
-                s.body[0].a.y = s.body[1].a.y - 1;
-                s.body[0].b.x = s.body[1].b.x + 2;
-                s.body[0].b.y = s.body[1].b.y;
+                s->body[0].a.x = s->body[1].a.x + 1;
+                s->body[0].a.y = s->body[1].a.y - 1;
+                s->body[0].b.x = s->body[1].b.x + 2;
+                s->body[0].b.y = s->body[1].b.y;
 
-                s.body[1].a.x = s.body[1].a.x;
-                s.body[1].a.y = s.body[1].a.y - 1;
-                s.body[1].b.x = s.body[1].b.x + 1;
-                s.body[1].b.y = s.body[1].b.y;
+                s->body[1].a.x = s->body[1].a.x;
+                s->body[1].a.y = s->body[1].a.y - 1;
+                s->body[1].b.x = s->body[1].b.x + 1;
+                s->body[1].b.y = s->body[1].b.y;
 
-                s.body[2].a.x = s.body[2].a.x - 1;
-                s.body[2].a.y = s.body[2].a.y;
-                s.body[2].b.x = s.body[2].b.x;
-                s.body[2].b.y = s.body[2].b.y + 1;
+                s->body[2].a.x = s->body[2].a.x - 1;
+                s->body[2].a.y = s->body[2].a.y;
+                s->body[2].b.x = s->body[2].b.x;
+                s->body[2].b.y = s->body[2].b.y + 1;
             }
         break;
         case 'l':
             if (newDirection == 'u') {
-                s.body[0].a.x = s.body[1].a.x;
-                s.body[0].a.y = s.body[1].a.y - 2;
-                s.body[0].b.x = s.body[1].b.x + 1;
-                s.body[0].b.y = s.body[1].b.y - 1;
+                s->body[0].a.x = s->body[1].a.x;
+                s->body[0].a.y = s->body[1].a.y - 2;
+                s->body[0].b.x = s->body[1].b.x + 1;
+                s->body[0].b.y = s->body[1].b.y - 1;
                 
-                s.body[1].a.x = s.body[1].a.x;
-                s.body[1].a.y = s.body[1].a.y - 1;
-                s.body[1].b.x = s.body[1].b.x + 1;
-                s.body[1].b.y = s.body[1].b.y;
+                s->body[1].a.x = s->body[1].a.x;
+                s->body[1].a.y = s->body[1].a.y - 1;
+                s->body[1].b.x = s->body[1].b.x + 1;
+                s->body[1].b.y = s->body[1].b.y;
 
-                s.body[2].a.x = s.body[2].a.x - 1;
-                s.body[2].a.y = s.body[2].a.y;
-                s.body[2].b.x = s.body[2].b.x;
-                s.body[2].b.y = s.body[2].b.y + 1;
+                s->body[2].a.x = s->body[2].a.x - 1;
+                s->body[2].a.y = s->body[2].a.y;
+                s->body[2].b.x = s->body[2].b.x;
+                s->body[2].b.y = s->body[2].b.y + 1;
             }
             else if (newDirection == 'd') {
-                s.body[0].a.x = s.body[1].a.x + 1;
-                s.body[0].a.y = s.body[1].a.y + 1;
-                s.body[0].b.x = s.body[1].b.x;
-                s.body[0].b.y = s.body[1].b.y + 2;
+                s->body[0].a.x = s->body[1].a.x + 1;
+                s->body[0].a.y = s->body[1].a.y + 1;
+                s->body[0].b.x = s->body[1].b.x;
+                s->body[0].b.y = s->body[1].b.y + 2;
 
-                s.body[1].a.x = s.body[1].a.x + 1;
-                s.body[1].a.y = s.body[1].a.y;
-                s.body[1].b.x = s.body[1].b.x;
-                s.body[1].b.y = s.body[1].b.y + 1;
+                s->body[1].a.x = s->body[1].a.x + 1;
+                s->body[1].a.y = s->body[1].a.y;
+                s->body[1].b.x = s->body[1].b.x;
+                s->body[1].b.y = s->body[1].b.y + 1;
 
-                s.body[2].a.x = s.body[2].a.x;
-                s.body[2].a.y = s.body[2].a.y - 1;
-                s.body[2].b.x = s.body[2].b.x - 1;
-                s.body[2].b.y = s.body[2].b.y;
+                s->body[2].a.x = s->body[2].a.x;
+                s->body[2].a.y = s->body[2].a.y - 1;
+                s->body[2].b.x = s->body[2].b.x - 1;
+                s->body[2].b.y = s->body[2].b.y;
             }
         break;
         case 'r':
             if (newDirection == 'u') {
-                s.body[0].a.x = s.body[1].a.x - 1;
-                s.body[0].a.y = s.body[1].a.y - 1;
-                s.body[0].b.x = s.body[1].b.x;
-                s.body[0].b.y = s.body[1].b.y - 2;
+                s->body[0].a.x = s->body[1].a.x - 1;
+                s->body[0].a.y = s->body[1].a.y - 1;
+                s->body[0].b.x = s->body[1].b.x;
+                s->body[0].b.y = s->body[1].b.y - 2;
 
-                s.body[1].a.x = s.body[1].a.x - 1;
-                s.body[1].a.y = s.body[1].a.y;
-                s.body[1].b.x = s.body[1].b.x;
-                s.body[1].b.y = s.body[1].b.y - 1;
+                s->body[1].a.x = s->body[1].a.x - 1;
+                s->body[1].a.y = s->body[1].a.y;
+                s->body[1].b.x = s->body[1].b.x;
+                s->body[1].b.y = s->body[1].b.y - 1;
 
-                s.body[2].a.x = s.body[2].a.x;
-                s.body[2].a.y = s.body[2].a.y + 1;
-                s.body[2].b.x = s.body[2].b.x + 1;
-                s.body[2].b.y = s.body[2].b.y;
+                s->body[2].a.x = s->body[2].a.x;
+                s->body[2].a.y = s->body[2].a.y + 1;
+                s->body[2].b.x = s->body[2].b.x + 1;
+                s->body[2].b.y = s->body[2].b.y;
             }
             else if (newDirection == 'd') {
-                s.body[0].a.x = s.body[1].a.x;
-                s.body[0].a.y = s.body[1].a.y + 2;
-                s.body[0].b.x = s.body[1].b.x - 1;
-                s.body[0].b.y = s.body[1].b.y + 1;
+                s->body[0].a.x = s->body[1].a.x;
+                s->body[0].a.y = s->body[1].a.y + 2;
+                s->body[0].b.x = s->body[1].b.x - 1;
+                s->body[0].b.y = s->body[1].b.y + 1;
 
-                s.body[1].a.x = s.body[1].a.x;
-                s.body[1].a.y = s.body[1].a.y + 1;
-                s.body[1].b.x = s.body[1].b.x - 1 ;
-                s.body[1].b.y = s.body[1].b.y;
+                s->body[1].a.x = s->body[1].a.x;
+                s->body[1].a.y = s->body[1].a.y + 1;
+                s->body[1].b.x = s->body[1].b.x - 1 ;
+                s->body[1].b.y = s->body[1].b.y;
 
-                s.body[2].a.x = s.body[2].a.x + 1;
-                s.body[2].a.y = s.body[2].a.y;
-                s.body[2].b.x = s.body[2].b.x;
-                s.body[2].b.y = s.body[2].b.y - 1;
+                s->body[2].a.x = s->body[2].a.x + 1;
+                s->body[2].a.y = s->body[2].a.y;
+                s->body[2].b.x = s->body[2].b.x;
+                s->body[2].b.y = s->body[2].b.y - 1;
             }
         break;
     }
-    board[s.body[0].a.x][s.body[0].a.y] = 1;
-    board[s.body[0].b.x][s.body[0].b.y] = 1;
+    board[s->body[0].a.x][s->body[0].a.y] = 1;
+    board[s->body[0].b.x][s->body[0].b.y] = 1;
 }
 
-void increase_length() {
-    s.length++;
+void increase_length(struct Snake* s) {
+    s->length++;
     skip_remove = 1;
 }
 
-//Jag får "conflicting type" om jag örsöker returna _Bool och jag FÖRSTÅR inte varför, det funkar på evaluate_rotation() 
-_Bool detect_fruit_collision(struct FatCoordinate next_coordinate) {
+_Bool detect_fruit_collision(struct Snake* s, struct FatCoordinate next_coordinate) {
     int i;
     _Bool found = 0;
         for(i = 0; i < fruit_num; i++){
@@ -358,7 +357,7 @@ _Bool detect_fruit_collision(struct FatCoordinate next_coordinate) {
         || next_coordinate.b.y == fruits[i].y1 || next_coordinate.b.y == fruits[i].y2)) {
             remove_fruit(i);
             score++;
-            increase_length();
+            increase_length(s);
             update_score();
             found = 1;
             }
@@ -366,33 +365,33 @@ _Bool detect_fruit_collision(struct FatCoordinate next_coordinate) {
     return found;
 }
 
-void detect_collision() {
-    struct FatCoordinate next_coordinate = s.body[0];
+void detect_collision(struct Snake* s) {
+    struct FatCoordinate next_coordinate = s->body[0];
     switch(directions[directionPointer]){
         case 'u':
-        next_coordinate.a.y = s.body[0].a.y - 1;
-        next_coordinate.b.y = s.body[0].b.y - 1;
+        next_coordinate.a.y = s->body[0].a.y - 1;
+        next_coordinate.b.y = s->body[0].b.y - 1;
         break;
         case 'd':
-        next_coordinate.a.y = s.body[0].a.y + 1;
-        next_coordinate.b.y = s.body[0].b.y + 1;
+        next_coordinate.a.y = s->body[0].a.y + 1;
+        next_coordinate.b.y = s->body[0].b.y + 1;
         break;
         case 'l':
-        next_coordinate.a.x = s.body[0].a.x - 1;
-        next_coordinate.b.x = s.body[0].b.x - 1;
+        next_coordinate.a.x = s->body[0].a.x - 1;
+        next_coordinate.b.x = s->body[0].b.x - 1;
         break;
         case 'r':
-        next_coordinate.a.x = s.body[0].a.x + 1;
-        next_coordinate.b.x = s.body[0].b.x + 1;
+        next_coordinate.a.x = s->body[0].a.x + 1;
+        next_coordinate.b.x = s->body[0].b.x + 1;
         break;
     }
     if (board[next_coordinate.a.x][next_coordinate.a.y] == 1 || board[next_coordinate.b.x][next_coordinate.b.y] == 1) {
+        
         //Check if point is part of fruit, then length increase and remove fruit
-        if (detect_fruit_collision(next_coordinate)) {
+        if (detect_fruit_collision(s, next_coordinate)) {
             return;
         }
-            
-
+           
         //Otherwise, game over.
         int q;
         for (q = 0; q < 128; q++) {
@@ -404,9 +403,14 @@ void detect_collision() {
     }
 }
 
-void move(){
+void move() {
+    move_snake(&s1);
+    //move_snake(s2);
+}
 
-    detect_collision();
+void move_snake(struct Snake* s){
+
+    detect_collision(s);
 
     /*
     Temporary solution while there is only 1 snake
@@ -414,10 +418,10 @@ void move(){
     */
     _Bool fat_turn = evaluate_rotation();
 
-    int x1 = s.body[0].a.x;
-    int x2 = s.body[0].b.x;
-    int y1 = s.body[0].a.y;
-    int y2 = s.body[0].b.y;
+    int x1 = s->body[0].a.x;
+    int x2 = s->body[0].b.x;
+    int y1 = s->body[0].a.y;
+    int y2 = s->body[0].b.y;
 
     if (!fat_turn) {
 
@@ -447,33 +451,33 @@ void move(){
     
     if (!skip_remove) {
     //Resets the tail pixel on the board
-    board[s.body[s.length-1].a.x][s.body[s.length-1].a.y] = 0;
-    board[s.body[s.length-1].b.x][s.body[s.length-1].b.y] = 0;
+    board[s->body[s->length-1].a.x][s->body[s->length-1].a.y] = 0;
+    board[s->body[s->length-1].b.x][s->body[s->length-1].b.y] = 0;
     } else {
         skip_remove = 0;
     }
     
 
-    struct FatCoordinate coo1 = s.body[0];
-    struct FatCoordinate coo2 = s.body[0];
+    struct FatCoordinate coo1 = s->body[0];
+    struct FatCoordinate coo2 = s->body[0];
     int i;
-    for(i = 0; i < s.length; i++){
+    for(i = 0; i < s->length; i++){
         coo2 = coo1;
-        coo1 = s.body[i+1];
-        s.body[i+1] = coo2;
+        coo1 = s->body[i+1];
+        s->body[i+1] = coo2;
     }
     
     if (!fat_turn) {
-    s.body[0].a.x = x1;
-    s.body[0].b.x = x2;
-    s.body[0].a.y = y1;
-    s.body[0].b.y = y2;
+    s->body[0].a.x = x1;
+    s->body[0].b.x = x2;
+    s->body[0].a.y = y1;
+    s->body[0].b.y = y2;
 
     board[x1][y1] = 1;
     board[x2][y2] = 1;
     }
     else { 
-        calculate_fat_rotation();
+        calculate_fat_rotation(s);
     }
 
 }
@@ -483,34 +487,31 @@ void move(){
 
 
 
-void initialize_snake1(){
-    initialize_snake();
+void initialize_snakes(){
+    initialize_snake(&s1);
+    //initialize_snake(s2)
 }
 
-void initialize_snake2(){
-    struct Snake s1;
-}
-
-void initialize_snake(){
-    s.length = starting_length;
+void initialize_snake(struct Snake* s){
+    s->length = starting_length;
 
     int i;
-    for(i = 0; i < s.length; i++){
-        s.body[i].a.x = 0;
-        s.body[i].b.x = 0;
-        s.body[i].a.y = 0;
-        s.body[i].b.y = 0;
+    for(i = 0; i < s->length; i++){
+        s->body[i].a.x = 0;
+        s->body[i].b.x = 0;
+        s->body[i].a.y = 0;
+        s->body[i].b.y = 0;
     }
     int x = 50;
     int y = 16;
     
-    for(i = 0; i < s.length; i++){
-        s.body[i].a.x = x - i;
-        s.body[i].b.x = x - i;
-        s.body[i].a.y = y;
-        s.body[i].b.y = y + 1;
+    for(i = 0; i < s->length; i++){
+        s->body[i].a.x = x - i;
+        s->body[i].b.x = x - i;
+        s->body[i].a.y = y;
+        s->body[i].b.y = y + 1;
     }
-    visualize();
+    visualize(s);
 }
 
 /*

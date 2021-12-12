@@ -56,7 +56,7 @@ int main(void) {
 	
 	display_init();
 	initialize_fruit();
-	initialize_snake1();
+	initialize_snakes();
 	
 	set_up_board();
 	/*
