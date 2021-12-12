@@ -241,12 +241,33 @@ void calculate_fat_rotation() {
                 s.body[0].a.y = s.body[1].a.y + 1;
                 s.body[0].b.x = s.body[1].b.x - 2;
                 s.body[0].b.y = s.body[1].b.y;
+                
+                s.body[1].a.x = s.body[1].a.x;
+                s.body[1].a.y = s.body[1].a.y + 1;
+                s.body[1].b.x = s.body[1].b.x - 1;
+                s.body[1].b.y = s.body[1].b.y;
+
+                s.body[2].a.x = s.body[2].a.x + 1;
+                s.body[2].a.y = s.body[2].a.y;
+                s.body[2].b.x = s.body[2].b.x;
+                s.body[2].b.y = s.body[2].b.y - 1;
+                
             }
             else if (newDirection == 'r') {
                 s.body[0].a.x = s.body[1].a.x + 2;
                 s.body[0].a.y = s.body[1].a.y;
                 s.body[0].b.x = s.body[1].b.x + 1;
                 s.body[0].b.y = s.body[1].b.y + 1;
+
+                s.body[1].a.x = s.body[1].a.x + 1;
+                s.body[1].a.y = s.body[1].a.y;
+                s.body[1].b.x = s.body[1].b.x;
+                s.body[1].b.y = s.body[1].b.y + 1;
+
+                s.body[2].a.x = s.body[2].a.x;
+                s.body[2].a.y = s.body[2].a.y - 1;
+                s.body[2].b.x = s.body[2].b.x - 1;
+                s.body[2].b.y = s.body[2].b.y;
             }
         break;
         case 'd':
@@ -255,12 +276,32 @@ void calculate_fat_rotation() {
                 s.body[0].a.y = s.body[1].a.y;
                 s.body[0].b.x = s.body[1].b.x - 1;
                 s.body[0].b.y = s.body[1].b.y - 1;
+
+                s.body[1].a.x = s.body[1].a.x - 1;
+                s.body[1].a.y = s.body[1].a.y;
+                s.body[1].b.x = s.body[1].b.x;
+                s.body[1].b.y = s.body[1].b.y - 1;
+
+                s.body[2].a.x = s.body[2].a.x;
+                s.body[2].a.y = s.body[2].a.y + 1;
+                s.body[2].b.x = s.body[2].b.x + 1;
+                s.body[2].b.y = s.body[2].b.y;
             }
             else if (newDirection == 'r') {
                 s.body[0].a.x = s.body[1].a.x + 1;
                 s.body[0].a.y = s.body[1].a.y - 1;
                 s.body[0].b.x = s.body[1].b.x + 2;
                 s.body[0].b.y = s.body[1].b.y;
+
+                s.body[1].a.x = s.body[1].a.x;
+                s.body[1].a.y = s.body[1].a.y - 1;
+                s.body[1].b.x = s.body[1].b.x + 1;
+                s.body[1].b.y = s.body[1].b.y;
+
+                s.body[2].a.x = s.body[2].a.x - 1;
+                s.body[2].a.y = s.body[2].a.y;
+                s.body[2].b.x = s.body[2].b.x;
+                s.body[2].b.y = s.body[2].b.y + 1;
             }
         break;
         case 'l':
@@ -269,12 +310,32 @@ void calculate_fat_rotation() {
                 s.body[0].a.y = s.body[1].a.y - 2;
                 s.body[0].b.x = s.body[1].b.x + 1;
                 s.body[0].b.y = s.body[1].b.y - 1;
+                
+                s.body[1].a.x = s.body[1].a.x;
+                s.body[1].a.y = s.body[1].a.y - 1;
+                s.body[1].b.x = s.body[1].b.x + 1;
+                s.body[1].b.y = s.body[1].b.y;
+
+                s.body[2].a.x = s.body[2].a.x - 1;
+                s.body[2].a.y = s.body[2].a.y;
+                s.body[2].b.x = s.body[2].b.x;
+                s.body[2].b.y = s.body[2].b.y + 1;
             }
             else if (newDirection == 'd') {
                 s.body[0].a.x = s.body[1].a.x + 1;
                 s.body[0].a.y = s.body[1].a.y + 1;
                 s.body[0].b.x = s.body[1].b.x;
                 s.body[0].b.y = s.body[1].b.y + 2;
+
+                s.body[1].a.x = s.body[1].a.x + 1;
+                s.body[1].a.y = s.body[1].a.y;
+                s.body[1].b.x = s.body[1].b.x;
+                s.body[1].b.y = s.body[1].b.y + 1;
+
+                s.body[2].a.x = s.body[2].a.x;
+                s.body[2].a.y = s.body[2].a.y - 1;
+                s.body[2].b.x = s.body[2].b.x - 1;
+                s.body[2].b.y = s.body[2].b.y;
             }
         break;
         case 'r':
@@ -283,109 +344,37 @@ void calculate_fat_rotation() {
                 s.body[0].a.y = s.body[1].a.y - 1;
                 s.body[0].b.x = s.body[1].b.x;
                 s.body[0].b.y = s.body[1].b.y - 2;
+
+                s.body[1].a.x = s.body[1].a.x - 1;
+                s.body[1].a.y = s.body[1].a.y;
+                s.body[1].b.x = s.body[1].b.x;
+                s.body[1].b.y = s.body[1].b.y - 1;
+
+                s.body[2].a.x = s.body[2].a.x;
+                s.body[2].a.y = s.body[2].a.y + 1;
+                s.body[2].b.x = s.body[2].b.x + 1;
+                s.body[2].b.y = s.body[2].b.y;
             }
             else if (newDirection == 'd') {
                 s.body[0].a.x = s.body[1].a.x;
                 s.body[0].a.y = s.body[1].a.y + 2;
                 s.body[0].b.x = s.body[1].b.x - 1;
                 s.body[0].b.y = s.body[1].b.y + 1;
+
+                s.body[1].a.x = s.body[1].a.x;
+                s.body[1].a.y = s.body[1].a.y + 1;
+                s.body[1].b.x = s.body[1].b.x - 1 ;
+                s.body[1].b.y = s.body[1].b.y;
+
+                s.body[2].a.x = s.body[2].a.x + 1;
+                s.body[2].a.y = s.body[2].a.y;
+                s.body[2].b.x = s.body[2].b.x;
+                s.body[2].b.y = s.body[2].b.y - 1;
             }
         break;
     }
     board[s.body[0].a.x][s.body[0].a.y] = 1;
     board[s.body[0].b.x][s.body[0].b.y] = 1;
-}
-
-void move(){
-
-    detect_collision();
-
-    /*
-    Temporary solution while there is only 1 snake
-    If a second snake is added, replace with something akin to a boolean that skips movement only for the snake(s) that turned instead
-    */
-    _Bool fat_turn = evaluate_rotation();
-
-    int x1 = s.body[0].a.x;
-    int x2 = s.body[0].b.x;
-    int y1 = s.body[0].a.y;
-    int y2 = s.body[0].b.y;
-
-    if (!fat_turn) {
-
-        switch(directions[directionPointer]){
-            case 'u':
-                y1--;
-                y2--;
-            break;
-            case 'd':
-                y1++;
-                y2++;
-            break;
-            case 'l':
-                x1--;
-                x2--;
-            break;
-            case 'r':
-                x1++;
-                x2++;
-            break;
-        }
-    }
-    
-    if (turned) {
-    movesSinceTurn++;
-    }
-    if (movesSinceTurn == starting_length - 1) {
-        if (lastTurnClockwise) {
-            board[s.body[starting_length-1].a.x][s.body[starting_length-1].a.y] = 0;
-            board[s.body[starting_length-2].a.x][s.body[starting_length-2].a.y] = 0;
-        }
-        else {
-            board[s.body[starting_length-1].b.x][s.body[starting_length-1].b.y] = 0;
-            board[s.body[starting_length-2].b.x][s.body[starting_length-2].b.y] = 0;
-        }
-    }
-    else if (movesSinceTurn == starting_length) {
-        if (lastTurnClockwise) {
-            board[s.body[starting_length-1].b.x][s.body[starting_length-1].b.y] = 0;
-            board[s.body[starting_length].b.x][s.body[starting_length].b.y] = 0;
-        }
-        else {
-            board[s.body[starting_length-1].a.x][s.body[starting_length-1].a.y] = 0;
-            board[s.body[starting_length].a.x][s.body[starting_length].a.y] = 0;
-        }
-        turned = 0;
-        movesSinceTurn = -2;
-    }
-    else {
-        //Resets the tail pixel on the board
-        board[s.body[starting_length-1].a.x][s.body[starting_length-1].a.y] = 0;
-        board[s.body[starting_length-1].b.x][s.body[starting_length-1].b.y] = 0;
-    }
-
-    struct FatCoordinate coo1 = s.body[0];
-    struct FatCoordinate coo2 = s.body[0];
-    int i;
-    for(i = 0; i < starting_length; i++){
-        coo2 = coo1;
-        coo1 = s.body[i+1];
-        s.body[i+1] = coo2;
-    }
-    
-    if (!fat_turn) {
-    s.body[0].a.x = x1;
-    s.body[0].b.x = x2;
-    s.body[0].a.y = y1;
-    s.body[0].b.y = y2;
-
-    board[x1][y1] = 1;
-    board[x2][y2] = 1;
-    }
-    else { 
-        calculate_fat_rotation();
-    }
-
 }
 
 //Jag får "conflicting type" om jag örsöker returna _Bool och jag FÖRSTÅR inte varför, det funkar på evaluate_rotation() 
@@ -443,6 +432,77 @@ void detect_collision() {
         }
     }
 }
+
+void move(){
+
+    detect_collision();
+
+    /*
+    Temporary solution while there is only 1 snake
+    If a second snake is added, replace with something akin to a boolean that skips movement only for the snake(s) that turned instead
+    */
+    _Bool fat_turn = evaluate_rotation();
+
+    int x1 = s.body[0].a.x;
+    int x2 = s.body[0].b.x;
+    int y1 = s.body[0].a.y;
+    int y2 = s.body[0].b.y;
+
+    if (!fat_turn) {
+
+        switch(directions[directionPointer]){
+            case 'u':
+                y1--;
+                y2--;
+            break;
+            case 'd':
+                y1++;
+                y2++;
+            break;
+            case 'l':
+                x1--;
+                x2--;
+            break;
+            case 'r':
+                x1++;
+                x2++;
+            break;
+        }
+    }
+    
+    if (turned) {
+    movesSinceTurn++;
+    //Resets the tail pixel on the board
+    board[s.body[starting_length-1].a.x][s.body[starting_length-1].a.y] = 0;
+    board[s.body[starting_length-1].b.x][s.body[starting_length-1].b.y] = 0;
+    
+
+    struct FatCoordinate coo1 = s.body[0];
+    struct FatCoordinate coo2 = s.body[0];
+    int i;
+    for(i = 0; i < starting_length; i++){
+        coo2 = coo1;
+        coo1 = s.body[i+1];
+        s.body[i+1] = coo2;
+    }
+    
+    if (!fat_turn) {
+    s.body[0].a.x = x1;
+    s.body[0].b.x = x2;
+    s.body[0].a.y = y1;
+    s.body[0].b.y = y2;
+
+    board[x1][y1] = 1;
+    board[x2][y2] = 1;
+    }
+    else { 
+        calculate_fat_rotation();
+    }
+
+}
+}
+
+
 
 
 
