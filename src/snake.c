@@ -21,8 +21,7 @@ _Bool lastTurnClockwise = 0;
 
 char previous_direction;
 
-int movesSinceTurn = -2;
-_Bool turned = 0;
+int movesSinceTurn = 2;
 
 int turns[10];
 _Bool turnDirection[10];
@@ -101,6 +100,16 @@ void spawn_fruit(){
     && board[x+1][y] != 1
     && board[x][y+1] != 1
     && board[x+1][y+1] != 1) {
+        int i, j, k;
+        for (i = x - 1; i < x + 3; i++) {
+            for (j = y - 1; j < y + 3; j++) {
+                for (k = 0; k < fruit_num; k++) {
+                    if ((fruits[fruit_num].x1 == i || fruits[fruit_num].x2 == i) && (fruits[fruit_num].y1 == j || fruits[fruit_num].y2 == j)) {
+                        return;
+                    }
+                }
+            }
+        }
         struct Fruit fruit = {.x1 = x, .x2 = x+1, .y1 = y, .y2 = y+1};
         fruits[fruit_num] = fruit;
     
@@ -187,7 +196,7 @@ void update_rotation(){
 
 // Evaluates if the user is turning
 _Bool evaluate_rotation(){
-    if (turned && movesSinceTurn < 2) {
+    if (movesSinceTurn < 2) {
         turnCW = 0;
         turnCCW = 0;
         return 0;
@@ -218,7 +227,6 @@ _Bool evaluate_rotation(){
 
     if (turnCW || turnCCW) {
         movesSinceTurn = 0;
-        turned = 1;
         turnCW = 0;
         turnCCW = 0;
         return 1;
@@ -469,9 +477,11 @@ void move(){
             break;
         }
     }
+
+    if (movesSinceTurn < 2) {
+        movesSinceTurn++;
+    }
     
-    if (turned) {
-    movesSinceTurn++;
     //Resets the tail pixel on the board
     board[s.body[starting_length-1].a.x][s.body[starting_length-1].a.y] = 0;
     board[s.body[starting_length-1].b.x][s.body[starting_length-1].b.y] = 0;
@@ -500,7 +510,6 @@ void move(){
     }
 
 }
-}
 
 
 
@@ -525,7 +534,7 @@ void initialize_snake(){
         s.body[i].a.y = 0;
         s.body[i].b.y = 0;
     }
-    int x = 32;
+    int x = 50;
     int y = 16;
     
     for(i = 0; i < starting_length; i++){
