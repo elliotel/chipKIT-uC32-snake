@@ -146,6 +146,9 @@ void ai_select_target(struct Snake* s) {
 
 void ai_evaluate_rotation(struct Snake* s) {
     struct Fruit target = s->ai.target;
+    if (target.x1 == 0) {
+        return;
+    }
         if (target.x1 < s->body[0].a.x && target.y1 < s->body[0].a.y) {
             switch(directions[s->directionPointer]) {
                 case 'u':
@@ -514,7 +517,9 @@ void move() {
 void move_snake(struct Snake* s){
     if (s->ai.enabled) {
         if (s->ai.target.x1 == 0) {
+            if (fruits[0].x1 != 0) {
             ai_select_target(s);
+            }
         }
         else {
             int i;
