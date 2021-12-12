@@ -1,9 +1,3 @@
-/* mipslabdata.c
-   This file compiled 2015 by F Lundevall
-   from original code written by Axel Isaksson
-
-   For copyright and licensing, see file COPYING */
-
 #include <stdint.h>   /* Declarations of uint_32 and the like */
 #include <pic32mx.h>  /* Declarations of system-specific addresses etc */
 #include "mipslab.h"  /* Declatations for these labs */
@@ -140,25 +134,6 @@ const uint8_t const font[] = {
 	0, 0, 65, 34, 28, 8, 0, 0,
 	0, 0, 4, 2, 4, 2, 0, 0,
 	0, 120, 68, 66, 68, 120, 0, 0,
-};
-
-const uint8_t const icon[] = {
-	0, 254, 254, 254, 254, 254, 254, 254,
-	254, 254, 254, 254, 254, 254, 254, 254,
-	254, 254, 254, 254, 254, 254, 254, 254,
-	254, 254, 254, 254, 254, 254, 254, 254,
-	0, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255,
-	0, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255,
-	0, 127, 127, 127, 127, 127, 127, 127,
-	127, 127, 127, 127, 127, 127, 127, 127,
-	127, 127, 127, 127, 127, 127, 127, 127,
-	127, 127, 127, 127, 127, 127, 127, 127,
 };
 
 uint8_t screen[] = {

@@ -82,4 +82,8 @@ void update_rotation();
 int buttonStatus;
 void spawn_fruit();
 void update_board();
+void display_update();
+//void detect_collition();
+void string_to_pixel();
+void update_score();
 
