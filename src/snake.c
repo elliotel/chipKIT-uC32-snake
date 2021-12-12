@@ -94,18 +94,13 @@ void spawn_fruit(){
     int x = (rand() % 99) + 28;
     int y = (rand() % 29) + 1;
 
-    /*
+    
+    //Börjat implementera lite logik för att skapa structs av frukter, men oklart om det är bäst
+    //struct Fruit fruit = {.x1 = x, .x2 = x+1, .y1 = y, .y2 = y+1};
     if(board[x][y] != 1
     && board[x+1][y] != 1
     && board[x][y+1] != 1
-    && board[x+1][y+1] != 1]) {
-        struct Fruit fruit { .a.x = x, .a.y = y, .b.x = x+1, .b.y = y, .c.x = x, .c.y = y+1, .d.x = x+1, .d.y = y+1};
-
-    }
-    */
-    //Börjat implementera lite logik för att skapa structs av frukter, men oklart om det är bäst
-    //struct Fruit fruit = {.x1 = x, .x2 = x+1, .y1 = y, .y2 = y+1};
-    if(board[x][y] != 1){
+    && board[x+1][y+1] != 1) {
         struct Fruit fruit = {.x1 = x, .x2 = x+1, .y1 = y, .y2 = y+1};
         fruits[fruit_num] = fruit;
     
@@ -119,13 +114,12 @@ void spawn_fruit(){
         }
     */
    
-   board[fruit.x1][fruit.y1] = 1;
-   board[fruit.x2][fruit.y1] = 1;
-   board[fruit.x1][fruit.y2] = 1;
-   board[fruit.x2][fruit.y2] = 1;
+        board[fruit.x1][fruit.y1] = 1;
+        board[fruit.x2][fruit.y1] = 1;
+        board[fruit.x1][fruit.y2] = 1;
+        board[fruit.x2][fruit.y2] = 1;
 
    fruit_num++;
-   
     }
     
 }
@@ -149,7 +143,10 @@ void remove_fruit(int num){
     board[fruits[num].x1][fruits[num].y2] = 0;
     board[fruits[num].x2][fruits[num].y1] = 0;
     board[fruits[num].x2][fruits[num].y2] = 0;
-    fruits[num] = fruits[num+1];
+    int i;
+    for (i = num; i < fruit_num; i++) {
+    fruits[i] = fruits[i+1];
+    }
 
     fruit_num--;
     score++;
