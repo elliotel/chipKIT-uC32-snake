@@ -30,6 +30,8 @@ extern struct Snake{
    char previous_direction;
    int movesSinceTurn;
    _Bool skip_remove;
+   _Bool turnCCW;
+   _Bool turnCW;
 };
 
 extern struct Fruit{
@@ -79,7 +81,7 @@ void time2string( char *, int );
 /* Written as part of i/o lab: getbtns, getsw, enable_interrupt */
 int getbtns(void);
 int getsw(void);
-void getinput(_Bool *, _Bool *);
+void getinput(struct Snake*);
 void update_game();
 void enable_interrupt(void);
 void update_rotation();

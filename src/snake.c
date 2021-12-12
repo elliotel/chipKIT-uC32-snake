@@ -6,8 +6,6 @@
 int const starting_length = 8;
 struct Snake s1;
 _Bool fruit_coords[128][32];
-_Bool turnCCW = 0;
-_Bool turnCW = 0;
 char directions[4] = {'l', 'u', 'r', 'd'};
 int fruit_num = 0;
 int score = 20;
@@ -135,27 +133,28 @@ void visualize(struct Snake* s){
     update_board();
 }
 void update_rotation(){
-    getinput(&turnCCW, &turnCW);
+    getinput(&s1);
+    //getinput(&s2);
 }
 
 // Evaluates if the user is turning
 _Bool evaluate_rotation(struct Snake* s){
     if (s->movesSinceTurn < 2) {
-        turnCW = 0;
-        turnCCW = 0;
+        s->turnCW = 0;
+        s->turnCCW = 0;
         return 0;
     }
     s->previous_direction = directions[s->directionPointer];
     
-    if (turnCW && turnCCW) {
-        turnCW = 0;
-        turnCCW = 0;
+    if (s->turnCW && s->turnCCW) {
+        s->turnCW = 0;
+        s->turnCCW = 0;
         return 0;
     }
-    else if(turnCCW){
+    else if(s->turnCCW){
         s->directionPointer--;
     }
-    else if(turnCW){
+    else if(s->turnCW){
         s->directionPointer++;
     }
     
@@ -167,10 +166,10 @@ _Bool evaluate_rotation(struct Snake* s){
         s->directionPointer = 3;
     }
 
-    if (turnCW || turnCCW) {
+    if (s->turnCW || s->turnCCW) {
         s->movesSinceTurn = 0;
-        turnCW = 0;
-        turnCCW = 0;
+        s->turnCW = 0;
+        s->turnCCW = 0;
         return 1;
     }
     else {
@@ -482,6 +481,8 @@ void initialize_snake(struct Snake* s){
     s->directionPointer = 2;
     s->movesSinceTurn = 2;
     s->skip_remove = 0;
+    s->turnCCW = 0;
+    s->turnCW = 0;
 
     int i;
     for(i = 0; i < s->length; i++){

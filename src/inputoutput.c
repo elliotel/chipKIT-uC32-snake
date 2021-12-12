@@ -58,7 +58,7 @@ void IOinitialize( void )
 }
 
 /* reads input and returns an int indicating which button has been pressed*/
-void getinput(_Bool *turnCCW,_Bool *turnCW){
+void getinput(struct Snake* s){
     buttonStatus = getbtns();
     if(buttonStatus){
         /*
@@ -70,10 +70,10 @@ void getinput(_Bool *turnCCW,_Bool *turnCW){
     }
     */
     if (buttonStatus & 0x4) {
-        *turnCW = 1;
+        s->turnCW = 1;
     }
     if (buttonStatus & 0x8){
-        *turnCCW = 1;
+        s->turnCCW = 1;
     }
     }
     
