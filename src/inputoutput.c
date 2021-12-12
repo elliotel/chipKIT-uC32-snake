@@ -93,7 +93,7 @@ void update_game(){
 		update_board();
         //detect_collition();
         string_to_pixel(1,1,score_string,5);
-        update_score();
+        //update_score();
 		move();
         //display_string(1, score);        
         //display_update();

@@ -81,6 +81,7 @@ void initialize_fruit(){
 }
 
 void update_score(){
+    clear_score_display();
     sprintf(score_count, "%d", score);
     string_to_pixel(1, 10, score_count, 3);
 }
@@ -158,8 +159,6 @@ void remove_fruit(int num){
     }
 
     fruit_num--;
-    score++;
-    clear_score_display();
 }
 
 /*
@@ -392,9 +391,10 @@ int detect_fruit_collision(struct FatCoordinate next_coordinate) {
         if((next_coordinate.a.x == fruits[i].x1 || next_coordinate.a.x == fruits[i].x2 
         || next_coordinate.b.x == fruits[i].x1 || next_coordinate.b.x == fruits[i].x2) && 
         ( next_coordinate.a.y == fruits[i].y1 || next_coordinate.a.y == fruits[i].y2 
-        || next_coordinate.b.y == fruits[i].y1 || next_coordinate.b.x == fruits[i].y2)) {
+        || next_coordinate.b.y == fruits[i].y1 || next_coordinate.b.y == fruits[i].y2)) {
             remove_fruit(i);
             score++;
+            update_score();
             return 1;
             }
         }
@@ -528,7 +528,7 @@ void initialize_snake(){
     s.length = starting_length;
 
     int i;
-    for(i = 0; i < sizeof(s.body); i++){
+    for(i = 0; i < starting_length; i++){
         s.body[i].a.x = 0;
         s.body[i].b.x = 0;
         s.body[i].a.y = 0;
