@@ -77,7 +77,7 @@ void initialize_fruit(){
         for(y = 0; y < 32; y++){
             fruit_coords[x][y] = 0;
         }
-    }   
+    }
 }
 
 void update_score(){
@@ -94,13 +94,11 @@ void spawn_fruit(){
     int x = (rand() % 99) + 28;
     int y = (rand() % 29) + 1;
 
-    
-    //Börjat implementera lite logik för att skapa structs av frukter, men oklart om det är bäst
-    //struct Fruit fruit = {.x1 = x, .x2 = x+1, .y1 = y, .y2 = y+1};
     if(board[x][y] != 1
     && board[x+1][y] != 1
     && board[x][y+1] != 1
     && board[x+1][y+1] != 1) {
+        /*
         int i, j, k;
         for (i = x - 1; i < x + 3; i++) {
             for (j = y - 1; j < y + 3; j++) {
@@ -111,6 +109,7 @@ void spawn_fruit(){
                 }
             }
         }
+        */
         struct Fruit fruit = {.x1 = x, .x2 = x+1, .y1 = y, .y2 = y+1};
         fruits[fruit_num] = fruit;
     
@@ -385,8 +384,9 @@ void calculate_fat_rotation() {
 }
 
 //Jag får "conflicting type" om jag örsöker returna _Bool och jag FÖRSTÅR inte varför, det funkar på evaluate_rotation() 
-int detect_fruit_collision(struct FatCoordinate next_coordinate) {
+_Bool detect_fruit_collision(struct FatCoordinate next_coordinate) {
     int i;
+    _Bool found = 0;
         for(i = 0; i < fruit_num; i++){
         if((next_coordinate.a.x == fruits[i].x1 || next_coordinate.a.x == fruits[i].x2 
         || next_coordinate.b.x == fruits[i].x1 || next_coordinate.b.x == fruits[i].x2) && 
@@ -395,10 +395,10 @@ int detect_fruit_collision(struct FatCoordinate next_coordinate) {
             remove_fruit(i);
             score++;
             update_score();
-            return 1;
+            found = 1;
             }
         }
-    return 0;
+    return found;
 }
 
 void detect_collision() {
@@ -425,7 +425,7 @@ void detect_collision() {
         //Check if point is part of fruit, then length increase and remove fruit
         //Remember to handle edge case where end of snake just finished turning, make sure it grows in the direction the snake turned from, not straight (or it might grow into a wall if it turned in a corner for example)
         //Remove fruit handled, not length increase so far
-        if (detect_fruit_collision(next_coordinate) == 1) {
+        if (detect_fruit_collision(next_coordinate)) {
             return;
         }
             
