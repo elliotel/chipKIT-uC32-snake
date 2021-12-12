@@ -2,4 +2,4 @@
 
 ![Snake](https://media.gettyimages.com/photos/venomous-snake-picture-id157479804?s=170667a)
 
-(Hopefully turns out to be) A two-player snake game for the chipKIT™ uC32™, utilizing a ILI9341 LCD display for graphics, and two Wii Nunchuk™ for player input!
+(Hopefully turns out to be) A two-player snake game for the chipKIT™ uC32™!
