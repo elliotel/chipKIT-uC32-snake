@@ -21,7 +21,54 @@ _Bool lastTurnClockwise = 0;
 
 char previous_direction;
 
-int movesSinceTurn = 10;
+int movesSinceTurn = -2;
+_Bool turned = 0;
+
+int turns[10];
+_Bool turnDirection[10];
+
+void queue_init() {
+    int i;
+    for (i = 0; i < 10; i++) {
+        turns[i] = 0;
+        turnDirection[i] = 0;
+    }
+}
+
+void queue_push(int value, _Bool clockwise) {
+    int i = 0;
+    while (turns[i] != 0) {
+        i++;
+        if (i == 10) { return; }
+    }
+    turns[i] = value;
+    turnDirection[i] = clockwise;
+}
+
+int queue_pop() {
+    int popped = turns[0];
+    turns[0] = 0;
+    turnDirection[0] = 0;
+    int i = 0;
+    while (turns[i+1] != 0) {
+        turns[i] = turns[i+1];
+        turnDirection[i] = turnDirection[i+1];
+        turns[i+1] = 0;
+        turnDirection[i+1] = 0;
+        i++;
+        if (i == 10) { break; }
+    }
+    return popped;
+}
+
+int queue_total() {
+    int sum = 0;
+    int i;
+    for (i = 0; i < 10; i++) {
+        sum += turns[i];
+    }
+    return sum;
+}
 
 void initialize_fruit(){    
 	//srand(100);
@@ -47,12 +94,22 @@ void spawn_fruit(){
     int x = (rand() % 99) + 28;
     int y = (rand() % 29) + 1;
 
+    /*
+    if(board[x][y] != 1
+    && board[x+1][y] != 1
+    && board[x][y+1] != 1
+    && board[x+1][y+1] != 1]) {
+        struct Fruit fruit { .a.x = x, .a.y = y, .b.x = x+1, .b.y = y, .c.x = x, .c.y = y+1, .d.x = x+1, .d.y = y+1};
+
+    }
+    */
     //Börjat implementera lite logik för att skapa structs av frukter, men oklart om det är bäst
     //struct Fruit fruit = {.x1 = x, .x2 = x+1, .y1 = y, .y2 = y+1};
     if(board[x][y] != 1){
         struct Fruit fruit = {.x1 = x, .x2 = x+1, .y1 = y, .y2 = y+1};
         fruits[fruit_num] = fruit;
     
+    /*
     //Inte fin kod
     int i, j;
         for(i = x; i <= x+1; i++){
@@ -60,49 +117,45 @@ void spawn_fruit(){
                 board[i][j] = 1;
             }
         }
-        
+    */
+   
+   board[fruit.x1][fruit.y1] = 1;
+   board[fruit.x2][fruit.y1] = 1;
+   board[fruit.x1][fruit.y2] = 1;
+   board[fruit.x2][fruit.y2] = 1;
+
+   fruit_num++;
+   
     }
-    fruit_num++;
+    
 }
 
 void visualize_fruit(){
     int i;
+    /*
     for(i = 0; i < fruit_num; i++){
         board[fruits[fruit_num].x1][fruits[fruit_num].y1] = 1;
         board[fruits[fruit_num].x1][fruits[fruit_num].y2] = 1;
         board[fruits[fruit_num].x2][fruits[fruit_num].y1] = 1;
         board[fruits[fruit_num].x2][fruits[fruit_num].y2] = 1;
     }
+    */
     update_board();
 }
 
 
-void remove_fruit(int x, int y){
-    _Bool found = 0;
-    int i;
-    for(i = 0; i < fruit_num; i++){
-        
-        if(!found){
-            if(fruits[fruit_num].x1 == x|| fruits[fruit_num].x2 == x){
-                if(fruits[fruit_num].y1 == y || fruits[fruit_num].y2 == y){
-                    found = true;
-                    board[fruits[fruit_num].x1][fruits[fruit_num].y1] = 0;
-                    board[fruits[fruit_num].x1][fruits[fruit_num].y2] = 0;
-                    board[fruits[fruit_num].x2][fruits[fruit_num].y1] = 0;
-                    board[fruits[fruit_num].x2][fruits[fruit_num].y2] = 0;
-                }
-            }
-        }
-        
-        if(found){
-            fruits[fruit_num] = fruits[fruit_num+1];
-        }
-    }
+void remove_fruit(int num){
+    board[fruits[num].x1][fruits[num].y1] = 0;
+    board[fruits[num].x1][fruits[num].y2] = 0;
+    board[fruits[num].x2][fruits[num].y1] = 0;
+    board[fruits[num].x2][fruits[num].y2] = 0;
+    fruits[num] = fruits[num+1];
 
     fruit_num--;
     score++;
 }
 
+/*
 void detect_collition(){
     int i;
     for(i = 0; i < fruit_num; i++){
@@ -120,6 +173,7 @@ void detect_collition(){
         }
     }
 }
+*/
 
 void visualize(){
     int i;
@@ -135,7 +189,7 @@ void update_rotation(){
 
 // Evaluates if the user is turning
 _Bool evaluate_rotation(){
-    if (movesSinceTurn < 2) {
+    if (turned && movesSinceTurn < 2) {
         turnCW = 0;
         turnCCW = 0;
         return 0;
@@ -166,6 +220,7 @@ _Bool evaluate_rotation(){
 
     if (turnCW || turnCCW) {
         movesSinceTurn = 0;
+        turned = 1;
         turnCW = 0;
         turnCCW = 0;
         return 1;
@@ -245,6 +300,8 @@ void calculate_fat_rotation() {
 
 void move(){
 
+    detect_collision();
+
     /*
     Temporary solution while there is only 1 snake
     If a second snake is added, replace with something akin to a boolean that skips movement only for the snake(s) that turned instead
@@ -278,7 +335,9 @@ void move(){
         }
     }
     
+    if (turned) {
     movesSinceTurn++;
+    }
     if (movesSinceTurn == starting_length - 1) {
         if (lastTurnClockwise) {
             board[s.body[starting_length-1].a.x][s.body[starting_length-1].a.y] = 0;
@@ -298,6 +357,8 @@ void move(){
             board[s.body[starting_length-1].a.x][s.body[starting_length-1].a.y] = 0;
             board[s.body[starting_length].a.x][s.body[starting_length].a.y] = 0;
         }
+        turned = 0;
+        movesSinceTurn = -2;
     }
     else {
         //Resets the tail pixel on the board
@@ -327,6 +388,62 @@ void move(){
         calculate_fat_rotation();
     }
 
+}
+
+void detect_collision() {
+    struct FatCoordinate next_coordinate = s.body[0];
+    switch(directions[directionPointer]){
+        case 'u':
+        next_coordinate.a.y = s.body[0].a.y - 1;
+        next_coordinate.b.y = s.body[0].b.y - 1;
+        break;
+        case 'd':
+        next_coordinate.a.y = s.body[0].a.y + 1;
+        next_coordinate.b.y = s.body[0].b.y + 1;
+        break;
+        case 'l':
+        next_coordinate.a.x = s.body[0].a.x - 1;
+        next_coordinate.b.x = s.body[0].b.x - 1;
+        break;
+        case 'r':
+        next_coordinate.a.x = s.body[0].a.x + 1;
+        next_coordinate.b.x = s.body[0].b.x + 1;
+        break;
+    }
+    if (board[next_coordinate.a.x][next_coordinate.a.y] == 1 || board[next_coordinate.b.x][next_coordinate.b.y] == 1) {
+        //Check if point is part of fruit, then length increase and remove fruit
+        //Remember to handle edge case where end of snake just finished turning, make sure it grows in the direction the snake turned from, not straight (or it might grow into a wall if it turned in a corner for example)
+        //Remove fruit handled, not length increase so far
+        if (detect_fruit_collision(next_coordinate) == 1) {
+            return;
+        }
+            
+
+        //Otherwise, game over.
+        int q;
+        for (q = 0; q < 128; q++) {
+            int r;
+            for (r = 0; r < 32; r++) {
+                board[q][r] = 1;
+            }
+        }
+    }
+}
+
+//Jag får "conflicting type" om jag örsöker returna _Bool och jag FÖRSTÅR inte varför, det funkar på evaluate_rotation() 
+int detect_fruit_collision(struct FatCoordinate next_coordinate) {
+    int i;
+        for(i = 0; i < fruit_num; i++){
+        if((next_coordinate.a.x == fruits[i].x1 || next_coordinate.a.x == fruits[i].x2 
+        || next_coordinate.b.x == fruits[i].x1 || next_coordinate.b.x == fruits[i].x2) && 
+        ( next_coordinate.a.y == fruits[i].y1 || next_coordinate.a.y == fruits[i].y2 
+        || next_coordinate.b.y == fruits[i].y1 || next_coordinate.b.x == fruits[i].y2)) {
+            remove_fruit(i);
+            score++;
+            return 1;
+            }
+        }
+    return 0;
 }
 
 
