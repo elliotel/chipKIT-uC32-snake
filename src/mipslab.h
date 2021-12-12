@@ -86,4 +86,5 @@ void display_update();
 //void detect_collition();
 void string_to_pixel();
 void update_score();
+void clear_score_display();
 

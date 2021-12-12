@@ -150,6 +150,7 @@ void remove_fruit(int num){
 
     fruit_num--;
     score++;
+    clear_score_display();
 }
 
 /*
@@ -387,6 +388,22 @@ void move(){
 
 }
 
+//Jag får "conflicting type" om jag örsöker returna _Bool och jag FÖRSTÅR inte varför, det funkar på evaluate_rotation() 
+int detect_fruit_collision(struct FatCoordinate next_coordinate) {
+    int i;
+        for(i = 0; i < fruit_num; i++){
+        if((next_coordinate.a.x == fruits[i].x1 || next_coordinate.a.x == fruits[i].x2 
+        || next_coordinate.b.x == fruits[i].x1 || next_coordinate.b.x == fruits[i].x2) && 
+        ( next_coordinate.a.y == fruits[i].y1 || next_coordinate.a.y == fruits[i].y2 
+        || next_coordinate.b.y == fruits[i].y1 || next_coordinate.b.x == fruits[i].y2)) {
+            remove_fruit(i);
+            score++;
+            return 1;
+            }
+        }
+    return 0;
+}
+
 void detect_collision() {
     struct FatCoordinate next_coordinate = s.body[0];
     switch(directions[directionPointer]){
@@ -427,21 +444,7 @@ void detect_collision() {
     }
 }
 
-//Jag får "conflicting type" om jag örsöker returna _Bool och jag FÖRSTÅR inte varför, det funkar på evaluate_rotation() 
-int detect_fruit_collision(struct FatCoordinate next_coordinate) {
-    int i;
-        for(i = 0; i < fruit_num; i++){
-        if((next_coordinate.a.x == fruits[i].x1 || next_coordinate.a.x == fruits[i].x2 
-        || next_coordinate.b.x == fruits[i].x1 || next_coordinate.b.x == fruits[i].x2) && 
-        ( next_coordinate.a.y == fruits[i].y1 || next_coordinate.a.y == fruits[i].y2 
-        || next_coordinate.b.y == fruits[i].y1 || next_coordinate.b.x == fruits[i].y2)) {
-            remove_fruit(i);
-            score++;
-            return 1;
-            }
-        }
-    return 0;
-}
+
 
 
 void initialize_snake1(){

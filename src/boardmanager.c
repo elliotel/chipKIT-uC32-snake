@@ -265,6 +265,15 @@ void string_to_pixel(int x, int y, char* s, int l){
     }
 }
 
+void clear_score_display(){
+  int i, j;
+  for(i = 0; i < 28; i++){
+    for(j = 10; j < 18; j++){
+      board[i][j] = 0;
+    }
+  }
+}
+
 //converts coordinates to pixels
 void update_board(void){
     
