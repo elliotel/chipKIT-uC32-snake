@@ -298,6 +298,17 @@ void update_board(void){
   display_board(0, screen);
 }
 
+
+void clear_display(){
+  int x;
+  int y;
+  for(x = 0; x < 128;  x++){
+    for(y = 0; y < 32; y++){
+      board[x][y] = 0;
+    }
+  }
+}
+
 /* Helper function, local to this file.
    Converts a number to hexadecimal ASCII digits. */
 static void num32asc( char * s, int n ) 
