@@ -59,6 +59,7 @@ int main(void) {
 	initialize_snakes();
 	
 	set_up_board();
+	set_up_score();
 	/*
 	struct Snake snek;
 	snek = 

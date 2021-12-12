@@ -33,6 +33,8 @@ extern struct Snake{
    _Bool turnCCW;
    _Bool turnCW;
    _Bool player_one;
+   
+   int score;
 };
 
 extern struct Fruit{

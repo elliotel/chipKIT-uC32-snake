@@ -208,7 +208,8 @@ void set_up_board(void){
 }
 
 void set_up_score(void){
-
+  string_to_pixel(1, 16, "VS", 2);
+  update_score();
 }
 
 void display_update(void) {
@@ -268,7 +269,13 @@ void string_to_pixel(int x, int y, char* s, int l){
 void clear_score_display(){
   int i, j;
   for(i = 0; i < 28; i++){
-    for(j = 10; j < 18; j++){
+    for(j = 8; j < 16; j++){
+      board[i][j] = 0;
+    }
+  }
+
+  for(i = 0; i < 28; i++){
+    for(j = 24; j < 32; j++){
       board[i][j] = 0;
     }
   }

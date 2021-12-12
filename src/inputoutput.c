@@ -96,7 +96,7 @@ void update_game(){
 		timeoutcount = 0;
 		update_board();
         //detect_collition();
-        string_to_pixel(1,1,score_string,5);
+        string_to_pixel(1,0,score_string,5);
         //update_score();
 		move();
         //display_string(1, score);        

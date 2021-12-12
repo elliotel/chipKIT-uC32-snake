@@ -9,7 +9,6 @@ struct Snake s2;
 _Bool fruit_coords[128][32];
 char directions[4] = {'l', 'u', 'r', 'd'};
 int fruit_num = 0;
-int score = 20;
 struct Fruit fruits[11];
 
 char score_count[3];
@@ -27,8 +26,10 @@ void initialize_fruit(){
 
 void update_score(){
     clear_score_display();
-    sprintf(score_count, "%d", score);
-    string_to_pixel(1, 10, score_count, 3);
+    sprintf(score_count, "%d", s1.score);
+    string_to_pixel(1, 8, score_count, 3);
+    sprintf(score_count, "%d", s2.score);
+    string_to_pixel(1, 24, score_count, 3);
 }
 
 void spawn_fruit(){
@@ -341,7 +342,7 @@ _Bool detect_fruit_collision(struct Snake* s, struct FatCoordinate next_coordina
         ( next_coordinate.a.y == fruits[i].y1 || next_coordinate.a.y == fruits[i].y2 
         || next_coordinate.b.y == fruits[i].y1 || next_coordinate.b.y == fruits[i].y2)) {
             remove_fruit(i);
-            score++;
+            s->score++;
             increase_length(s);
             update_score();
             found = 1;
@@ -485,6 +486,7 @@ void initialize_snake(struct Snake* s){
     s->skip_remove = 0;
     s->turnCCW = 0;
     s->turnCW = 0;
+    s->score = 0;
 
     int i;
     for(i = 0; i < s->length; i++){
