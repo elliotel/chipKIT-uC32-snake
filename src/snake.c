@@ -388,8 +388,6 @@ void detect_collision() {
     }
     if (board[next_coordinate.a.x][next_coordinate.a.y] == 1 || board[next_coordinate.b.x][next_coordinate.b.y] == 1) {
         //Check if point is part of fruit, then length increase and remove fruit
-        //Remember to handle edge case where end of snake just finished turning, make sure it grows in the direction the snake turned from, not straight (or it might grow into a wall if it turned in a corner for example)
-        //Remove fruit handled, not length increase so far
         if (detect_fruit_collision(next_coordinate)) {
             return;
         }
