@@ -11,7 +11,7 @@
 #include <pic32mx.h>  /* Declarations of system-specific addresses etc */
 #include "mipslab.h"  /* Declatations for these labs */
 
-int main(void) {
+int main(void)  {
         /*
 	  This will set the peripheral bus clock to the same frequency
 	  as the sysclock. That means 80 MHz, when the microcontroller
@@ -54,6 +54,14 @@ int main(void) {
 	/* SPI2CON bit ON = 1; */
 	SPI2CONSET = 0x8000;
 	
+	int seed_array[10];
+	int i;
+	int seed = 1;
+	for (i = 0; i < 10; i++) {
+		seed += seed_array[i];
+		seed *= seed_array[i];
+	}
+	srand(seed);
 	display_init();
 	initialize_fruit();
 	initialize_snakes();
