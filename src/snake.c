@@ -9,18 +9,11 @@ _Bool fruit_coords[128][32];
 _Bool turnCCW = 0;
 _Bool turnCW = 0;
 char directions[4] = {'l', 'u', 'r', 'd'};
-int directionPointer = 2;
 int fruit_num = 0;
 int score = 20;
 struct Fruit fruits[11];
 
 char score_count[3];
-
-char previous_direction;
-
-int movesSinceTurn = 2;
-
-_Bool skip_remove = 0;
 
 void initialize_fruit(){    
 	//srand(100);
@@ -146,13 +139,13 @@ void update_rotation(){
 }
 
 // Evaluates if the user is turning
-_Bool evaluate_rotation(){
-    if (movesSinceTurn < 2) {
+_Bool evaluate_rotation(struct Snake* s){
+    if (s->movesSinceTurn < 2) {
         turnCW = 0;
         turnCCW = 0;
         return 0;
     }
-    previous_direction = directions[directionPointer];
+    s->previous_direction = directions[s->directionPointer];
     
     if (turnCW && turnCCW) {
         turnCW = 0;
@@ -160,22 +153,22 @@ _Bool evaluate_rotation(){
         return 0;
     }
     else if(turnCCW){
-        directionPointer--;
+        s->directionPointer--;
     }
     else if(turnCW){
-        directionPointer++;
+        s->directionPointer++;
     }
     
     // Ensures the pointer loops around if it surpasses the boundaries of the array
-    if (directionPointer > 3) {
-        directionPointer = 0;
+    if (s->directionPointer > 3) {
+        s->directionPointer = 0;
     }
-    else if (directionPointer < 0 ) {
-        directionPointer = 3;
+    else if (s->directionPointer < 0 ) {
+        s->directionPointer = 3;
     }
 
     if (turnCW || turnCCW) {
-        movesSinceTurn = 0;
+        s->movesSinceTurn = 0;
         turnCW = 0;
         turnCCW = 0;
         return 1;
@@ -186,12 +179,12 @@ _Bool evaluate_rotation(){
 }
 
 void calculate_fat_rotation(struct Snake* s) {
-    char newDirection = directions[directionPointer];
+    char newDirection = directions[s->directionPointer];
 
     //Dubbelkolla igen om (och isåfall varför) dessa 2 rader behövs (jag ska alltså)
     board[s->body[s->length].a.x][s->body[s->length].a.y] = 0;
     board[s->body[s->length].b.x][s->body[s->length].b.y] = 0;
-    switch(previous_direction){
+    switch(s->previous_direction){
         case 'u':
             if (newDirection == 'l') {
                 s->body[0].a.x = s->body[1].a.x - 1;
@@ -336,7 +329,7 @@ void calculate_fat_rotation(struct Snake* s) {
 
 void increase_length(struct Snake* s) {
     s->length++;
-    skip_remove = 1;
+    s->skip_remove = 1;
 }
 
 _Bool detect_fruit_collision(struct Snake* s, struct FatCoordinate next_coordinate) {
@@ -359,7 +352,7 @@ _Bool detect_fruit_collision(struct Snake* s, struct FatCoordinate next_coordina
 
 void detect_collision(struct Snake* s) {
     struct FatCoordinate next_coordinate = s->body[0];
-    switch(directions[directionPointer]){
+    switch(directions[s->directionPointer]){
         case 'u':
         next_coordinate.a.y = s->body[0].a.y - 1;
         next_coordinate.b.y = s->body[0].b.y - 1;
@@ -408,7 +401,7 @@ void move_snake(struct Snake* s){
     Temporary solution while there is only 1 snake
     If a second snake is added, replace with something akin to a boolean that skips movement only for the snake(s) that turned instead
     */
-    _Bool fat_turn = evaluate_rotation();
+    _Bool fat_turn = evaluate_rotation(s);
 
     int x1 = s->body[0].a.x;
     int x2 = s->body[0].b.x;
@@ -417,7 +410,7 @@ void move_snake(struct Snake* s){
 
     if (!fat_turn) {
 
-        switch(directions[directionPointer]){
+        switch(directions[s->directionPointer]){
             case 'u':
                 y1--;
                 y2--;
@@ -437,16 +430,16 @@ void move_snake(struct Snake* s){
         }
     }
 
-    if (movesSinceTurn < 2) {
-        movesSinceTurn++;
+    if (s->movesSinceTurn < 2) {
+        s->movesSinceTurn++;
     }
     
-    if (!skip_remove) {
+    if (!s->skip_remove) {
     //Resets the tail pixel on the board
     board[s->body[s->length-1].a.x][s->body[s->length-1].a.y] = 0;
     board[s->body[s->length-1].b.x][s->body[s->length-1].b.y] = 0;
     } else {
-        skip_remove = 0;
+        s->skip_remove = 0;
     }
     
 
@@ -486,6 +479,9 @@ void initialize_snakes(){
 
 void initialize_snake(struct Snake* s){
     s->length = starting_length;
+    s->directionPointer = 2;
+    s->movesSinceTurn = 2;
+    s->skip_remove = 0;
 
     int i;
     for(i = 0; i < s->length; i++){

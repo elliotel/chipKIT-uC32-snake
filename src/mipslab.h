@@ -23,9 +23,13 @@ extern struct FatCoordinate{
 };
 
 extern struct Snake{
-    struct FatCoordinate body[200];
-    _Bool alive;
-    int length;
+   struct FatCoordinate body[200];
+   _Bool alive;
+   int length;
+   int directionPointer;
+   char previous_direction;
+   int movesSinceTurn;
+   _Bool skip_remove;
 };
 
 extern struct Fruit{
