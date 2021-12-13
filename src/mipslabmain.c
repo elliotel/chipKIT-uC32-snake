@@ -63,11 +63,11 @@ int main(void)  {
 	}
 	srand(seed);
 	display_init();
+while ( 1 ){
 	IOinitialize(); /* Do any lab-specific initialization */
-
 	_Bool multiplayer = display_main_menu();
 	
-	initialize_fruit();
+	initialize_fruits();
 	initialize_snakes(multiplayer);
 	
 	set_up_board();
@@ -77,8 +77,11 @@ int main(void)  {
 	while( 1 )
 	{
 		
-	  update_game(); 
+	  if (update_game()) { 
+	  break;
+	  }
 	  
 	}
+}
 	return 0;
 }

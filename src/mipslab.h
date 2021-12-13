@@ -80,7 +80,8 @@ extern char textbuffer[4][16];
 
 extern _Bool board[128][32];
 
-void initialize_snake1(void);
+void initialize_fruits(void);
+void initialize_snakes(_Bool);
 /* Declare functions written by students.
    Note: Since we declare these functions here,
    students must define their functions with the exact types
@@ -92,7 +93,7 @@ void time2string( char *, int );
 int getbtns(void);
 int getsw(void);
 void getinput(struct Snake*);
-void update_game();
+_Bool update_game();
 void enable_interrupt(void);
 void update_rotation();
 int buttonStatus;
@@ -100,9 +101,10 @@ void spawn_fruit();
 void update_screen();
 void display_update();
 //void detect_collition();
-void string_to_pixel();
+void string_to_pixel(int, int, char*, int);
 void update_score();
 void clear_display();
 void clear_score_display();
 _Bool display_main_menu();
+void display_end_screen();
 
