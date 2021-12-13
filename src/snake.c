@@ -447,14 +447,14 @@ void increase_length(struct Snake* s) {
     s->skip_remove = 1;
 }
 
-_Bool detect_fruit_collision(struct Snake* s, struct FatCoordinate next_coordinate) {
+_Bool detect_fruit_collision(struct Snake* s) {
     int i;
     _Bool found = 0;
         for(i = 0; i < fruit_num; i++){
-        if((next_coordinate.a.x == fruits[i].x1 || next_coordinate.a.x == fruits[i].x2 
-        || next_coordinate.b.x == fruits[i].x1 || next_coordinate.b.x == fruits[i].x2) && 
-        ( next_coordinate.a.y == fruits[i].y1 || next_coordinate.a.y == fruits[i].y2 
-        || next_coordinate.b.y == fruits[i].y1 || next_coordinate.b.y == fruits[i].y2)) {
+        if((s->body[0].a.x == fruits[i].x1 || s->body[0].a.x == fruits[i].x2 
+        || s->body[0].b.x == fruits[i].x1 || s->body[0].b.x == fruits[i].x2) && 
+        ( s->body[0].a.y == fruits[i].y1 || s->body[0].a.y == fruits[i].y2 
+        || s->body[0].b.y == fruits[i].y1 || s->body[0].b.y == fruits[i].y2)) {
             remove_fruit(i);
             s->score++;
             increase_length(s);
@@ -469,7 +469,7 @@ void detect_collision(struct Snake* s) {
     if (board[s->body[0].a.x][s->body[0].a.y] == 1 || board[s->body[0].b.x][s->body[0].b.y] == 1) {
         
         //Check if point is part of fruit, then length increase and remove fruit
-        if (detect_fruit_collision(s, s->body[0])) {
+        if (detect_fruit_collision(s)) {
             return;
         }
 
@@ -591,7 +591,7 @@ void initialize_snakes(){
     s1.player_one = 1;
     s2.player_one = 0;
     s1.ai.enabled = 0;
-    s2.ai.enabled = 0;
+    s2.ai.enabled = 1;
     initialize_snake(&s1);
     initialize_snake(&s2);
 }
