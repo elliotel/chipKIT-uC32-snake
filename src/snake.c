@@ -301,7 +301,6 @@ _Bool evaluate_rotation(struct Snake* s){
 void calculate_fat_rotation(struct Snake* s) {
     char newDirection = directions[s->directionPointer];
 
-    //Dubbelkolla igen om (och isåfall varför) dessa 2 rader behövs (jag ska alltså)
     switch(s->previous_direction){
         case 'u':
             if (newDirection == 'l') {
@@ -441,8 +440,6 @@ void calculate_fat_rotation(struct Snake* s) {
             }
         break;
     }
-    board[s->body[0].a.x][s->body[0].a.y] = 1;
-    board[s->body[0].b.x][s->body[0].b.y] = 1;
 }
 
 void increase_length(struct Snake* s) {
@@ -597,13 +594,13 @@ void move_snake(struct Snake* s){
     s->body[0].b.x = x2;
     s->body[0].a.y = y1;
     s->body[0].b.y = y2;
-
-    board[x1][y1] = 1;
-    board[x2][y2] = 1;
     }
-    else { 
+    else {
         calculate_fat_rotation(s);
     }
+
+    board[s->body[0].a.x][s->body[0].a.y] = 1;
+    board[s->body[0].b.x][s->body[0].b.y] = 1;
 
 }
 
