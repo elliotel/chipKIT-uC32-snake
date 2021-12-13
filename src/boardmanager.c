@@ -197,13 +197,76 @@ void set_up_board(void){
   int y;
   for(x = 0; x < 128;  x++){
     for(y = 0; y < 32; y++){
-      if(((y == 0 || y == 31) && x >= 28) || x == 28 || x == 127){
+      if(((y == 0 || y == 31) && x >= 27) || x == 27 || x == 127){
         board[x][y] = 1;
       }       
       else {
         board[x][y] = 0;
       }
     }
+  }
+}
+
+void set_up_difficult_board(char map){
+  int amount = 0;
+  int donut_amount = 0;
+  int churro_amount = 0;
+  set_up_board();
+  switch(map){
+    case 'm':
+    amount = 10;   
+    break;
+    case 'h':
+    amount = 20;
+    break;
+  }
+  donut_amount = (rand() % amount-1) + 1;
+  churro_amount = amount - donut_amount; 
+  struct Coordinate coords[amount];
+  int i,j,k,l;
+  int x_temp;
+  int y_temp;
+  _Bool success;
+  for( i = 0; i < donut_amount; i++){
+    success = 0;
+    while(!success){
+      x_temp = (rand() % 99) + 27;
+      y_temp = (rand() % 29) + 1;
+      success = 1;
+      for(k = x_temp; k < x_temp + 3; k++){
+        for(l = x_temp; l < x_temp + 3; l++){
+          if(board[k][l] = 1){
+            success = 0;
+          }
+        }
+      }
+    }
+      for(k = x_temp; k < x_temp + 3; k++){
+        for(l = x_temp; l < x_temp + 3; l++){
+          if(k == x_temp + 1 && l == y_temp + 1){
+            continue;
+          }
+          board[k][l] = 1;
+        }
+      }  
+  }
+  for( j = 0; j < donut_amount; j++){
+          success = 0;
+    while(!success){
+      x_temp = (rand() % 99) + 27;
+      y_temp = (rand() % 29) + 1;
+      success = 1;
+      for(k = y_temp; k < y_temp + 3; k++){
+          if(board[x_temp][k] = 1){
+            success = 0;
+          }
+        }
+      }
+    
+      for(k = y_temp; k < y_temp + 3; k++){
+          board[x_temp][k] = 1;
+
+      }  
   }
 }
 
