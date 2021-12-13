@@ -70,9 +70,8 @@ while ( 1 ){
 	initialize_fruits();
 	initialize_snakes(multiplayer);
 	
-	set_up_board();
+	set_up_difficult_board('h');
 	set_up_score();
-	
 
 	while( 1 )
 	{

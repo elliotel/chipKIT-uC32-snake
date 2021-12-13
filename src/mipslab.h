@@ -46,7 +46,15 @@ extern struct Snake{
    struct AI ai;
 };
 
+extern struct Donut_obstacle{
+   //represents the corners of the obstacle
+   int x1; int x2; int y1; int y2;
+};
 
+extern struct Churro_obstacle{
+   //represents the top and bottom of the obstacle
+   int x1; int x2; int y1; int y2;
+};
 
 /* Declare lab-related functions from mipslabfunc.c */
 char * itoaconv( int num );
@@ -106,5 +114,5 @@ void update_score();
 void clear_display();
 void clear_score_display();
 _Bool display_main_menu();
+void set_up_difficult_board(char);
 void display_end_screen();
-
