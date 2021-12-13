@@ -108,9 +108,9 @@ void spawn_fruit();
 void update_screen();
 void display_update();
 //void detect_collition();
-void string_to_pixel();
+void string_to_pixel(int,int,char *, int);
 void update_score();
 void clear_display();
 void clear_score_display();
 _Bool display_main_menu();
-
+void set_up_difficult_board(char);

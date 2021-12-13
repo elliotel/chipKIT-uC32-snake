@@ -70,9 +70,8 @@ int main(void)  {
 	initialize_fruit();
 	initialize_snakes(multiplayer);
 	
-	set_up_difficult_board('m');
+	set_up_difficult_board('h');
 	set_up_score();
-	
 
 	while( 1 )
 	{

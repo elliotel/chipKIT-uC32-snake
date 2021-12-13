@@ -621,7 +621,7 @@ void initialize_snake(struct Snake* s){
 
     if (s->player_one) {
         s->directionPointer = 2;
-        int x = 42;
+        int x = 41;
         int y = 8;
     
         for(i = 0; i < s->length; i++){
