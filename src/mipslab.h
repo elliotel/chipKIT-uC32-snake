@@ -75,6 +75,8 @@ extern const uint8_t const font[128*8];
 extern const uint8_t const icon[128*2];
 /* Declare bitmap array containing board */
 extern uint8_t screen[128*4];
+/* Declare bits for snek */
+extern const uint8_t const snek[32*32];
 /* Declare text buffer for display output */
 extern char textbuffer[4][16];
 

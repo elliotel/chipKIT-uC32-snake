@@ -11,6 +11,17 @@ void clear_menu_arrow() {
   }
 }
 
+void display_snake(int x) {
+    int y = 0;
+    int tot = 0;
+    int i, j;
+    for (i = y; i < y + 32; i++) {
+        for (j = x; j < x + 32; j++, tot++) {
+            board[j][i] = snek[tot];
+        }
+    }
+}
+
 //Extrem code duplication i denna för menyerna, måste fixa en extra metod för valen
 _Bool display_main_menu() {
 
@@ -32,15 +43,14 @@ _Bool display_main_menu() {
     string_to_pixel(0, 1, "Welcome to Snake!", 17);
     string_to_pixel(14, 11, "Start game!", 11);
     string_to_pixel(14, 21, "Highscores", 10);
+    display_snake(96);
 
         switch (arrow_pointer) {
             case 0:
                 arrow_y = 11;
-                multiplayer = 0;
                 break;
             case 1:
                 arrow_y = 21;
-                multiplayer = 1;
                 break;
         }
         
@@ -85,6 +95,7 @@ _Bool display_main_menu() {
             string_to_pixel(0, 8, "1: Kajim Val", 12);
             string_to_pixel(0, 16, "2: Daodac Calle", 15);
             string_to_pixel(0, 24, "3: Zuk Ara", 10);
+            display_snake(96);
             update_screen();
             while(!(button_status & 0x1)) {
                 button_status = getbtns();
@@ -104,6 +115,7 @@ _Bool display_main_menu() {
     string_to_pixel(0, 1, "Select mode:", 12);
     string_to_pixel(14, 11, "Singleplayer", 12);
     string_to_pixel(14, 21, "Multiplayer", 11);
+    display_snake(96);
 
     string_to_pixel(0, arrow_y, "->", 2);
 
