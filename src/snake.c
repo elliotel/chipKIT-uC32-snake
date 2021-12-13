@@ -36,9 +36,9 @@ void spawn_fruit(){
     if(fruit_num == 10){
         return;
     }
-    int x = (rand() % 99) + 28;
+    int x = (rand() % 99) + 27;
     //Ändrade denna till 30, så 0-29
-    int y = (rand() % 30) + 1;
+    int y = (rand() % 29) + 1;
 
     if(board[x][y] != 1
     && board[x+1][y] != 1
@@ -620,7 +620,7 @@ void initialize_snake(struct Snake* s){
 
     if (s->player_one) {
         s->directionPointer = 2;
-        int x = 42;
+        int x = 41;
         int y = 8;
     
         for(i = 0; i < s->length; i++){
