@@ -1,6 +1,5 @@
 #include <stdint.h>  
 #include <pic32mx.h>
-#include <stdlib.h>
 #include "mipslab.h" 
 
 int const starting_length = 8;
@@ -303,8 +302,6 @@ void calculate_fat_rotation(struct Snake* s) {
     char newDirection = directions[s->directionPointer];
 
     //Dubbelkolla igen om (och isåfall varför) dessa 2 rader behövs (jag ska alltså)
-    board[s->body[s->length].a.x][s->body[s->length].a.y] = 0;
-    board[s->body[s->length].b.x][s->body[s->length].b.y] = 0;
     switch(s->previous_direction){
         case 'u':
             if (newDirection == 'l') {
@@ -614,7 +611,7 @@ void initialize_snakes(){
     s1.player_one = 1;
     s2.player_one = 0;
     s1.ai.enabled = 0;
-    s2.ai.enabled = 1;
+    s2.ai.enabled = 0;
     initialize_snake(&s1);
     initialize_snake(&s2);
 }
@@ -644,8 +641,8 @@ void initialize_snake(struct Snake* s){
 
     if (s->player_one) {
         s->directionPointer = 2;
-        int x = 40;
-        int y = 16;
+        int x = 42;
+        int y = 8;
     
         for(i = 0; i < s->length; i++){
             s->body[i].a.x = x - i;
@@ -657,8 +654,8 @@ void initialize_snake(struct Snake* s){
     else {
         
         s->directionPointer = 0;
-        int x = 120;
-        int y = 16;
+        int x = 113;
+        int y = 23;
     
         for(i = 0; i < s->length; i++){
             s->body[i].a.x = x + i;
