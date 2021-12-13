@@ -466,29 +466,10 @@ _Bool detect_fruit_collision(struct Snake* s, struct FatCoordinate next_coordina
 }
 
 void detect_collision(struct Snake* s) {
-    struct FatCoordinate next_coordinate = s->body[0];
-    switch(directions[s->directionPointer]){
-        case 'u':
-        next_coordinate.a.y = s->body[0].a.y - 1;
-        next_coordinate.b.y = s->body[0].b.y - 1;
-        break;
-        case 'd':
-        next_coordinate.a.y = s->body[0].a.y + 1;
-        next_coordinate.b.y = s->body[0].b.y + 1;
-        break;
-        case 'l':
-        next_coordinate.a.x = s->body[0].a.x - 1;
-        next_coordinate.b.x = s->body[0].b.x - 1;
-        break;
-        case 'r':
-        next_coordinate.a.x = s->body[0].a.x + 1;
-        next_coordinate.b.x = s->body[0].b.x + 1;
-        break;
-    }
-    if (board[next_coordinate.a.x][next_coordinate.a.y] == 1 || board[next_coordinate.b.x][next_coordinate.b.y] == 1) {
+    if (board[s->body[0].a.x][s->body[0].a.y] == 1 || board[s->body[0].b.x][s->body[0].b.y] == 1) {
         
         //Check if point is part of fruit, then length increase and remove fruit
-        if (detect_fruit_collision(s, next_coordinate)) {
+        if (detect_fruit_collision(s, s->body[0])) {
             return;
         }
 
@@ -532,7 +513,6 @@ void move_snake(struct Snake* s){
             }
         }
     }
-    detect_collision(s);
 
     /*
     Temporary solution while there is only 1 snake
@@ -571,13 +551,6 @@ void move_snake(struct Snake* s){
         s->movesSinceTurn++;
     }
     
-    if (!s->skip_remove) {
-    //Resets the tail pixel on the board
-    board[s->body[s->length-1].a.x][s->body[s->length-1].a.y] = 0;
-    board[s->body[s->length-1].b.x][s->body[s->length-1].b.y] = 0;
-    } else {
-        s->skip_remove = 0;
-    }
     
 
     struct FatCoordinate coo1 = s->body[0];
@@ -597,6 +570,16 @@ void move_snake(struct Snake* s){
     }
     else {
         calculate_fat_rotation(s);
+    }
+
+    detect_collision(s);
+
+    if (!s->skip_remove) {
+    //Resets the tail pixel on the board
+    board[s->body[s->length-1].a.x][s->body[s->length-1].a.y] = 0;
+    board[s->body[s->length-1].b.x][s->body[s->length-1].b.y] = 0;
+    } else {
+        s->skip_remove = 0;
     }
 
     board[s->body[0].a.x][s->body[0].a.y] = 1;
