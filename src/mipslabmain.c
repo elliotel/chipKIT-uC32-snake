@@ -63,17 +63,16 @@ int main(void)  {
 	}
 	srand(seed);
 	display_init();
+	IOinitialize(); /* Do any lab-specific initialization */
+
+	_Bool multiplayer = display_main_menu();
+	
 	initialize_fruit();
-	initialize_snakes();
+	initialize_snakes(multiplayer);
 	
 	set_up_board();
 	set_up_score();
-	/*
-	struct Snake snek;
-	snek = 
-	*/
 	
-	IOinitialize(); /* Do any lab-specific initialization */
 
 	while( 1 )
 	{

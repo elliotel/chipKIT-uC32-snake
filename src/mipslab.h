@@ -97,10 +97,12 @@ void enable_interrupt(void);
 void update_rotation();
 int buttonStatus;
 void spawn_fruit();
-void update_board();
+void update_screen();
 void display_update();
 //void detect_collition();
 void string_to_pixel();
 void update_score();
+void clear_display();
 void clear_score_display();
+_Bool display_main_menu();
 

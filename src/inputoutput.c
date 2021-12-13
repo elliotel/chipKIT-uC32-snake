@@ -94,7 +94,7 @@ void update_game(){
 
 	if (timeoutcount == 2) { 
 		timeoutcount = 0;
-		update_board();
+		update_screen();
         //detect_collition();
         string_to_pixel(1,1,score_string,5);
         //update_score();

@@ -89,7 +89,7 @@ void visualize_fruit(){
         board[fruits[fruit_num].x2][fruits[fruit_num].y2] = 1;
     }
     */
-    update_board();
+    update_screen();
 }
 
 
@@ -132,7 +132,7 @@ void visualize(struct Snake* s){
         board[s->body[i].a.x][s->body[i].a.y] = 1;
         board[s->body[i].b.x][s->body[i].b.y] = 1;
     }
-    update_board();
+    update_screen();
 }
 void update_rotation(){
     getinput(&s1);
@@ -587,11 +587,11 @@ void move_snake(struct Snake* s){
 
 }
 
-void initialize_snakes(){
+void initialize_snakes(_Bool multiplayer){
     s1.player_one = 1;
     s2.player_one = 0;
     s1.ai.enabled = 0;
-    s2.ai.enabled = 1;
+    s2.ai.enabled = !multiplayer;
     initialize_snake(&s1);
     initialize_snake(&s2);
 }

@@ -161,7 +161,7 @@ void display_image(int x, const uint8_t *data) {
 	}
 }
 
-void display_board(int x, const uint8_t *data) {
+void display_screen(int x, const uint8_t *data) {
 	int i, j;
 	
 	for(i = 0; i < 4; i++) {
@@ -282,7 +282,7 @@ void clear_score_display(){
 }
 
 //converts coordinates to pixels
-void update_board(void){
+void update_screen(void){
     
   int y = 0;
   int c = 0;
@@ -302,7 +302,7 @@ void update_board(void){
       screen[c] = value;
       }
     }
-  display_board(0, screen);
+  display_screen(0, screen);
 }
 
 
