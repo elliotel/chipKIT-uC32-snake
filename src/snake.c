@@ -7,19 +7,19 @@ struct Snake s1;
 struct Snake s2;
 _Bool fruit_coords[128][32];
 char directions[4] = {'l', 'u', 'r', 'd'};
-int fruit_num = 0;
+int fruit_num;
 struct Fruit fruits[11];
 
 char score_count[3];
 
-void initialize_fruit(){    
-	//srand(100);
-    int x;
-    int y;
-    for(x = 0; x < 128; x++){
-        for(y = 0; y < 32; y++){
-            fruit_coords[x][y] = 0;
-        }
+void initialize_fruits(){   
+    fruit_num = 0;
+    int i;
+    for (i = 0; i < 11; i++) {
+        fruits[i].x1 = 0;
+        fruits[i].x2 = 0;
+        fruits[i].y1 = 0;
+        fruits[i].y2 = 0;
     }
 }
 
@@ -473,20 +473,18 @@ void detect_collision(struct Snake* s) {
             return;
         }
 
-        //Otherwise, game over.
-        int q;
-        for (q = 0; q < 128; q++) {
-            int r;
-            for (r = 0; r < 32; r++) {
-                board[q][r] = 1;
-            }
-        }
+        s->alive = 0;
     }
 }
 
-void move() {
+_Bool move() {
     move_snake(&s1);
     move_snake(&s2);
+    if (!(s1.alive && s2.alive)) {
+        display_end_screen(&s1, &s2);
+        return 1;
+    }
+    return 0;
 }
 
 void move_snake(struct Snake* s){
@@ -603,6 +601,7 @@ void initialize_snake(struct Snake* s){
     s->turnCCW = 0;
     s->turnCW = 0;
     s->score = 0;
+    s->alive = 1;
 
     if (s->ai.enabled) {
         s->ai.target.x1 = 0;

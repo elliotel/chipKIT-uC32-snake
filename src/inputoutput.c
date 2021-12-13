@@ -83,7 +83,7 @@ void getinput(struct Snake* s){
     
 }
 
-void update_game(){
+_Bool update_game(){
     update_rotation();
 
     if (IFS(0) & 0x100) { //interrupt flag, found in bit 8 of IFS(0) (lecture), if 1 the timer has reached the period
@@ -98,7 +98,10 @@ void update_game(){
         //detect_collition();
         string_to_pixel(1,1,score_string,5);
         //update_score();
-		move();
+		if (move()) {
+            //Game ended
+            return 1;
+        }
         //display_string(1, score);        
         //display_update();
         
@@ -116,4 +119,5 @@ void update_game(){
 			*port_E &= ~0xff;
 		}
 	}
+    return 0;
 }
