@@ -79,18 +79,6 @@ void spawn_fruit(){
     
 }
 
-void visualize_fruit(){
-    int i;
-    /*
-    for(i = 0; i < fruit_num; i++){
-        board[fruits[fruit_num].x1][fruits[fruit_num].y1] = 1;
-        board[fruits[fruit_num].x1][fruits[fruit_num].y2] = 1;
-        board[fruits[fruit_num].x2][fruits[fruit_num].y1] = 1;
-        board[fruits[fruit_num].x2][fruits[fruit_num].y2] = 1;
-    }
-    */
-    update_screen();
-}
 
 
 void remove_fruit(int num){
@@ -105,26 +93,6 @@ void remove_fruit(int num){
 
     fruit_num--;
 }
-
-/*
-void detect_collition(){
-    int i;
-    for(i = 0; i < fruit_num; i++){
-        if(fruits[fruit_num].x1 > 0){
-            board[2][2] = 1;
-        }
-        if((s->body[0].a.x == fruits[fruit_num].x1 || s->body[0].a.x == fruits[fruit_num].x2 
-        || s->body[0].b.x == fruits[fruit_num].x1 || s->body[0].b.x == fruits[fruit_num].x2) && 
-        ( s->body[0].a.y == fruits[fruit_num].y1 || s->body[0].a.y == fruits[fruit_num].y2 
-        || s->body[0].b.y == fruits[fruit_num].y1 || s->body[0].b.x == fruits[fruit_num].y2)){
-        //remove_fruit();
-        board[2][2] = 1;
-        score++;    
-        break;
-        }
-    }
-}
-*/
 
 void visualize(struct Snake* s){
     int i;
@@ -659,13 +627,3 @@ void initialize_snake(struct Snake* s){
     }
     visualize(s);
 }
-
-/*
-void increaseLength(struct snake snake*){
-    snake.length++;
-}
-
-void move(struct snake snake*){
-    
-}
-*/

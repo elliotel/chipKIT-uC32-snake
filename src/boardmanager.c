@@ -200,10 +200,6 @@ void display_screen(int x, const uint8_t *data)
   }
 }
 
-void set_up_menu(void)
-{
-}
-
 //Loads the game board
 void set_up_board(char map)
 {
