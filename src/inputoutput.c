@@ -62,7 +62,7 @@ int get_btns(void) {
 
 /* reads input and returns an int indicating which button has been pressed*/
 void get_input(struct Snake *s) {
-  button_status = get_btns();
+  int button_status = get_btns();
   if (button_status) {
     if (s->player_one && !(s->ai.enabled)) {
 

@@ -92,7 +92,6 @@ void get_input(struct Snake *);
 _Bool update_game();
 void enable_interrupt(void);
 void update_rotation();
-int button_status;
 void spawn_fruit();
 void update_screen();
 void display_update();
