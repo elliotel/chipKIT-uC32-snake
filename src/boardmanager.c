@@ -2,6 +2,8 @@
    This file written 2015 by F Lundevall
    Some parts are original code written by Axel Isaksson
 
+   This file modified 2021-12-14 by Elliot Elmenbeck and Isak Karlander
+
    For copyright and licensing, see file COPYING */
 
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */

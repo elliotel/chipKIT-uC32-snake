@@ -8,6 +8,8 @@
 
    This file modified 2017-04-31 by Ture Teknolog
 
+   This file modified 2021-12-14 by Elliot Elmenbeck and Isak Karlander
+
    For copyright and licensing, see file COPYING */
 
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */

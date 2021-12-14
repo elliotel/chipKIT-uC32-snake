@@ -5,6 +5,8 @@
 
    Latest update 2015-08-28 by F Lundevall
 
+   This file modified 2021-12-14 by Elliot Elmenbeck and Isak Karlander
+
    For copyright and licensing, see file COPYING */
 
 /* Declare display-related functions from mipslabfunc.c */
