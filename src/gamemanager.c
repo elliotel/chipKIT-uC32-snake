@@ -184,17 +184,17 @@ _Bool display_main_menu() {
 void display_end_screen(struct Snake* s1, struct Snake* s2) {
     clear_display();
     int button_status = 0;
-    if (!s1->alive && !s2->alive) {
-        string_to_pixel(0, 1, "Both players died.", 18);
         char player_one_score[3];
         char player_two_score[3];
         sprintf(player_one_score, "%d", s1->score);
         sprintf(player_two_score, "%d", s2->score);
-        char score_string[30] = "The final score was ";
+    char score_string[30] = "Final score: ";
         strcat(score_string, player_one_score);
         strcat(score_string, " - ");
         strcat(score_string, player_two_score);
-        strcat(score_string, ".");
+    if (!s1->alive && !s2->alive) {
+        string_to_pixel(0, 1, "Both players died.", 18);
+        
         string_to_pixel(0, 11, score_string, 30);
         if (s1->score > s2->score) {
             string_to_pixel(0, 21, "Player 1 wins.", 14);
@@ -208,15 +208,35 @@ void display_end_screen(struct Snake* s1, struct Snake* s2) {
     }
     else if (!s1->alive) {
         string_to_pixel(0, 1, "Player 1 has died.", 18);
-        string_to_pixel(0, 11, "Player 2 wins.", 14);
+        string_to_pixel(0, 11, score_string, 30);
+        string_to_pixel(0, 21, "Player 2 wins.", 14);
     }
-    else {
+    else if (!s2->alive) {
         string_to_pixel(0, 1, "Player 2 has died.", 18);
-        string_to_pixel(0, 11, "Player 1 wins.", 14);
+        string_to_pixel(0, 11, score_string, 30);
+        string_to_pixel(0, 21, "Player 1 wins.", 14);
         }
-            update_screen();
-            while(!(button_status & 0x1)) {
-                button_status = getbtns();
-            }
-            return;
+            
+    else {
+        if (s1->score > s2->score) {
+        string_to_pixel(0, 1, "Player 1 reached 100 score!", 31);
+        string_to_pixel(0, 11, score_string, 30);
+        string_to_pixel(0, 21, "Player 1 wins.", 14);
+        }
+        else if (s2->score > s1->score) {
+        string_to_pixel(0, 1, "Player 2 reached 100 score!", 31);
+        string_to_pixel(0, 11, score_string, 30);
+        string_to_pixel(0, 21, "Player 2 wins.", 14); 
+        }
+        else {
+        string_to_pixel(0, 1, "Both reached 100 score!", 28);
+        string_to_pixel(0, 11, score_string, 30);
+        string_to_pixel(0, 21, "It's a draw.", 14);
+        }
+    }
+        update_screen();
+        while(!(button_status & 0x1)) {
+            button_status = getbtns();
+        }
+        return;
 }

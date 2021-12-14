@@ -33,7 +33,7 @@ extern struct AI {
 };
 
 extern struct Snake{
-   struct FatCoordinate body[200];
+   struct FatCoordinate body[110];
    _Bool alive;
    int length;
    int directionPointer;
@@ -45,16 +45,6 @@ extern struct Snake{
    _Bool player_one;
    int score;
    struct AI ai;
-};
-
-extern struct Donut_obstacle{
-   //represents the corners of the obstacle
-   int x1; int x2; int y1; int y2;
-};
-
-extern struct Churro_obstacle{
-   //represents the top and bottom of the obstacle
-   int x1; int x2; int y1; int y2;
 };
 
 /* Declare lab-related functions from mipslabfunc.c */

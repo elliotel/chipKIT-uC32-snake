@@ -8,7 +8,7 @@ struct Snake s2;
 _Bool fruit_coords[128][32];
 char directions[4] = {'l', 'u', 'r', 'd'};
 int fruit_num;
-struct Fruit fruits[11];
+struct Fruit fruits[110];
 
 char score_count[3];
 
@@ -33,7 +33,7 @@ void update_score(){
 
 void spawn_fruit(){
     //Randomly generates locations for fruit
-    if(fruit_num == 10){
+    if(fruit_num == 109){
         return;
     }
     int x = (rand() % 99) + 27;
@@ -495,7 +495,7 @@ void detect_collision(struct Snake* s) {
 _Bool move() {
     move_snake(&s1);
     move_snake(&s2);
-    if (!(s1.alive && s2.alive)) {
+    if (!(s1.alive && s2.alive) || s1.score >= 30 || s2.score >= 30) {
         display_end_screen(&s1, &s2);
         return 1;
     }
@@ -563,8 +563,6 @@ void move_snake(struct Snake* s){
     if (s->movesSinceTurn < 2) {
         s->movesSinceTurn++;
     }
-    
-    
 
     struct FatCoordinate coo1 = s->body[0];
     struct FatCoordinate coo2 = s->body[0];
