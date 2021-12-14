@@ -26,7 +26,6 @@ int mytime = 0x5957;
 unsigned volatile char *port_E;
 unsigned volatile int *IOStatus;
 unsigned volatile int *test;
-int button_status;
 int switchStatus;
 int timeoutcount;
 int fruitcount;
