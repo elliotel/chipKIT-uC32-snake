@@ -52,6 +52,11 @@ void IOinitialize(void) {
   return;
 }
 
+//Checks if any buttons are being pressed
+int getbtns(void) {
+	return (int) (((PORTD & 0xe0) >> 4) | ((PORTF & 0x2) >> 1)); 
+}
+
 /* reads input and returns an int indicating which button has been pressed*/
 void getinput(struct Snake *s) {
   buttonStatus = getbtns();
