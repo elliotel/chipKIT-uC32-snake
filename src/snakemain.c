@@ -57,8 +57,9 @@ int main(void) {
   }
   srand(seed);
   display_init();
+  //Loops the program
   while (1) {
-    IOinitialize(); /* Do any lab-specific initialization */
+    IOinitialize();
     display_main_menu();
 
     initialize_fruits();
@@ -68,7 +69,7 @@ int main(void) {
     set_up_score();
 
     while (1) {
-
+      //Updates the game until it has ended
       if (update_game()) {
         break;
       }

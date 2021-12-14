@@ -17,16 +17,14 @@
 #include <stdint.h>  /* Declarations of uint_32 and the like */
 #include "snake.h" /* Declatations for these labs */
 
+
+
 #define TMR2PERIOD ((80000000 / 256) / 10)
 #if TMR2PERIOD > 0xffff
 #error "Timer period is too big." //reference exercise
 #endif
 
-int mytime = 0x5957;
-unsigned volatile char *port_E;
 unsigned volatile int *IOStatus;
-unsigned volatile int *test;
-int switchStatus;
 int timeoutcount;
 int fruitcount;
 
@@ -44,13 +42,11 @@ void IOinitialize(void) {
   // Initialize timer 2
   T2CON =
       0x70; // set all values to 0 except for the 3 bits in the TCKPS (1110000)
-  PR2 = TMR2PERIOD; // Sets the period to the right value
+      PR2 = TMR2PERIOD; // Sets the period to the right value
   TMR2 = 0;
   T2CONSET = 0x8000; // Start the timer (15 bit according to manual 14 (timer))
   timeoutcount = 0;
   fruitcount = 0;
-
-  port_E = (unsigned volatile char *)0xbf886110; // address of PORTE
   return;
 }
 
@@ -59,7 +55,7 @@ int get_btns(void) {
 	return (int) (((PORTD & 0xe0) >> 4) | ((PORTF & 0x2) >> 1)); 
 }
 
-/* reads input and returns an int indicating which button has been pressed*/
+/* Reads input and returns an int indicating which button has been pressed*/
 void get_input(struct Snake *s) {
   int button_status = get_btns();
   if (button_status) {
@@ -83,6 +79,7 @@ void get_input(struct Snake *s) {
   }
 }
 
+//Updates the game, this function is run continously while a game is in progress
 _Bool update_game() {
   update_rotation();
 
@@ -96,26 +93,16 @@ _Bool update_game() {
   if (timeoutcount == 2) {
     timeoutcount = 0;
     update_screen();
-    // detect_collition();
-    // update_score();
+    //Moves both snakes, and handles all calculations regarding new positions, collisions and so on.
     if (move()) {
       // Game ended
       return 1;
     }
-    // display_string(1, score);
-    // display_update();
 
+    //Counter for how often fruits spawn, lower = more frequent
     if (fruitcount == 20) {
       fruitcount = 0;
       spawn_fruit();
-    }
-
-    tick(&mytime);
-
-    if (*port_E != 255) {
-      (*port_E)++;
-    } else {
-      *port_E &= ~0xff;
     }
   }
   return 0;

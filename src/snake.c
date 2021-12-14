@@ -83,6 +83,7 @@ void update_rotation() {
   get_input(&s2);
 }
 
+//Selects a new fruit to target for the AI depending on its difficulty
 void ai_select_target(struct Snake *s) {
   if (!s->ai.hard) {
     if (fruit_num > 0) {
@@ -105,6 +106,7 @@ void ai_select_target(struct Snake *s) {
   }
 }
 
+//Calculations for how the AI should turn to reach its target
 void ai_evaluate_rotation(struct Snake *s) {
   struct Fruit target = s->ai.target;
   if (target.x1 == 0) {
@@ -250,6 +252,7 @@ _Bool evaluate_rotation(struct Snake *s) {
   }
 }
 
+//Calculates how the front pixels of the snake's body array should be set after a turn
 void calculate_wide_rotation(struct Snake *s) {
   char newDirection = directions[s->direction_pointer];
 
@@ -390,11 +393,13 @@ void calculate_wide_rotation(struct Snake *s) {
   }
 }
 
+//Increases the length of a snake
 void increase_length(struct Snake *s) {
   s->length++;
   s->skip_remove = 1;
 }
 
+//Detects if a snake has collided with a fruit
 _Bool detect_fruit_collision(struct Snake *s) {
   int i;
   _Bool found = 0;
@@ -413,19 +418,22 @@ _Bool detect_fruit_collision(struct Snake *s) {
   return found;
 }
 
+//Detects if a collision has happened
 void detect_collision(struct Snake *s) {
   if (board[s->body[0].a.x][s->body[0].a.y] == 1 ||
       board[s->body[0].b.x][s->body[0].b.y] == 1) {
 
-    // Check if point is part of fruit, then length increase and remove fruit
+    //Check if collision was made with part of a fruit, if true increase length and remove fruit
     if (detect_fruit_collision(s)) {
       return;
     }
 
+    //If the collision was made with something other than a fruit, sets snake to dead.
     s->alive = 0;
   }
 }
 
+//Moves both snakes and checks if the game should end
 _Bool move() {
   move_snake(&s1);
   move_snake(&s2);
@@ -436,6 +444,7 @@ _Bool move() {
   return 0;
 }
 
+//Moves a snake
 void move_snake(struct Snake *s) {
   if (s->ai.enabled) {
     if (s->ai.target.x1 == 0 || (s->ai.hard)) {
@@ -460,19 +469,15 @@ void move_snake(struct Snake *s) {
     }
   }
 
-  /*
-  Temporary solution while there is only 1 snake
-  If a second snake is added, replace with something akin to a boolean that
-  skips movement only for the snake(s) that turned instead
-  */
-  _Bool fat_turn = evaluate_rotation(s);
+  //Boolean that skips regular movement calculation for a snake that has turned
+  _Bool wide_turn = evaluate_rotation(s);
 
   int x1 = s->body[0].a.x;
   int x2 = s->body[0].b.x;
   int y1 = s->body[0].a.y;
   int y2 = s->body[0].b.y;
 
-  if (!fat_turn) {
+  if (!wide_turn) {
 
     switch (directions[s->direction_pointer]) {
     case 'u':
@@ -498,6 +503,7 @@ void move_snake(struct Snake *s) {
     s->moves_since_turn++;
   }
 
+  //Moves all values in the snake body array backwards, to make room for new ones at the front spot
   struct wide_coordinate coo1 = s->body[0];
   struct wide_coordinate coo2 = s->body[0];
   int i;
@@ -507,7 +513,8 @@ void move_snake(struct Snake *s) {
     s->body[i + 1] = coo2;
   }
 
-  if (!fat_turn) {
+  //Calculates new positions depending on if the snake is turning or not
+  if (!wide_turn) {
     s->body[0].a.x = x1;
     s->body[0].b.x = x2;
     s->body[0].a.y = y1;
@@ -530,6 +537,7 @@ void move_snake(struct Snake *s) {
   board[s->body[0].b.x][s->body[0].b.y] = 1;
 }
 
+//Initializes both snakes
 void initialize_snakes(_Bool multiplayer) {
   s1.player_one = 1;
   s2.player_one = 0;
@@ -539,6 +547,7 @@ void initialize_snakes(_Bool multiplayer) {
   initialize_snake(&s2);
 }
 
+//Initializes a single snake
 void initialize_snake(struct Snake *s) {
   s->length = starting_length;
   s->moves_since_turn = 2;
@@ -548,6 +557,7 @@ void initialize_snake(struct Snake *s) {
   s->score = 0;
   s->alive = 1;
 
+  //Initializes variables only relevant if the snake is AI-controlled
   if (s->ai.enabled) {
     s->ai.target.x1 = 0;
     s->ai.target.y1 = 0;
@@ -564,6 +574,7 @@ void initialize_snake(struct Snake *s) {
     s->body[i].b.y = 0;
   }
 
+  //Initializes player one
   if (s->player_one) {
     s->direction_pointer = 2;
     int x = 41;
@@ -575,7 +586,9 @@ void initialize_snake(struct Snake *s) {
       s->body[i].a.y = y;
       s->body[i].b.y = y + 1;
     }
-  } else {
+  } 
+  //Initializes player two
+  else {
 
     s->direction_pointer = 0;
     int x = 113;
