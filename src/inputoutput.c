@@ -26,7 +26,6 @@ int mytime = 0x5957;
 unsigned volatile char *port_E;
 unsigned volatile int *IOStatus;
 unsigned volatile int *test;
-int button_status;
 int switchStatus;
 int timeoutcount;
 int fruitcount;
@@ -62,7 +61,7 @@ int get_btns(void) {
 
 /* reads input and returns an int indicating which button has been pressed*/
 void get_input(struct Snake *s) {
-  button_status = get_btns();
+  int button_status = get_btns();
   if (button_status) {
     if (s->player_one && !(s->ai.enabled)) {
 
