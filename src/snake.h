@@ -21,7 +21,7 @@ extern struct Coordinate {
   int y;
 };
 
-extern struct FatCoordinate {
+extern struct wide_coordinate {
   struct Coordinate a;
   struct Coordinate b;
 };
@@ -46,15 +46,15 @@ extern struct AI {
 };
 
 extern struct Snake {
-  struct FatCoordinate body[110];
+  struct wide_coordinate body[110];
   _Bool alive;
   int length;
-  int directionPointer;
+  int direction_pointer;
   char previous_direction;
-  int movesSinceTurn;
+  int moves_since_turn;
   _Bool skip_remove;
-  _Bool turnCCW;
-  _Bool turnCW;
+  _Bool turn_CCW;
+  _Bool turn_CW;
   _Bool player_one;
   int score;
   struct AI ai;
@@ -106,15 +106,13 @@ void initialize_snakes(_Bool);
    specified in the laboratory instructions. */
 /* Written as part of asm lab: delay, time2string */
 void delay(int);
-void time2string(char *, int);
 /* Written as part of i/o lab: getbtns, getsw, enable_interrupt */
-int getbtns(void);
-int getsw(void);
-void getinput(struct Snake *);
+int get_btns(void);
+void get_input(struct Snake *);
 _Bool update_game();
 void enable_interrupt(void);
 void update_rotation();
-int buttonStatus;
+int button_status;
 void spawn_fruit();
 void update_screen();
 void display_update();
