@@ -6,6 +6,7 @@ _Bool multiplayer;
 char map;
 _Bool difficulty;
 
+//Clears the selection arrow from the menu
 void clear_menu_arrow(int start) {
     int i, j;
   for(i = 0; i < 14; i++){
@@ -15,6 +16,7 @@ void clear_menu_arrow(int start) {
   }
 }
 
+//Displays an image of a snake starting at specified x-coordinate
 void display_snake(int x) {
     int y = 0;
     int tot = 0;
@@ -26,7 +28,8 @@ void display_snake(int x) {
     }
 }
 
-int arrow_point_method(int num_choices){
+//Handles input and output for the selection arrow
+int arrow_selection(int num_choices){
     int choice = 0;
     int arrow_y;
      _Bool done = 0;
@@ -95,6 +98,7 @@ int arrow_point_method(int num_choices){
     return arrow_pointer;
 }
 
+//Displays the main menu of the game
 void display_main_menu() {
 
     _Bool selecting = 1;
@@ -115,7 +119,7 @@ void display_main_menu() {
             string_to_pixel(14, 11, "Start game!", 11);
             string_to_pixel(14, 21, "Highscores", 10);
             update_screen();
-            result = arrow_point_method(2);
+            result = arrow_selection(2);
             if (result == 0){
             menu = 'g';
             }
@@ -130,7 +134,7 @@ void display_main_menu() {
             string_to_pixel(14, 11, "Singleplayer", 12);
             string_to_pixel(14, 21, "Multiplayer", 11); 
             update_screen();
-            result = arrow_point_method(2);
+            result = arrow_selection(2);
             multiplayer = result;
             if (result == 0){
             menu = 'd';
@@ -149,7 +153,7 @@ void display_main_menu() {
             string_to_pixel(14, 11, "Medium map", 11);
             string_to_pixel(14, 21, "Hard map", 8);
             update_screen();
-            result = arrow_point_method(3);
+            result = arrow_selection(3);
             switch(result){
                 case 2:
                     map = 'e';
@@ -175,7 +179,7 @@ void display_main_menu() {
             string_to_pixel(14, 11, "Easy", 4);
             string_to_pixel(14, 21, "Hard", 4);
             update_screen();
-            result = arrow_point_method(2);
+            result = arrow_selection(2);
             if (result == 0){
                 difficulty = 0;
                 selecting = 0;
@@ -225,6 +229,7 @@ void display_main_menu() {
     }
 }
 
+//Displays the end of game screen
 void display_end_screen(struct Snake* s1, struct Snake* s2) {
     clear_display();
     int button_status = 0;
@@ -366,6 +371,7 @@ void display_end_screen(struct Snake* s1, struct Snake* s2) {
                  
             
         }
+        //Saves the new highscore
         strcpy(highscores[highscore_rank].name, name);
         highscores[highscore_rank].score = s1->score;
         strcpy(highscores[highscore_rank].score_char, player_one_score);
