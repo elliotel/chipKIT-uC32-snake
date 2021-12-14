@@ -4,6 +4,7 @@
 
 char textbuffer[4][16];
 _Bool board[128][32];
+struct Highscore highscores[3] = {{.name = "", .score = 0}, {.name = "", .score = 0}, {.name = "", .score = 0}};
 
 const uint8_t const font[] = {
 	0, 0, 0, 0, 0, 0, 0, 0,

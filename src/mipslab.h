@@ -26,6 +26,11 @@ extern struct Fruit{
    int x1; int x2; int y1; int y2;
 };
 
+extern struct Highscore{
+   char name[3];
+   int score;
+}
+
 extern struct AI {
    _Bool enabled;
    struct Fruit target;
@@ -84,6 +89,7 @@ extern _Bool board[128][32];
 extern _Bool multiplayer;
 extern char map;
 extern _Bool difficulty;
+extern struct Highscore highscores[3];
 
 void initialize_fruits(void);
 void initialize_snakes(_Bool);
