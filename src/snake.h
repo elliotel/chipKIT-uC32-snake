@@ -84,18 +84,15 @@ void initialize_snakes(_Bool);
    Note: Since we declare these functions here,
    students must define their functions with the exact types
    specified in the laboratory instructions. */
-/* Written as part of asm lab: delay, time2string */
-void delay(int);
-/* Written as part of i/o lab: getbtns, getsw, enable_interrupt */
+/* Written as part of i/o lab: getbtns, enable_interrupt */
 int get_btns(void);
+void enable_interrupt(void);
 void get_input(struct Snake *);
 _Bool update_game();
-void enable_interrupt(void);
 void update_rotation();
 void spawn_fruit();
 void update_screen();
 void display_update();
-// void detect_collition();
 void string_to_pixel(int, int, char *, int);
 void update_score();
 void clear_screen();
