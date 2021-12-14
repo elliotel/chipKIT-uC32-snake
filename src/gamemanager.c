@@ -172,7 +172,7 @@ void display_main_menu() {
 
             //which difficulty
             case 'd': 
-            string_to_pixel(0, 1, "Difficulty:", 11);
+            string_to_pixel(0, 1, "AI difficulty:", 11);
             string_to_pixel(14, 11, "Easy", 4);
             string_to_pixel(14, 21, "Hard", 4);
             update_screen();

@@ -495,7 +495,7 @@ void detect_collision(struct Snake* s) {
 _Bool move() {
     move_snake(&s1);
     move_snake(&s2);
-    if (!(s1.alive && s2.alive) || s1.score >= 30 || s2.score >= 30) {
+    if (!(s1.alive && s2.alive) || s1.score >= 100 || s2.score >= 100) {
         display_end_screen(&s1, &s2);
         return 1;
     }
