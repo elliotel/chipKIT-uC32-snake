@@ -4,9 +4,10 @@
 
    For copyright and licensing, see file COPYING */
 
-#include <stdint.h>  /* Declarations of uint_32 and the like */
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */
+#include <stdint.h>  /* Declarations of uint_32 and the like */
 #include "mipslab.h" /* Declatations for these labs */
+
 
 /* Declare a helper function which is local to this file */
 static void num32asc(char *s, int);
@@ -27,8 +28,7 @@ static void num32asc(char *s, int);
    A simple function to create a small delay.
    Very inefficient use of computing resources,
    but very handy in some special cases. */
-void quicksleep(int cyc)
-{
+void quicksleep(int cyc) {
   int i;
   for (i = cyc; i > 0; i--)
     ;
@@ -42,8 +42,7 @@ void quicksleep(int cyc)
    3rd pair counts minutes.
    4th pair (least significant byte) counts seconds.
    In most labs, only the 3rd and 4th pairs are used. */
-void tick(unsigned int *timep)
-{
+void tick(unsigned int *timep) {
   /* Get current value, store locally */
   register unsigned int t = *timep;
   t += 1; /* Increment local copy */
@@ -90,8 +89,7 @@ void tick(unsigned int *timep)
    repeated calls to display_image; display_image overwrites
    about half of the digits shown by display_debug.
 */
-void display_debug(volatile int *const addr)
-{
+void display_debug(volatile int *const addr) {
   display_string(1, "Addr");
   display_string(2, "Data");
   num32asc(&textbuffer[1][6], (int)addr);
@@ -99,8 +97,7 @@ void display_debug(volatile int *const addr)
   display_update();
 }
 
-uint8_t spi_send_recv(uint8_t data)
-{
+uint8_t spi_send_recv(uint8_t data) {
   while (!(SPI2STAT & 0x08))
     ;
   SPI2BUF = data;
@@ -109,8 +106,7 @@ uint8_t spi_send_recv(uint8_t data)
   return SPI2BUF;
 }
 
-void display_init(void)
-{
+void display_init(void) {
   DISPLAY_CHANGE_TO_COMMAND_MODE;
   quicksleep(10);
   DISPLAY_ACTIVATE_VDD;
@@ -140,8 +136,7 @@ void display_init(void)
   spi_send_recv(0xAF);
 }
 
-void display_string(int line, char *s)
-{
+void display_string(int line, char *s) {
   int i;
   if (line < 0 || line >= 4)
     return;
@@ -149,21 +144,17 @@ void display_string(int line, char *s)
     return;
 
   for (i = 0; i < 16; i++)
-    if (*s)
-    {
+    if (*s) {
       textbuffer[line][i] = *s;
       s++;
-    }
-    else
+    } else
       textbuffer[line][i] = ' ';
 }
 
-void display_image(int x, const uint8_t *data)
-{
+void display_image(int x, const uint8_t *data) {
   int i, j;
 
-  for (i = 0; i < 4; i++)
-  {
+  for (i = 0; i < 4; i++) {
     DISPLAY_CHANGE_TO_COMMAND_MODE;
 
     spi_send_recv(0x22);
@@ -179,12 +170,10 @@ void display_image(int x, const uint8_t *data)
   }
 }
 
-void display_screen(int x, const uint8_t *data)
-{
+void display_screen(int x, const uint8_t *data) {
   int i, j;
 
-  for (i = 0; i < 4; i++)
-  {
+  for (i = 0; i < 4; i++) {
     DISPLAY_CHANGE_TO_COMMAND_MODE;
 
     spi_send_recv(0x22);
@@ -200,33 +189,26 @@ void display_screen(int x, const uint8_t *data)
   }
 }
 
-//Loads the game board
-void set_up_board(char map)
-{
+// Loads the game board
+void set_up_board(char map) {
   int amount = 0;
   int donut_amount = 0;
   int churro_amount = 0;
 
   int x;
   int y;
-  for (x = 0; x < 128; x++)
-  {
-    for (y = 0; y < 32; y++)
-    {
-      if (((y == 0 || y == 31) && x >= 27) || x == 27 || x == 127)
-      {
+  for (x = 0; x < 128; x++) {
+    for (y = 0; y < 32; y++) {
+      if (((y == 0 || y == 31) && x >= 27) || x == 27 || x == 127) {
         board[x][y] = 1;
-      }
-      else
-      {
+      } else {
         board[x][y] = 0;
       }
     }
   }
 
-  switch (map)
-  {
-    case 'e':
+  switch (map) {
+  case 'e':
     update_screen();
     return;
     break;
@@ -237,39 +219,30 @@ void set_up_board(char map)
     amount = 16;
     break;
   }
-  donut_amount = (rand() % (amount-1)) + 1;
+  donut_amount = (rand() % (amount - 1)) + 1;
   churro_amount = amount - donut_amount;
   struct Coordinate coords[amount];
   int i, j, k, l;
   int x_temp;
   int y_temp;
   _Bool success;
-  for (i = 0; i < donut_amount; i++)
-  {
+  for (i = 0; i < donut_amount; i++) {
     success = 0;
-    while (!success)
-    {
+    while (!success) {
       x_temp = (rand() % 99) + 27;
       y_temp = (rand() % 29) + 1;
       success = 1;
-      for (k = x_temp; k < (x_temp + 3); k++)
-      {
-        for (l = y_temp; l < (y_temp + 3); l++)
-        {
-          if (board[k][l] == 1 || (k < 60 && l < 10)  || (k > 100 && l > 21))
-          {
+      for (k = x_temp; k < (x_temp + 3); k++) {
+        for (l = y_temp; l < (y_temp + 3); l++) {
+          if (board[k][l] == 1 || (k < 60 && l < 10) || (k > 100 && l > 21)) {
             success = 0;
           }
         }
-      }      
-      if(success)
-      {
-        for (k = x_temp; k < (x_temp + 3); k++)
-        {
-          for (l = y_temp; l < (y_temp + 3); l++)
-          {
-            if (k != x_temp + 1 || l != y_temp + 1)
-            {
+      }
+      if (success) {
+        for (k = x_temp; k < (x_temp + 3); k++) {
+          for (l = y_temp; l < (y_temp + 3); l++) {
+            if (k != x_temp + 1 || l != y_temp + 1) {
               board[k][l] = 1;
             }
           }
@@ -277,32 +250,24 @@ void set_up_board(char map)
       }
     }
   }
-  for (j = 0; j < churro_amount; j++)
-  {
+  for (j = 0; j < churro_amount; j++) {
     success = 0;
-    while (!success)
-    {
+    while (!success) {
       x_temp = (rand() % 99) + 27;
       y_temp = (rand() % 29) + 1;
       success = 1;
-      for (k = x_temp; k < (x_temp + 3); k++)
-      {
-        for (l = y_temp; l < (y_temp + 5); l++)
-        {
-          if (board[k][l] == 1 || (k < 50 && l < 10)  || (k > 110 && l > 21))
-          {
+      for (k = x_temp; k < (x_temp + 3); k++) {
+        for (l = y_temp; l < (y_temp + 5); l++) {
+          if (board[k][l] == 1 || (k < 50 && l < 10) || (k > 110 && l > 21)) {
             success = 0;
           }
         }
-      }      
-      if(success)
-      {
-        for (k = x_temp; k < (x_temp + 3); k++)
-        {
-          for (l = y_temp; l < (y_temp + 5); l++)
-          {
-            if (!(k == x_temp + 1 && (l == y_temp + 1 || l == y_temp + 2 || l == y_temp + 3)))
-            {
+      }
+      if (success) {
+        for (k = x_temp; k < (x_temp + 3); k++) {
+          for (l = y_temp; l < (y_temp + 5); l++) {
+            if (!(k == x_temp + 1 &&
+                  (l == y_temp + 1 || l == y_temp + 2 || l == y_temp + 3))) {
               board[k][l] = 1;
             }
           }
@@ -310,22 +275,19 @@ void set_up_board(char map)
       }
     }
   }
-  update_screen();  
+  update_screen();
 }
 
-void set_up_score(void)
-{
+void set_up_score(void) {
   string_to_pixel(1, 0, "P1:", 3);
   string_to_pixel(1, 16, "P2:", 3);
   update_score();
 }
 
-void display_update(void)
-{
+void display_update(void) {
   int i, j, k;
   int c;
-  for (i = 0; i < 4; i++)
-  {
+  for (i = 0; i < 4; i++) {
     DISPLAY_CHANGE_TO_COMMAND_MODE;
     spi_send_recv(0x22);
     spi_send_recv(i);
@@ -335,8 +297,7 @@ void display_update(void)
 
     DISPLAY_CHANGE_TO_DATA_MODE;
 
-    for (j = 0; j < 16; j++)
-    {
+    for (j = 0; j < 16; j++) {
       c = textbuffer[i][j];
       if (c & 0x80)
         continue;
@@ -347,24 +308,19 @@ void display_update(void)
   }
 }
 
-//Converts a string into pixels at a specified location on the screen
-void string_to_pixel(int x, int y, char *s, int l)
-{
-  int c,i,row;
+// Converts a string into pixels at a specified location on the screen
+void string_to_pixel(int x, int y, char *s, int l) {
+  int c, i, row;
   int x_new, y_new;
   _Bool chara = 0;
-  //loops for every character in the array
-  for (c = 0, x_new = x; c < l; c++, x_new++, s++)
-  {
+  // loops for every character in the array
+  for (c = 0, x_new = x; c < l; c++, x_new++, s++) {
     chara = 0;
-    for (i = 0; i < 8; i++)
-    {
+    for (i = 0; i < 8; i++) {
       row = font[(*s) * 8 + i];
-      if (row != 0)
-      {
+      if (row != 0) {
         // converts each set of 8 bits into pixels
-        for (y_new = y; y_new < y+8; y_new++)
-        {
+        for (y_new = y; y_new < y + 8; y_new++) {
           if (row & 0x1)
             board[x_new][y_new] = 1;
           row = row >> 1;
@@ -378,29 +334,23 @@ void string_to_pixel(int x, int y, char *s, int l)
   }
 }
 
-void clear_score_display()
-{
+void clear_score_display() {
   int i, j;
-  for (i = 0; i < 27; i++)
-  {
-    for (j = 8; j < 16; j++)
-    {
+  for (i = 0; i < 27; i++) {
+    for (j = 8; j < 16; j++) {
       board[i][j] = 0;
     }
   }
 
-  for (i = 0; i < 27; i++)
-  {
-    for (j = 24; j < 32; j++)
-    {
+  for (i = 0; i < 27; i++) {
+    for (j = 24; j < 32; j++) {
       board[i][j] = 0;
     }
   }
 }
 
-//converts coordinates to pixels
-void update_screen(void)
-{
+// converts coordinates to pixels
+void update_screen(void) {
 
   int y = 0;
   int c = 0;
@@ -408,16 +358,12 @@ void update_screen(void)
   int b;
   int a;
 
-  for (b = 0; b < 32; b += 8)
-  {
-    for (x = 0; x < 128; x++, c++)
-    {
+  for (b = 0; b < 32; b += 8) {
+    for (x = 0; x < 128; x++, c++) {
       int value = 0xFF;
       y = b;
-      for (a = 0; a < 8; a++, y++)
-      {
-        if (board[x][y] == 1)
-        {
+      for (a = 0; a < 8; a++, y++) {
+        if (board[x][y] == 1) {
           value = value - (0x1 << a);
         }
       }
@@ -427,15 +373,12 @@ void update_screen(void)
   display_screen(0, screen);
 }
 
-//Clears the entire screen
-void clear_screen()
-{
+// Clears the entire screen
+void clear_screen() {
   int x;
   int y;
-  for (x = 0; x < 128; x++)
-  {
-    for (y = 0; y < 32; y++)
-    {
+  for (x = 0; x < 128; x++) {
+    for (y = 0; y < 32; y++) {
       board[x][y] = 0;
     }
   }
@@ -443,8 +386,7 @@ void clear_screen()
 
 /* Helper function, local to this file.
    Converts a number to hexadecimal ASCII digits. */
-static void num32asc(char *s, int n)
-{
+static void num32asc(char *s, int n) {
   int i;
   for (i = 28; i >= 0; i -= 4)
     *s++ = "0123456789ABCDEF"[(n >> i) & 15];
@@ -452,43 +394,43 @@ static void num32asc(char *s, int n)
 
 /*
  * itoa
- * 
+ *
  * Simple conversion routine
  * Converts binary to decimal numbers
  * Returns pointer to (static) char array
- * 
+ *
  * The integer argument is converted to a string
  * of digits representing the integer in decimal format.
  * The integer is considered signed, and a minus-sign
  * precedes the string of digits if the number is
  * negative.
- * 
+ *
  * This routine will return a varying number of digits, from
  * one digit (for integers in the range 0 through 9) and up to
  * 10 digits and a leading minus-sign (for the largest negative
  * 32-bit integers).
- * 
+ *
  * If the integer has the special value
  * 100000...0 (that's 31 zeros), the number cannot be
  * negated. We check for this, and treat this as a special case.
  * If the integer has any other value, the sign is saved separately.
- * 
+ *
  * If the integer is negative, it is then converted to
  * its positive counterpart. We then use the positive
  * absolute value for conversion.
- * 
+ *
  * Conversion produces the least-significant digits first,
  * which is the reverse of the order in which we wish to
  * print the digits. We therefore store all digits in a buffer,
  * in ASCII form.
- * 
+ *
  * To avoid a separate step for reversing the contents of the buffer,
  * the buffer is initialized with an end-of-string marker at the
  * very end of the buffer. The digits produced by conversion are then
  * stored right-to-left in the buffer: starting with the position
  * immediately before the end-of-string marker and proceeding towards
  * the beginning of the buffer.
- * 
+ *
  * For this to work, the buffer size must of course be big enough
  * to hold the decimal representation of the largest possible integer,
  * and the minus sign, and the trailing end-of-string marker.
@@ -497,8 +439,7 @@ static void num32asc(char *s, int n)
  * may not allow this straight away.
  */
 #define ITOA_BUFSIZ (24)
-char *itoaconv(int num)
-{
+char *itoaconv(int num) {
   register int i, sign;
   static char itoa_buffer[ITOA_BUFSIZ];
   static const char maxneg[] = "-2147483648";
@@ -510,25 +451,22 @@ char *itoaconv(int num)
     for (i = 0; i < sizeof(maxneg); i += 1)
       itoa_buffer[i + 1] = maxneg[i];
     i = 0;
-  }
-  else
-  {
+  } else {
     if (num < 0)
       num = -num;        /* Make number positive. */
     i = ITOA_BUFSIZ - 2; /* Location for first ASCII digit. */
-    do
-    {
+    do {
       itoa_buffer[i] = num % 10 + '0'; /* Insert next digit. */
       num = num / 10;                  /* Remove digit from number. */
       i -= 1;                          /* Move index to next empty position. */
     } while (num > 0);
-    if (sign < 0)
-    {
+    if (sign < 0) {
       itoa_buffer[i] = '-';
       i -= 1;
     }
   }
   /* Since the loop always sets the index i to the next empty position,
-   * we must add 1 in order to return a pointer to the first occupied position. */
+   * we must add 1 in order to return a pointer to the first occupied position.
+   */
   return (&itoa_buffer[i + 1]);
 }
