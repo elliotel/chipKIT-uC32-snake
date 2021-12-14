@@ -200,14 +200,6 @@ void display_screen(int x, const uint8_t *data)
   }
 }
 
-void display_snake(int x, int y)
-{
-  x = 1;
-  y = 1;
-
-  screen[1] = 252;
-}
-
 void set_up_menu(void)
 {
 }
