@@ -27,7 +27,6 @@ int buttonStatus;
 int switchStatus;
 int timeoutcount;
 int fruitcount;
-char score_string[] = "score";
 
 /* Interrupt Service Routine */
 void user_isr( void )
@@ -96,7 +95,6 @@ _Bool update_game(){
 		timeoutcount = 0;
 		update_screen();
         //detect_collition();
-        string_to_pixel(1,1,score_string,5);
         //update_score();
 		if (move()) {
             //Game ended

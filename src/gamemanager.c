@@ -232,14 +232,15 @@ void display_end_screen(struct Snake* s1, struct Snake* s2) {
         char player_two_score[3];
         sprintf(player_one_score, "%d", s1->score);
         sprintf(player_two_score, "%d", s2->score);
-    char score_string[30] = "Final score: ";
+        
+    char score_string[22] = "Final score: ";
         strcat(score_string, player_one_score);
         strcat(score_string, " - ");
         strcat(score_string, player_two_score);
     if (!s1->alive && !s2->alive) {
         string_to_pixel(0, 1, "Both players died.", 18);
         
-        string_to_pixel(0, 11, score_string, 30);
+        string_to_pixel(0, 11, score_string, 22);
         if (s1->score > s2->score) {
             string_to_pixel(0, 21, "Player 1 wins.", 14);
         }
@@ -252,29 +253,29 @@ void display_end_screen(struct Snake* s1, struct Snake* s2) {
     }
     else if (!s1->alive) {
         string_to_pixel(0, 1, "Player 1 has died.", 18);
-        string_to_pixel(0, 11, score_string, 30);
+        string_to_pixel(0, 11, score_string, 22);
         string_to_pixel(0, 21, "Player 2 wins.", 14);
     }
     else if (!s2->alive) {
         string_to_pixel(0, 1, "Player 2 has died.", 18);
-        string_to_pixel(0, 11, score_string, 30);
+        string_to_pixel(0, 11, score_string, 22);
         string_to_pixel(0, 21, "Player 1 wins.", 14);
         }
             
     else {
         if (s1->score > s2->score) {
         string_to_pixel(0, 1, "Player 1 reached 100 score!", 31);
-        string_to_pixel(0, 11, score_string, 30);
+        string_to_pixel(0, 11, score_string, 22);
         string_to_pixel(0, 21, "Player 1 wins.", 14);
         }
         else if (s2->score > s1->score) {
         string_to_pixel(0, 1, "Player 2 reached 100 score!", 31);
-        string_to_pixel(0, 11, score_string, 30);
+        string_to_pixel(0, 11, score_string, 22);
         string_to_pixel(0, 21, "Player 2 wins.", 14); 
         }
         else {
         string_to_pixel(0, 1, "Both reached 100 score!", 28);
-        string_to_pixel(0, 11, score_string, 30);
+        string_to_pixel(0, 11, score_string, 22);
         string_to_pixel(0, 21, "It's a draw.", 14);
         }
     }
@@ -282,5 +283,93 @@ void display_end_screen(struct Snake* s1, struct Snake* s2) {
         while(!(button_status & 0x1)) {
             button_status = getbtns();
         }
+        clear_display();
+        if (s2->ai.enabled && (s1->score > highscores[2].score)) {
+            int highscore_rank;
+            if (s1->score > highscores[1].score) {
+                if (s1->score > highscores[0].score) {
+                    highscore_rank = 0;
+                    highscores[2] = highscores[1];
+                    highscores[1] = highscores[0];
+                }
+                else {
+                    highscore_rank = 1;
+                    highscores[2] = highscores[1];
+                }
+            }
+            else {
+                highscore_rank = 2;
+            }
+
+            int i;
+            int alphabet_index = 0;
+            char name[3] = "___";
+            char name_spaced[5];
+            for (i = 0; i < 3; i++) {
+
+                char highscore_string[25] = "You got highscore rank ";
+                char highscore_rank_string[1];
+                sprintf(highscore_rank_string, "%d", highscore_rank + 1);
+            
+                strcat(highscore_string, highscore_rank_string);
+                strcat(highscore_string, "!");
+
+                string_to_pixel(0, 1, highscore_string, 25);
+                string_to_pixel(0, 11, "Enter name (3 letters):", 23);
+
+                _Bool done = 0;
+                alphabet_index = 0;
+                while ( !done ) {
+                    name[i] = alphabet[alphabet_index];
+                    name_spaced[0] = name[0];
+                    name_spaced[1] = name_spaced[3] = ' ';
+                    name_spaced[2] = name[1];
+                    name_spaced[4] = name[2];
+
+                    string_to_pixel(0, 21, name_spaced, 5);
+                    update_screen();
+
+                    while(!button_status) {
+                        button_status = getbtns();
+                        if (button_status & 0x8){
+                            alphabet_index--;
+                        }
+                         if (button_status & 0x4) {
+                            alphabet_index++;
+                        }
+                        if (button_status & 0x2){
+                            done = 1;
+                        }
+                        if (button_status & 0x1){
+                        }
+                    }
+                    
+                  if (alphabet_index > 25) {
+                        alphabet_index = 0;
+                    }
+                    else if (alphabet_index < 0 ) {
+                        alphabet_index = 25;
+                    }
+
+                    int x, y;
+                    for (x = 0; x < 128; x++) {
+                        for (y = 21; y < 32; y++) {
+                            board[x][y] = 0;
+                        }
+                    }
+                    
+                    while (button_status) {
+                    button_status = getbtns();
+                    }
+                }
+                
+                 
+            
+        }
+        strcpy(highscores[highscore_rank].name, name);
+        highscores[highscore_rank].score = s1->score;
+        strcpy(highscores[highscore_rank].score_char, player_one_score);
         return;
+        }
+        
 }

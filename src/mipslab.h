@@ -91,6 +91,7 @@ extern _Bool multiplayer;
 extern char map;
 extern _Bool difficulty;
 extern struct Highscore highscores[3];
+extern const char const alphabet[26];
 
 void initialize_fruits(void);
 void initialize_snakes(_Bool);

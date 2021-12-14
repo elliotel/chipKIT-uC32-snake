@@ -319,7 +319,8 @@ void set_up_board(char map)
 
 void set_up_score(void)
 {
-  string_to_pixel(1, 16, "VS", 2);
+  string_to_pixel(1, 0, "P1:", 3);
+  string_to_pixel(1, 16, "P2:", 3);
   update_score();
 }
 

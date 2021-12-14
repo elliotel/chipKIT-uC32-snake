@@ -26,9 +26,9 @@ void initialize_fruits(){
 void update_score(){
     clear_score_display();
     sprintf(score_count, "%d", s1.score);
-    string_to_pixel(1, 8, score_count, 3);
+    string_to_pixel(14, 8, score_count, 3);
     sprintf(score_count, "%d", s2.score);
-    string_to_pixel(1, 24, score_count, 3);
+    string_to_pixel(14, 24, score_count, 3);
 }
 
 void spawn_fruit(){
@@ -621,7 +621,7 @@ void initialize_snake(struct Snake* s){
         s->ai.target.y1 = 0;
         s->ai.target.x2 = 0;
         s->ai.target.y2 = 0;
-        s->ai.hard = 1;
+        s->ai.hard = difficulty;
     }
 
     int i;

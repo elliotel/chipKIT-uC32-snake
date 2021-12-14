@@ -6,6 +6,10 @@ char textbuffer[4][16];
 _Bool board[128][32];
 struct Highscore highscores[3] = {{.name = "", .score = 0, .score_char = ""}, {.name = "", .score = 0, .score_char = ""}, {.name = "", .score = 0, .score_char = ""}};
 
+const char const alphabet[26] = {
+	'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+};
+
 const uint8_t const font[] = {
 	0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0,
