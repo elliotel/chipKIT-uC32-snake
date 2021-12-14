@@ -77,8 +77,8 @@ void remove_fruit(int num) {
 
 // Updates the rotation of both snakes
 void update_rotation() {
-  getinput(&s1);
-  getinput(&s2);
+  get_input(&s1);
+  get_input(&s2);
 }
 
 void ai_select_target(struct Snake *s) {
@@ -107,99 +107,99 @@ void ai_evaluate_rotation(struct Snake *s) {
     return;
   }
   if (target.x1 < s->body[0].a.x && target.y1 < s->body[0].a.y) {
-    switch (directions[s->directionPointer]) {
+    switch (directions[s->direction_pointer]) {
     case 'u':
     case 'l':
       break;
     case 'r':
-      s->turnCCW = 1;
+      s->turn_CCW = 1;
       break;
     case 'd':
-      s->turnCW = 1;
+      s->turn_CW = 1;
       break;
     }
   } else if (target.x1 > s->body[0].a.x && target.y1 < s->body[0].a.y) {
-    switch (directions[s->directionPointer]) {
+    switch (directions[s->direction_pointer]) {
     case 'u':
     case 'r':
       break;
     case 'l':
-      s->turnCW = 1;
+      s->turn_CW = 1;
       break;
     case 'd':
-      s->turnCCW = 1;
+      s->turn_CCW = 1;
       break;
     }
   } else if (target.x1 < s->body[0].a.x && target.y1 > s->body[0].a.y) {
-    switch (directions[s->directionPointer]) {
+    switch (directions[s->direction_pointer]) {
     case 'l':
     case 'd':
       break;
     case 'u':
-      s->turnCCW = 1;
+      s->turn_CCW = 1;
       break;
     case 'r':
-      s->turnCW = 1;
+      s->turn_CW = 1;
       break;
     }
   } else if (target.x1 > s->body[0].a.x && target.y1 > s->body[0].a.y) {
-    switch (directions[s->directionPointer]) {
+    switch (directions[s->direction_pointer]) {
     case 'r':
     case 'd':
       break;
     case 'u':
-      s->turnCW = 1;
+      s->turn_CW = 1;
       break;
     case 'l':
-      s->turnCCW = 1;
+      s->turn_CCW = 1;
       break;
     }
   } else if (target.x1 < s->body[0].a.x && target.y1 == s->body[0].a.y) {
-    switch (directions[s->directionPointer]) {
+    switch (directions[s->direction_pointer]) {
     case 'l':
       break;
     case 'u':
     case 'r':
-      s->turnCCW = 1;
+      s->turn_CCW = 1;
       break;
     case 'd':
-      s->turnCW = 1;
+      s->turn_CW = 1;
       break;
     }
   } else if (target.x1 > s->body[0].a.x && target.y1 == s->body[0].a.y) {
-    switch (directions[s->directionPointer]) {
+    switch (directions[s->direction_pointer]) {
     case 'r':
       break;
     case 'u':
     case 'l':
-      s->turnCW = 1;
+      s->turn_CW = 1;
       break;
     case 'd':
-      s->turnCCW = 1;
+      s->turn_CCW = 1;
       break;
     }
   } else if (target.x1 == s->body[0].a.x && target.y1 < s->body[0].a.y) {
-    switch (directions[s->directionPointer]) {
+    switch (directions[s->direction_pointer]) {
     case 'u':
       break;
     case 'r':
     case 'd':
-      s->turnCCW = 1;
+      s->turn_CCW = 1;
       break;
     case 'l':
-      s->turnCW = 1;
+      s->turn_CW = 1;
       break;
     }
   } else if (target.x1 == s->body[0].a.x && target.y1 > s->body[0].a.y) {
-    switch (directions[s->directionPointer]) {
+    switch (directions[s->direction_pointer]) {
     case 'd':
       break;
     case 'l':
     case 'u':
-      s->turnCCW = 1;
+      s->turn_CCW = 1;
       break;
     case 'r':
-      s->turnCW = 1;
+      s->turn_CW = 1;
       break;
     }
   }
@@ -207,47 +207,47 @@ void ai_evaluate_rotation(struct Snake *s) {
 
 // Evaluates if the user is turning
 _Bool evaluate_rotation(struct Snake *s) {
-  if (s->movesSinceTurn < 2) {
-    s->turnCW = 0;
-    s->turnCCW = 0;
+  if (s->moves_since_turn < 2) {
+    s->turn_CW = 0;
+    s->turn_CCW = 0;
     return 0;
   }
-  s->previous_direction = directions[s->directionPointer];
+  s->previous_direction = directions[s->direction_pointer];
 
   if (s->ai.enabled) {
     ai_evaluate_rotation(s);
   }
 
-  if (s->turnCW && s->turnCCW) {
-    s->turnCW = 0;
-    s->turnCCW = 0;
+  if (s->turn_CW && s->turn_CCW) {
+    s->turn_CW = 0;
+    s->turn_CCW = 0;
     return 0;
-  } else if (s->turnCCW) {
-    s->directionPointer--;
-  } else if (s->turnCW) {
-    s->directionPointer++;
+  } else if (s->turn_CCW) {
+    s->direction_pointer--;
+  } else if (s->turn_CW) {
+    s->direction_pointer++;
   }
 
   // Ensures the pointer loops around if it surpasses the boundaries of the
   // array
-  if (s->directionPointer > 3) {
-    s->directionPointer = 0;
-  } else if (s->directionPointer < 0) {
-    s->directionPointer = 3;
+  if (s->direction_pointer > 3) {
+    s->direction_pointer = 0;
+  } else if (s->direction_pointer < 0) {
+    s->direction_pointer = 3;
   }
 
-  if (s->turnCW || s->turnCCW) {
-    s->movesSinceTurn = 0;
-    s->turnCW = 0;
-    s->turnCCW = 0;
+  if (s->turn_CW || s->turn_CCW) {
+    s->moves_since_turn = 0;
+    s->turn_CW = 0;
+    s->turn_CCW = 0;
     return 1;
   } else {
     return 0;
   }
 }
 
-void calculate_fat_rotation(struct Snake *s) {
-  char newDirection = directions[s->directionPointer];
+void calculate_wide_rotation(struct Snake *s) {
+  char newDirection = directions[s->direction_pointer];
 
   switch (s->previous_direction) {
   case 'u':
@@ -470,7 +470,7 @@ void move_snake(struct Snake *s) {
 
   if (!fat_turn) {
 
-    switch (directions[s->directionPointer]) {
+    switch (directions[s->direction_pointer]) {
     case 'u':
       y1--;
       y2--;
@@ -490,12 +490,12 @@ void move_snake(struct Snake *s) {
     }
   }
 
-  if (s->movesSinceTurn < 2) {
-    s->movesSinceTurn++;
+  if (s->moves_since_turn < 2) {
+    s->moves_since_turn++;
   }
 
-  struct FatCoordinate coo1 = s->body[0];
-  struct FatCoordinate coo2 = s->body[0];
+  struct wide_coordinate coo1 = s->body[0];
+  struct wide_coordinate coo2 = s->body[0];
   int i;
   for (i = 0; i < s->length; i++) {
     coo2 = coo1;
@@ -509,7 +509,7 @@ void move_snake(struct Snake *s) {
     s->body[0].a.y = y1;
     s->body[0].b.y = y2;
   } else {
-    calculate_fat_rotation(s);
+    calculate_wide_rotation(s);
   }
 
   detect_collision(s);
@@ -537,10 +537,10 @@ void initialize_snakes(_Bool multiplayer) {
 
 void initialize_snake(struct Snake *s) {
   s->length = starting_length;
-  s->movesSinceTurn = 2;
+  s->moves_since_turn = 2;
   s->skip_remove = 0;
-  s->turnCCW = 0;
-  s->turnCW = 0;
+  s->turn_CCW = 0;
+  s->turn_CW = 0;
   s->score = 0;
   s->alive = 1;
 
@@ -561,7 +561,7 @@ void initialize_snake(struct Snake *s) {
   }
 
   if (s->player_one) {
-    s->directionPointer = 2;
+    s->direction_pointer = 2;
     int x = 41;
     int y = 8;
 
@@ -573,7 +573,7 @@ void initialize_snake(struct Snake *s) {
     }
   } else {
 
-    s->directionPointer = 0;
+    s->direction_pointer = 0;
     int x = 113;
     int y = 23;
 

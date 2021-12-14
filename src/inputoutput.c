@@ -25,7 +25,7 @@ int mytime = 0x5957;
 unsigned volatile char *port_E;
 unsigned volatile int *IOStatus;
 unsigned volatile int *test;
-int buttonStatus;
+int button_status;
 int switchStatus;
 int timeoutcount;
 int fruitcount;
@@ -55,29 +55,29 @@ void IOinitialize(void) {
 }
 
 //Checks if any buttons are being pressed
-int getbtns(void) {
+int get_btns(void) {
 	return (int) (((PORTD & 0xe0) >> 4) | ((PORTF & 0x2) >> 1)); 
 }
 
 /* reads input and returns an int indicating which button has been pressed*/
-void getinput(struct Snake *s) {
-  buttonStatus = getbtns();
-  if (buttonStatus) {
+void get_input(struct Snake *s) {
+  button_status = get_btns();
+  if (button_status) {
     if (s->player_one && !(s->ai.enabled)) {
 
-      if (buttonStatus & 0x4) {
-        s->turnCW = 1;
+      if (button_status & 0x4) {
+        s->turn_CW = 1;
       }
-      if (buttonStatus & 0x8) {
-        s->turnCCW = 1;
+      if (button_status & 0x8) {
+        s->turn_CCW = 1;
       }
     } else if (!(s->ai.enabled)) {
 
-      if (buttonStatus & 0x1) {
-        s->turnCW = 1;
+      if (button_status & 0x1) {
+        s->turn_CW = 1;
       }
-      if (buttonStatus & 0x2) {
-        s->turnCCW = 1;
+      if (button_status & 0x2) {
+        s->turn_CCW = 1;
       }
     }
   }

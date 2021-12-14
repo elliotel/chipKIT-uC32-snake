@@ -59,7 +59,7 @@ int arrow_selection(int num_choices) {
     update_screen();
 
     while (!button_status) {
-      button_status = getbtns();
+      button_status = get_btns();
       if (button_status & 0x8) {
         arrow_pointer--;
       }
@@ -71,7 +71,7 @@ int arrow_selection(int num_choices) {
       }
       if (button_status & 0x1) {
         while (button_status) {
-          button_status = getbtns();
+          button_status = get_btns();
         }
         return 3;
       }
@@ -89,7 +89,7 @@ int arrow_selection(int num_choices) {
       clear_menu_arrow(0);
     }
     while (button_status) {
-      button_status = getbtns();
+      button_status = get_btns();
     }
   }
   return arrow_pointer;
@@ -213,7 +213,7 @@ void display_main_menu() {
       }
       update_screen();
       while (!(button_status & 0x1)) {
-        button_status = getbtns();
+        button_status = get_btns();
       }
       menu = 'p';
       break;
@@ -272,7 +272,7 @@ void display_end_screen(struct Snake *s1, struct Snake *s2) {
   }
   update_screen();
   while (!(button_status & 0x1)) {
-    button_status = getbtns();
+    button_status = get_btns();
   }
   clear_screen();
   if (s2->ai.enabled && (s1->score > highscores[2].score)) {
@@ -319,7 +319,7 @@ void display_end_screen(struct Snake *s1, struct Snake *s2) {
         update_screen();
 
         while (!button_status) {
-          button_status = getbtns();
+          button_status = get_btns();
           if (button_status & 0x8) {
             alphabet_index--;
           }
@@ -347,7 +347,7 @@ void display_end_screen(struct Snake *s1, struct Snake *s2) {
         }
 
         while (button_status) {
-          button_status = getbtns();
+          button_status = get_btns();
         }
       }
     }
