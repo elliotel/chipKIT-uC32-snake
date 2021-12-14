@@ -12,6 +12,7 @@ struct Fruit fruits[11];
 
 char score_count[3];
 
+//Initializes the fruits in fruits[]
 void initialize_fruits(){   
     fruit_num = 0;
     int i;
@@ -23,6 +24,7 @@ void initialize_fruits(){
     }
 }
 
+//Updates the scoreboard
 void update_score(){
     clear_score_display();
     sprintf(score_count, "%d", s1.score);
@@ -31,77 +33,52 @@ void update_score(){
     string_to_pixel(14, 24, score_count, 3);
 }
 
+//Randomly generates fruits on the board
 void spawn_fruit(){
-    //Randomly generates locations for fruit
+
     if(fruit_num == 10){
         return;
     }
+
     int x = (rand() % 99) + 27;
-    //Ändrade denna till 30, så 0-29
     int y = (rand() % 29) + 1;
 
+    //Only adds a fruit if the area is clear
     if(board[x][y] != 1
     && board[x+1][y] != 1
     && board[x][y+1] != 1
     && board[x+1][y+1] != 1) {
-        /*
-        int i, j, k;
-        for (i = x - 1; i < x + 3; i++) {
-            for (j = y - 1; j < y + 3; j++) {
-                for (k = 0; k < fruit_num; k++) {
-                    if ((fruits[fruit_num].x1 == i || fruits[fruit_num].x2 == i) && (fruits[fruit_num].y1 == j || fruits[fruit_num].y2 == j)) {
-                        return;
-                    }
-                }
-            }
-        }
-        */
         struct Fruit fruit = {.x1 = x, .x2 = x+1, .y1 = y, .y2 = y+1};
         fruits[fruit_num] = fruit;
-    
-    /*
-    //Inte fin kod
-    int i, j;
-        for(i = x; i <= x+1; i++){
-            for(j = y; j <= y+1; j++){
-                board[i][j] = 1;
-            }
-        }
-    */
    
         board[fruit.x1][fruit.y1] = 1;
         board[fruit.x2][fruit.y1] = 1;
         board[fruit.x1][fruit.y2] = 1;
         board[fruit.x2][fruit.y2] = 1;
 
-   fruit_num++;
+        fruit_num++;
     }
     
 }
 
 
-
+//Removes a fruit from the board
 void remove_fruit(int num){
+
     board[fruits[num].x1][fruits[num].y1] = 0;
     board[fruits[num].x1][fruits[num].y2] = 0;
     board[fruits[num].x2][fruits[num].y1] = 0;
     board[fruits[num].x2][fruits[num].y2] = 0;
+
     int i;
     for (i = num; i < fruit_num; i++) {
-    fruits[i] = fruits[i+1];
+        fruits[i] = fruits[i+1];
     }
 
     fruit_num--;
 }
 
-void visualize(struct Snake* s){
-    int i;
-    for(i = 0; i < s->length; i++){
-        board[s->body[i].a.x][s->body[i].a.y] = 1;
-        board[s->body[i].b.x][s->body[i].b.y] = 1;
-    }
-    update_screen();
-}
+//Updates the rotation of both snakes
 void update_rotation(){
     getinput(&s1);
     getinput(&s2);
@@ -625,5 +602,8 @@ void initialize_snake(struct Snake* s){
             s->body[i].b.y = y - 1;
         }
     }
-    visualize(s);
+    for(i = 0; i < s->length; i++){
+        board[s->body[i].a.x][s->body[i].a.y] = 1;
+        board[s->body[i].b.x][s->body[i].b.y] = 1;
+    }
 }

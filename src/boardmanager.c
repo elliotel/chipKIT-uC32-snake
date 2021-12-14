@@ -427,7 +427,8 @@ void update_screen(void)
   display_screen(0, screen);
 }
 
-void clear_display()
+//Clears the entire screen
+void clear_screen()
 {
   int x;
   int y;

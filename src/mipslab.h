@@ -114,7 +114,7 @@ void display_update();
 //void detect_collition();
 void string_to_pixel(int, int, char*, int);
 void update_score();
-void clear_display();
+void clear_screen();
 void clear_score_display();
 void display_main_menu();
 void set_up_board(char);

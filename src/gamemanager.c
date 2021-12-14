@@ -104,7 +104,7 @@ void display_main_menu() {
     _Bool button_status;
     while(selecting){
         
-        clear_display();
+        clear_screen();
         display_snake(96);
         result = 0;
         switch(menu){
@@ -226,7 +226,7 @@ void display_main_menu() {
 }
 
 void display_end_screen(struct Snake* s1, struct Snake* s2) {
-    clear_display();
+    clear_screen();
     int button_status = 0;
         char player_one_score[3];
         char player_two_score[3];
@@ -283,7 +283,7 @@ void display_end_screen(struct Snake* s1, struct Snake* s2) {
         while(!(button_status & 0x1)) {
             button_status = getbtns();
         }
-        clear_display();
+        clear_screen();
         if (s2->ai.enabled && (s1->score > highscores[2].score)) {
             int highscore_rank;
             if (s1->score > highscores[1].score) {
