@@ -1,6 +1,6 @@
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */
 #include <stdint.h>  /* Declarations of uint_32 and the like */
-#include "mipslab.h" /* Declatations for these labs */
+#include "snake.h" /* Declatations for these labs */
 
 
 _Bool multiplayer;

@@ -1,6 +1,6 @@
 #include <stdint.h>   /* Declarations of uint_32 and the like */
 #include <pic32mx.h>  /* Declarations of system-specific addresses etc */
-#include "mipslab.h"  /* Declatations for these labs */
+#include "snake.h"  /* Declatations for these labs */
 
 char textbuffer[4][16];
 _Bool board[128][32];

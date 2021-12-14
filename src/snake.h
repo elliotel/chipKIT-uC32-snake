@@ -1,4 +1,4 @@
-/* mipslab.h
+/* snake.h
    Header file for all labs.
    This file written 2015 by F Lundevall
    Some parts are original code written by Axel Isaksson

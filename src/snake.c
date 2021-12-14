@@ -1,7 +1,7 @@
 
 #include <pic32mx.h>
 #include <stdint.h>
-#include "mipslab.h"
+#include "snake.h"
 
 int const starting_length = 8;
 struct Snake s1;
