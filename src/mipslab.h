@@ -29,7 +29,7 @@ extern struct Fruit{
 extern struct Highscore{
    char name[3];
    int score;
-}
+};
 
 extern struct AI {
    _Bool enabled;
