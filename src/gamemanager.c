@@ -102,15 +102,17 @@ void display_main_menu() {
   char menu = 'p';
   int result = 0;
   map = 'e';
-  _Bool button_status;
+  int button_status;
   while (selecting) {
-
+    button_status = 0;
     clear_screen();
+    if (menu != 'i') {
     display_snake(96);
+    }
     result = 0;
     switch (menu) {
 
-    // play game or check highscores
+    // Play game or check highscores
     case 'p':
       string_to_pixel(0, 1, "Welcome to Snake!", 17);
       string_to_pixel(14, 11, "Start game!", 11);
@@ -121,10 +123,12 @@ void display_main_menu() {
         menu = 'g';
       } else if (result == 1) {
         menu = 'h';
+      } else if (result == 3) {
+        menu = 'i';
       }
       break;
 
-    // singleplayer och multiplayer
+    // Singleplayer or multiplayer selections
     case 'g':
       string_to_pixel(0, 1, "Select mode:", 12);
       string_to_pixel(14, 11, "Singleplayer", 12);
@@ -141,7 +145,7 @@ void display_main_menu() {
       }
       break;
 
-    // Which map?
+    // Map selection
     case 'm':
       string_to_pixel(14, 1, "Easy map", 8);
       string_to_pixel(14, 11, "Medium map", 11);
@@ -167,7 +171,7 @@ void display_main_menu() {
       }
       break;
 
-    // which difficulty
+    // Difficulty selection
     case 'd':
       string_to_pixel(0, 1, "AI difficulty:", 14);
       string_to_pixel(14, 11, "Easy", 4);
@@ -185,7 +189,7 @@ void display_main_menu() {
       }
       break;
 
-    // view highscores
+    // View highscores
     case 'h':
       button_status = 0;
       string_to_pixel(0, 0, "Top 3 highscores:", 17);
@@ -194,10 +198,10 @@ void display_main_menu() {
       char rank[1];
       char entry[12];
 
-      // prints all highscores
+      // Prints all highscores
       for (i = 0; i < 3; i++, y += 8) {
 
-        // resets the entry array
+        // Resets the entry array
         for (j = 0; j < 12; j++) {
           entry[j] = '\0';
         }
@@ -216,6 +220,26 @@ void display_main_menu() {
         button_status = getbtns();
       }
       menu = 'p';
+      while (button_status) {
+          button_status = getbtns();
+        }
+      break;
+
+      //View creator info
+      case 'i':
+        string_to_pixel(0, 0, "Multiplayer Snake", 17);
+        string_to_pixel(0, 8, "Made for chipKIT uC32 by:", 25);
+        string_to_pixel(0, 16, "- Elliot Elmenbeck", 18);
+        string_to_pixel(0, 24, "- Isak Karlander", 16);
+
+        update_screen();
+        while (!(button_status & 0x2)) {
+          button_status = getbtns();
+        }
+        menu = 'p';
+        while (button_status) {
+          button_status = getbtns();
+        }
       break;
     }
   }
@@ -271,10 +295,11 @@ void display_end_screen(struct Snake *s1, struct Snake *s2) {
     }
   }
   update_screen();
-  while (!(button_status & 0x1)) {
+  while (!(button_status & 0x2)) {
     button_status = getbtns();
   }
   clear_screen();
+  
   if (s2->ai.enabled && (s1->score > highscores[2].score)) {
     int highscore_rank;
     if (s1->score > highscores[1].score) {
@@ -329,8 +354,6 @@ void display_end_screen(struct Snake *s1, struct Snake *s2) {
           if (button_status & 0x2) {
             done = 1;
           }
-          if (button_status & 0x1) {
-          }
         }
 
         if (alphabet_index > 25) {
@@ -357,4 +380,8 @@ void display_end_screen(struct Snake *s1, struct Snake *s2) {
     strcpy(highscores[highscore_rank].score_char, player_one_score);
     return;
   }
+  
+  while (button_status) {
+          button_status = getbtns();
+        }
 }

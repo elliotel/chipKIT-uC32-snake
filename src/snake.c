@@ -83,7 +83,9 @@ void update_rotation() {
 
 void ai_select_target(struct Snake *s) {
   if (!s->ai.hard) {
+    if (fruit_num > 0) {
     s->ai.target = fruits[rand() % fruit_num];
+    }
   } else {
     struct Fruit closest_fruit;
     int closest_distance = (abs(s->body[0].a.x - fruits[0].x1)) +
