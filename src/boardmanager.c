@@ -129,12 +129,13 @@ void display_screen(int x, const uint8_t *data) {
   }
 }
 
-// Loads the game board
+//Sets up the game board
 void set_up_board(char map) {
   int amount = 0;
   int donut_amount = 0;
   int churro_amount = 0;
 
+  //Draws the corners of the board
   int x;
   int y;
   for (x = 0; x < 128; x++) {
@@ -147,6 +148,7 @@ void set_up_board(char map) {
     }
   }
 
+  //Depending on the difficulty level, the amount of obstacles change
   switch (map) {
   case 'e':
     update_screen();
@@ -159,6 +161,8 @@ void set_up_board(char map) {
     amount = 16;
     break;
   }
+  
+  //Randomizes the amount of donut and churro obstacles based on the amount of total obstacles
   donut_amount = (rand() % (amount - 1)) + 1;
   churro_amount = amount - donut_amount;
   struct Coordinate coords[amount];
@@ -166,6 +170,7 @@ void set_up_board(char map) {
   int x_temp;
   int y_temp;
   _Bool success;
+
   for (i = 0; i < donut_amount; i++) {
     success = 0;
     while (!success) {
@@ -174,12 +179,14 @@ void set_up_board(char map) {
       success = 1;
       for (k = x_temp; k < (x_temp + 3); k++) {
         for (l = y_temp; l < (y_temp + 3); l++) {
+          //Evaluates if there exists something on this spot, if so, loops around and finds a new spot
           if (board[k][l] == 1 || (k < 60 && l < 10) || (k > 100 && l > 21)) {
             success = 0;
           }
         }
       }
       if (success) {
+        //Draws the "donut"
         for (k = x_temp; k < (x_temp + 3); k++) {
           for (l = y_temp; l < (y_temp + 3); l++) {
             if (k != x_temp + 1 || l != y_temp + 1) {
@@ -198,12 +205,14 @@ void set_up_board(char map) {
       success = 1;
       for (k = x_temp; k < (x_temp + 3); k++) {
         for (l = y_temp; l < (y_temp + 5); l++) {
+          //Evaluates if there exists something on this spot, if so, loops around and finds a new spot
           if (board[k][l] == 1 || (k < 50 && l < 10) || (k > 110 && l > 21)) {
             success = 0;
           }
         }
       }
       if (success) {
+        //Draws the "churro"
         for (k = x_temp; k < (x_temp + 3); k++) {
           for (l = y_temp; l < (y_temp + 5); l++) {
             if (!(k == x_temp + 1 &&
