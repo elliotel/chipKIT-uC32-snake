@@ -29,6 +29,7 @@ extern struct Fruit{
 extern struct AI {
    _Bool enabled;
    struct Fruit target;
+   _Bool hard;
 };
 
 extern struct Snake{
@@ -90,6 +91,7 @@ extern char textbuffer[4][16];
 
 extern _Bool board[128][32];
 
+void set_up_board(void);
 void initialize_fruits(void);
 void initialize_snakes(_Bool);
 /* Declare functions written by students.

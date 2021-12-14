@@ -140,7 +140,22 @@ void update_rotation(){
 }
 
 void ai_select_target(struct Snake* s) {
-    s->ai.target = fruits[rand() % fruit_num];
+    if (!s->ai.hard) {
+        s->ai.target = fruits[rand() % fruit_num];
+    }
+    else {
+        struct Fruit closest_fruit;
+        int closest_distance = (abs(s->body[0].a.x - fruits[0].x1)) + (abs(s->body[0].a.y - fruits[0].y1));
+        int i;
+        for (i = 0; i < fruit_num; i++) {
+           int new_distance =  (abs(s->body[0].a.x - fruits[i].x1)) + (abs(s->body[0].a.y - fruits[i].y1));
+            if (i == 0 || new_distance < closest_distance) {
+                closest_fruit = fruits[i];
+                closest_distance = new_distance;
+            }
+        }
+        s->ai.target = closest_fruit;
+    }
 }
 
 void ai_evaluate_rotation(struct Snake* s) {
@@ -489,7 +504,7 @@ _Bool move() {
 
 void move_snake(struct Snake* s){
     if (s->ai.enabled) {
-        if (s->ai.target.x1 == 0) {
+        if (s->ai.target.x1 == 0 || (s->ai.hard)) {
             if (fruits[0].x1 != 0) {
             ai_select_target(s);
             }
@@ -608,6 +623,7 @@ void initialize_snake(struct Snake* s){
         s->ai.target.y1 = 0;
         s->ai.target.x2 = 0;
         s->ai.target.y2 = 0;
+        s->ai.hard = 1;
     }
 
     int i;
