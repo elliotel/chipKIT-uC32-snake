@@ -351,34 +351,34 @@ void display_update(void)
   }
 }
 
+//Converts a string into pixels at a specified location on the screen
 void string_to_pixel(int x, int y, char *s, int l)
 {
-  //SKRIV OM LITE
-  int c;
-  int k;
-  int add = 0;
+  int c,i,row;
+  int x_new, y_new;
   _Bool chara = 0;
-  for (c = 0; c < l; c++, add++, s++)
+  //loops for every character in the array
+  for (c = 0, x_new = x; c < l; c++, x_new++, s++)
   {
     chara = 0;
-    for (k = 0; k < 8; k++)
+    for (i = 0; i < 8; i++)
     {
-      int i = font[(*s) * 8 + k];
-      if (i != 0)
+      row = font[(*s) * 8 + i];
+      if (row != 0)
       {
-        int j;
-        for (j = 0; j < 8; j++)
+        // converts each set of 8 bits into pixels
+        for (y_new = y; y_new < y+8; y_new++)
         {
-          if (i & 0x1)
-            board[x + add][y + j] = 1;
-          i = i >> 1;
+          if (row & 0x1)
+            board[x_new][y_new] = 1;
+          row = row >> 1;
         }
-        add++;
+        x_new++;
         chara = 1;
       }
     }
     if (!chara)
-      add += 4;
+      x_new += 4;
   }
 }
 

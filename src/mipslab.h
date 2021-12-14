@@ -77,8 +77,6 @@ void display_debug( volatile int * const addr );
 /* Declare bitmap array containing font */
 extern const uint8_t const font[128*8];
 /* Declare bitmap array containing icon */
-extern const uint8_t const icon[128*2];
-/* Declare bitmap array containing board */
 extern uint8_t screen[128*4];
 /* Declare bits for snek */
 extern const uint8_t const snek[32*32];
