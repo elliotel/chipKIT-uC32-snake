@@ -1,3 +1,12 @@
+/* snakedata.c
+    (based on mipslabdata.c)
+   This file compiled 2015 by F Lundevall
+   from original code written by Axel Isaksson
+   For copyright and licensing, see file COPYING 
+   
+   This file modified 2021-12-14 by Elliot Elmenbeck and Isak Karlander */
+   
+
 #include <stdint.h>   /* Declarations of uint_32 and the like */
 #include <pic32mx.h>  /* Declarations of system-specific addresses etc */
 #include "snake.h"  /* Declatations for these labs */

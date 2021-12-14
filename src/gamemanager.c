@@ -1,3 +1,6 @@
+/* gamemanager.c
+   This file written 2021-12-14 by Elliot Elmenbeck and Isak Karlander */
+
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */
 #include <stdint.h>  /* Declarations of uint_32 and the like */
 #include "snake.h" /* Declatations for these labs */
@@ -221,11 +224,11 @@ void display_main_menu() {
       }
       menu = 'p';
       while (button_status) {
-          button_status = getbtns();
+          button_status = get_btns();
         }
       break;
 
-      //View creator info
+      //View program info
       case 'i':
         string_to_pixel(0, 0, "Multiplayer Snake", 17);
         string_to_pixel(0, 8, "Made for chipKIT uC32 by:", 25);
@@ -234,11 +237,11 @@ void display_main_menu() {
 
         update_screen();
         while (!(button_status & 0x2)) {
-          button_status = getbtns();
+          button_status = get_btns();
         }
         menu = 'p';
         while (button_status) {
-          button_status = getbtns();
+          button_status = get_btns();
         }
       break;
     }
@@ -296,7 +299,7 @@ void display_end_screen(struct Snake *s1, struct Snake *s2) {
   }
   update_screen();
   while (!(button_status & 0x2)) {
-    button_status = getbtns();
+    button_status = get_btns();
   }
   clear_screen();
   
@@ -382,6 +385,6 @@ void display_end_screen(struct Snake *s1, struct Snake *s2) {
   }
   
   while (button_status) {
-          button_status = getbtns();
+          button_status = get_btns();
         }
 }

@@ -1,3 +1,5 @@
+/* snake.c
+   This file written 2021-12-14 by Elliot Elmenbeck and Isak Karlander */
 
 #include <pic32mx.h>
 #include <stdint.h>

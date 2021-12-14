@@ -1,15 +1,16 @@
 /* snake.h
+  (based on mipslab.h)
    Header file for all labs.
    This file written 2015 by F Lundevall
    Some parts are original code written by Axel Isaksson
 
    Latest update 2015-08-28 by F Lundevall
 
-   This file modified 2021-12-14 by Elliot Elmenbeck and Isak Karlander
+   For copyright and licensing, see file COPYING
 
-   For copyright and licensing, see file COPYING */
+   This file modified 2021-12-14 by Elliot Elmenbeck and Isak Karlander */
 
-/* Declare display-related functions from mipslabfunc.c */
+/* Declare display-related functions from boardmanager.c */
 void display_image(int x, const uint8_t *data);
 void display_init(void);
 void display_string(int line, char *s);
@@ -59,27 +60,6 @@ extern struct Snake {
   int score;
   struct AI ai;
 };
-
-/* Declare lab-related functions from mipslabfunc.c */
-char *itoaconv(int num);
-void labwork();
-int nextprime(int inval);
-void quicksleep(int cyc);
-void tick(unsigned int *timep);
-
-/* Declare display_debug - a function to help debugging.
-
-   After calling display_debug,
-   the two middle lines of the display show
-   an address and its current contents.
-
-   There's one parameter: the address to read and display.
-
-   Note: When you use this function, you should comment out any
-   repeated calls to display_image; display_image overwrites
-   about half of the digits shown by display_debug.
-*/
-void display_debug(volatile int *const addr);
 
 /* Declare bitmap array containing font */
 extern const uint8_t const font[128 * 8];
