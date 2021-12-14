@@ -95,7 +95,6 @@ int arrow_point_method(int num_choices){
     return arrow_pointer;
 }
 
-//Extrem code duplication i denna för menyerna, måste fixa en extra metod för valen
 void display_main_menu() {
 
     _Bool selecting = 1;
@@ -172,7 +171,7 @@ void display_main_menu() {
 
             //which difficulty
             case 'd': 
-            string_to_pixel(0, 1, "AI difficulty:", 11);
+            string_to_pixel(0, 1, "AI difficulty:", 14);
             string_to_pixel(14, 11, "Easy", 4);
             string_to_pixel(14, 21, "Hard", 4);
             update_screen();
@@ -194,9 +193,28 @@ void display_main_menu() {
             case 'h':
             button_status = 0;
             string_to_pixel(0, 0, "Top 3 highscores:", 17);
-            string_to_pixel(0, 8, "1: KEL", 6);
-            string_to_pixel(0, 16, "2: KOL", 6);
-            string_to_pixel(0, 24, "3: KAL", 6);
+            int i,j;
+            int y = 8;
+            char rank[1];
+            char entry[12];
+            
+            //prints all highscores
+            for(i = 0; i < 3; i++, y+=8){
+                
+                //resets the entry array
+                for(j = 0; j < 12; j++){
+                    entry[j] = '\0'; 
+                }                
+                sprintf(rank, "%d",i+1);
+                strcat(entry, rank);
+                strcat(entry, ": ");
+                strcat(entry, highscores[i].name);
+                if(highscores[i].score != 0){
+                strcat(entry, " - ");
+                strcat(entry, highscores[i].score_char);
+                }
+                string_to_pixel(0, y, entry, 12);       
+            }
             update_screen();
             while(!(button_status & 0x1)) {
                 button_status = getbtns();

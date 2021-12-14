@@ -29,6 +29,7 @@ extern struct Fruit{
 extern struct Highscore{
    char name[3];
    int score;
+   char score_char[3];
 };
 
 extern struct AI {
