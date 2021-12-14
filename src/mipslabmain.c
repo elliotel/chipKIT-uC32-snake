@@ -65,13 +65,12 @@ int main(void)  {
 	display_init();
 while ( 1 ){
 	IOinitialize(); /* Do any lab-specific initialization */
-	_Bool multiplayer = display_main_menu();
+	display_main_menu();
 	
 	initialize_fruits();
 	initialize_snakes(multiplayer);
 	
-	//set_up_difficult_board('h');
-	set_up_board();
+	set_up_board(map);
 	set_up_score();
 
 	while( 1 )

@@ -205,8 +205,12 @@ void set_up_menu(void)
 }
 
 //Loads the game board
-void set_up_board(void)
+void set_up_board(char map)
 {
+  int amount = 0;
+  int donut_amount = 0;
+  int churro_amount = 0;
+
   int x;
   int y;
   for (x = 0; x < 128; x++)
@@ -223,21 +227,18 @@ void set_up_board(void)
       }
     }
   }
-}
 
-void set_up_difficult_board(char map)
-{
-  int amount = 0;
-  int donut_amount = 0;
-  int churro_amount = 0;
-  set_up_board();
   switch (map)
   {
+    case 'e':
+    update_screen();
+    return;
+    break;
   case 'm':
-    amount = 10;
+    amount = 8;
     break;
   case 'h':
-    amount = 20;
+    amount = 16;
     break;
   }
   donut_amount = (rand() % (amount-1)) + 1;
@@ -259,7 +260,7 @@ void set_up_difficult_board(char map)
       {
         for (l = y_temp; l < (y_temp + 3); l++)
         {
-          if (board[k][l] == 1 || (k < 50 && l < 10)  || (k > 110 && l > 21))
+          if (board[k][l] == 1 || (k < 60 && l < 10)  || (k > 100 && l > 21))
           {
             success = 0;
           }

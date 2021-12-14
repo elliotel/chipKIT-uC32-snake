@@ -8,7 +8,7 @@ struct Snake s2;
 _Bool fruit_coords[128][32];
 char directions[4] = {'l', 'u', 'r', 'd'};
 int fruit_num;
-struct Fruit fruits[110];
+struct Fruit fruits[11];
 
 char score_count[3];
 
@@ -33,7 +33,7 @@ void update_score(){
 
 void spawn_fruit(){
     //Randomly generates locations for fruit
-    if(fruit_num == 109){
+    if(fruit_num == 10){
         return;
     }
     int x = (rand() % 99) + 27;

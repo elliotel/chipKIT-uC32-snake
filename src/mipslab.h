@@ -81,7 +81,10 @@ extern char textbuffer[4][16];
 
 extern _Bool board[128][32];
 
-void set_up_board(void);
+extern _Bool multiplayer;
+extern char map;
+extern _Bool difficulty;
+
 void initialize_fruits(void);
 void initialize_snakes(_Bool);
 /* Declare functions written by students.
@@ -107,6 +110,6 @@ void string_to_pixel(int, int, char*, int);
 void update_score();
 void clear_display();
 void clear_score_display();
-_Bool display_main_menu();
-void set_up_difficult_board(char);
+void display_main_menu();
+void set_up_board(char);
 void display_end_screen();

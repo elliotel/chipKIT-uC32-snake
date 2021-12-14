@@ -2,10 +2,14 @@
 #include <pic32mx.h>  /* Declarations of system-specific addresses etc */
 #include "mipslab.h"  /* Declatations for these labs */
 
-void clear_menu_arrow() {
+_Bool multiplayer;
+char map;
+_Bool difficulty;
+
+void clear_menu_arrow(int start) {
     int i, j;
   for(i = 0; i < 14; i++){
-    for(j = 11; j < 32; j++){
+    for(j = start; j < 32; j++){
       board[i][j] = 0;
     }
   }
@@ -22,29 +26,20 @@ void display_snake(int x) {
     }
 }
 
-//Extrem code duplication i denna för menyerna, måste fixa en extra metod för valen
-_Bool display_main_menu() {
-
-    clear_display();
-    
-    _Bool done = 0;
-    _Bool back = 0;
-    int arrow_pointer = 0;
-    int arrow_y = 11;
-    _Bool multiplayer = 0;
+int arrow_point_method(int num_choices){
+    int choice = 0;
+    int arrow_y;
+     _Bool done = 0;
+    _Bool back = 0;       
+    int arrow_pointer;
+    if(num_choices == 2){
+        arrow_pointer = 0;
+    }
+    else{
+        arrow_pointer = 2;
+    } 
     int button_status = 0;
-    
-    while ( 1 ) {
-
     while (!done) {
-
-        clear_display();
-
-    string_to_pixel(0, 1, "Welcome to Snake!", 17);
-    string_to_pixel(14, 11, "Start game!", 11);
-    string_to_pixel(14, 21, "Highscores", 10);
-    display_snake(96);
-
         switch (arrow_pointer) {
             case 0:
                 arrow_y = 11;
@@ -52,10 +47,14 @@ _Bool display_main_menu() {
             case 1:
                 arrow_y = 21;
                 break;
+            case 2:
+                arrow_y = 1;
+                break;            
         }
-        
+
         string_to_pixel(0, arrow_y, "->", 2);
         update_screen();
+        
 
         while(!button_status) {
             button_status = getbtns();
@@ -69,116 +68,143 @@ _Bool display_main_menu() {
                 done = 1;
             }
             if (button_status & 0x1){
-                back = 1;
+                while (button_status) {
+                    button_status = getbtns();
+                }
+                return 3;
             }
         }
 
-        if (arrow_pointer > 1) {
+        if (arrow_pointer > (num_choices-1)) {
         arrow_pointer = 0;
         }
         else if (arrow_pointer < 0 ) {
-            arrow_pointer = 1;
+            arrow_pointer = (num_choices-1);
         }
 
-        clear_menu_arrow();
-        
+        if(num_choices == 2){
+            clear_menu_arrow(11);
+        }
+        else{
+            clear_menu_arrow(0);
+        }
         while (button_status) {
             button_status = getbtns();
         }
-        if (done) {
-        if (arrow_pointer == 0) {
-            //Pass through and leave the method goodbye
-        }
-        else if (arrow_pointer == 1) {
-            clear_display();
+    }
+    return arrow_pointer;
+}
+
+//Extrem code duplication i denna för menyerna, måste fixa en extra metod för valen
+void display_main_menu() {
+
+    _Bool selecting = 1;
+    char menu = 'p';    
+    int result = 0;
+    map = 'e';
+    _Bool button_status;
+    while(selecting){
+        
+        clear_display();
+        display_snake(96);
+        result = 0;
+        switch(menu){
+
+            //play game or check highscores
+            case 'p': 
+            string_to_pixel(0, 1, "Welcome to Snake!", 17);
+            string_to_pixel(14, 11, "Start game!", 11);
+            string_to_pixel(14, 21, "Highscores", 10);
+            update_screen();
+            result = arrow_point_method(2);
+            if (result == 0){
+            menu = 'g';
+            }
+            else if (result == 1) {
+            menu = 'h';
+            }
+            break;
+
+            //singleplayer och multiplayer
+            case 'g':
+            string_to_pixel(0, 1, "Select mode:", 12);
+            string_to_pixel(14, 11, "Singleplayer", 12);
+            string_to_pixel(14, 21, "Multiplayer", 11); 
+            update_screen();
+            result = arrow_point_method(2);
+            multiplayer = result;
+            if (result == 0){
+            menu = 'd';
+            }
+            else if (result == 1) {
+            menu = 'm';
+            }
+            else if (result == 3) {
+            menu = 'p';
+            }
+            break;
+
+            //Which map?
+            case 'm': 
+            string_to_pixel(14, 1, "Easy map", 8);
+            string_to_pixel(14, 11, "Medium map", 11);
+            string_to_pixel(14, 21, "Hard map", 8);
+            update_screen();
+            result = arrow_point_method(3);
+            switch(result){
+                case 2:
+                    map = 'e';
+                    break;
+                case 0:
+                    map = 'm';
+                    break;
+                case 1:
+                    map = 'h';
+                    break;
+                case 3:
+                    menu = 'g';
+                    break;
+            }
+            if(result != 3){
+                selecting = 0;
+            }
+            break;
+
+            //which difficulty
+            case 'd': 
+            string_to_pixel(0, 1, "Difficulty:", 11);
+            string_to_pixel(14, 11, "Easy", 4);
+            string_to_pixel(14, 21, "Hard", 4);
+            update_screen();
+            result = arrow_point_method(2);
+            if (result == 0){
+                difficulty = 0;
+                selecting = 0;
+            }
+            else if (result == 1) {
+                difficulty = 1;
+                selecting = 0;
+            }   
+            else if (result == 3) {
+                menu = 'g';
+            }          
+            break;
+
+            //view highscores
+            case 'h':
+            button_status = 0;
             string_to_pixel(0, 0, "Top 3 highscores:", 17);
-            string_to_pixel(0, 8, "1: Kajim Val", 12);
-            string_to_pixel(0, 16, "2: Daodac Calle", 15);
-            string_to_pixel(0, 24, "3: Zuk Ara", 10);
-            display_snake(96);
+            string_to_pixel(0, 8, "1: KEL", 6);
+            string_to_pixel(0, 16, "2: KOL", 6);
+            string_to_pixel(0, 24, "3: KAL", 6);
             update_screen();
             while(!(button_status & 0x1)) {
                 button_status = getbtns();
             }
-            done = 0;
-        }
-
-        
+            menu = 'p';
+            break;
         }
     }
-
-    back = 0;
-    done = 0;
-
-    clear_display();
-
-    string_to_pixel(0, 1, "Select mode:", 12);
-    string_to_pixel(14, 11, "Singleplayer", 12);
-    string_to_pixel(14, 21, "Multiplayer", 11);
-    display_snake(96);
-
-    string_to_pixel(0, arrow_y, "->", 2);
-
-    update_screen();
-
-    while (!done) {
-
-        switch (arrow_pointer) {
-            case 0:
-                arrow_y = 11;
-                multiplayer = 0;
-                break;
-            case 1:
-                arrow_y = 21;
-                multiplayer = 1;
-                break;
-        }
-        
-        string_to_pixel(0, arrow_y, "->", 2);
-        update_screen();
-
-        while(!button_status) {
-            button_status = getbtns();
-            if (button_status & 0x8){
-                arrow_pointer--;
-            }
-            if (button_status & 0x4) {
-                arrow_pointer++;
-            }
-            if (button_status & 0x2){
-                done = 1;
-            }
-            if (button_status & 0x1){
-                done = 1;
-                back = 1;
-            }
-        }
-
-        if (arrow_pointer > 1) {
-        arrow_pointer = 0;
-        }
-        else if (arrow_pointer < 0 ) {
-            arrow_pointer = 1;
-        }
-
-        clear_menu_arrow();
-        
-        while (button_status) {
-            button_status = getbtns();
-        }
-        
-    }
-    
-    clear_display();
-    
-    if (!back) {
-        back = 0;
-        done = 0;
-        return multiplayer;
-    }
-    back = 0;
-    done = 0;
-}
 }
 
 void display_end_screen(struct Snake* s1, struct Snake* s2) {

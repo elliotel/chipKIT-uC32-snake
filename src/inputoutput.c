@@ -105,7 +105,7 @@ _Bool update_game(){
         //display_string(1, score);        
         //display_update();
         
-        if(fruitcount == 2){
+        if(fruitcount == 20){
         fruitcount = 0;
         spawn_fruit();
         }
